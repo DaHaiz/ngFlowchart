@@ -1,23 +1,23 @@
-# angular-flowchart
+# ngFlowchart
 
-angular-flowchart is an easy and customizable way to draw flowchart graphs using AngularJS.
+ngFlowchart is an easy and customizable way to draw flowchart graphs using AngularJS.
 
 ## Getting Started
 
-Install angular-flowchart via bower with `bower install angular-flowchart`
+Install ngFlowchart via bower with `bower install ngFlowchart`
 
-Run `gulp` in the angular-flowchart directory to start an interactive demo.
+Run `gulp` in the ngFlowchart directory to start an interactive demo.
 
 ## Integration
 
 Add stylesheet:
 ```html
-    <link rel="stylesheet" href="bower_components/angular-flowchart/dist/flowchart.css" type="text/css">
+    <link rel="stylesheet" href="bower_components/ngFlowchart/dist/flowchart.css" type="text/css">
 ```
 
 Include script:
 ```html
-  <script src="bower_components/angular-flowchart/dist/angular-flowchart.js"></script>
+  <script src="bower_components/ngFlowchart/dist/ngFlowchart.js"></script>
 ```
 
 Insert this line where you want the flowchart to appear. It should fill up the given space, but if you are working on a complex site,
@@ -124,6 +124,6 @@ We use gulp to build and manage our project. If you want to use some of our gulp
 * `gulp test` Will run our test via karma in PhantomJs, Chrome, Firefox and IE
 
 ## Browser Support
-angular-flowchart supports Chrome, Firefox, Opera, IE10+. Safari is not supported. PRs to expand support are welcome.
+ngFlowchart supports Chrome, Firefox, Opera, IE10+. Safari is not supported. PRs to expand support are welcome.
 
 Right now it is only possible to have one canvas per site, this may changes in future.

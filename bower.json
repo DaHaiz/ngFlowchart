@@ -7,7 +7,7 @@
   ],
   "description": "angular ngflowchart enables drag&drop modelling of graphs in web applications",
   "main": [
-    "dist/angular-flowchart.js",
+    "dist/ngFlowchart.js",
     "app/flowchart/flowchart.css"
   ],
   "keywords": [

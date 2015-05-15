@@ -42,7 +42,7 @@ gulp.task('flowchartScripts', function() {
         prefix: 'flowchart/'
       }))
   )
-    .pipe(concat('angular-flowchart.js'))
+    .pipe(concat('ngFlowchart.js'))
     .pipe(gulp.dest('dist'));
   safeReload--;
   return ret;
@@ -96,7 +96,7 @@ gulp.task('test', function(done) {
 });
 
 gulp.task('clean', function(done) {
-  del(['dist/angular-flowchart.js', 'dist/vendor.js', 'dist/flowchart.css'], done);
+  del(['dist/ngFlowchart.js', 'dist/vendor.js', 'dist/flowchart.css'], done);
 });
 
 gulp.task('build', ['flowchartScripts', 'flowchartCss', 'vendorScripts']);

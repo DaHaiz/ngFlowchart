@@ -20,7 +20,6 @@ module.exports = function(config) {
       'bower_components/bind-polyfill/index.js',
       'flowchart/flowchart.js',
       'flowchart/**/*.js',
-      '*.js',
       'flowchart/**.html'
       ],
 
