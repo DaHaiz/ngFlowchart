@@ -46,7 +46,7 @@ Your site should now show your first flowchart with two connected nodes.
 
 ## Program structure
 
-![Dependency graph](https://github.com/ONE-LOGIC/ngFlowchart/edit/master/README.md
+![Dependency graph](https://github.com/ONE-LOGIC/ngFlowchart/edit/master/README.md)
 
 ## Api
 
