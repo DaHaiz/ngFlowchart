@@ -1,11 +1,11 @@
 {
-  "name": "angular-flowchart",
+  "name": "ngFlowchart",
   "version": "0.1.0",
-  "homepage": "https://github.com/ONE-LOGIC/angular-flowchart",
+  "homepage": "https://github.com/ONE-LOGIC/ngFlowchart",
   "authors": [
     "per.fuchs@onelogic.de"
   ],
-  "description": "angular-flowchart enables drag&drop modelling of graphs in web applications",
+  "description": "angular ngflowchart enables drag&drop modelling of graphs in web applications",
   "main": [
     "dist/angular-flowchart.js",
     "app/flowchart/flowchart.css"
