@@ -1,15 +1,35 @@
 {
-  "name": "angular-seed",
-  "description": "A starter project for AngularJS",
-  "version": "0.0.0",
-  "homepage": "https://github.com/angular/angular-seed",
+  "name": "angular-flowchart",
+  "version": "0.1.0",
+  "homepage": "https://github.com/ONE-LOGIC/angular-flowchart",
+  "authors": [
+    "per.fuchs@onelogic.de"
+  ],
+  "description": "angular-flowchart enables drag&drop modelling of graphs in web applications",
+  "main": [
+    "dist/angular-flowchart.js",
+    "app/flowchart/flowchart.css"
+  ],
+  "keywords": [
+    "angular",
+    "angularjs",
+    "flowchart",
+    "graph"
+  ],
   "license": "MIT",
-  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/bower_components",
+    "test",
+    "tests"
+  ],
   "dependencies": {
     "angular": "1.2.x",
-    "angular-route": "1.2.x",
     "angular-loader": "1.2.x",
     "angular-mocks": "~1.2.x",
+    "angular-route": "1.2.x",
     "bind-polyfill": "~1.0.0"
   }
 }
