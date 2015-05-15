@@ -1,0 +1,14 @@
+<div
+  id="{{node.id}}"
+  ng-attr-style="position: absolute; top: {{ node.y }}px; left: {{ node.x }}px; background: {{ node.color }}; border-color: {{node.borderColor}}">
+  <p>{{ node.name }}</p>
+
+  <div class="{{flowchartConstants.topConnectorClass}}">
+    <div fc-connector
+         ng-repeat="connector in modelservice.nodes.getConnectorsByType(node, flowchartConstants.topConnectorType)"></div>
+  </div>
+  <div class="{{flowchartConstants.bottomConnectorClass}}">
+    <div fc-connector
+         ng-repeat="connector in modelservice.nodes.getConnectorsByType(node, flowchartConstants.bottomConnectorType)"></div>
+  </div>
+</div>

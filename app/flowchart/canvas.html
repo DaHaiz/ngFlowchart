@@ -1,0 +1,28 @@
+<div ng-click="canvasClick($event)">
+  <svg>
+    <g ng-repeat="edge in model.edges">
+      <path
+        ng-click="edgeClick($event, edge)"
+        ng-dblclick="edgeDoubleClick($event, edge)"
+        ng-mouseover="edgeMouseOver($event, edge)"
+        ng-mouseenter="edgeMouseEnter($event, edge)"
+        ng-mouseleave="edgeMouseLeave($event, edge)"
+        ng-attr-class="{{(modelservice.edges.isSelected(edge) && flowchartConstants.selectedClass + ' ' + flowchartConstants.edgeClass) || edge == mouseOver.edge && flowchartConstants.hoverClass + ' ' + flowchartConstants.edgeClass || flowchartConstants.edgeClass}}"
+        ng-attr-d="{{getEdgeDAttribute(modelservice.edges.sourceCoord(edge), modelservice.edges.destCoord(edge), edgeStyle)}}"></path>
+    </g>
+    <g ng-if="edgeDragging.isDragging">
+      <path class="{{ flowchartConstants.edgeClass }} {{ flowchartConstants.draggingClass }}"
+            ng-attr-d="{{getEdgeDAttribute(edgeDragging.dragPoint1, edgeDragging.dragPoint2, edgeStyle)}}"></path>
+      <circle class="edge-endpoint" r="4" ng-attr-cx="{{edgeDragging.dragPoint2.x}}"
+              ng-attr-cy="{{edgeDragging.dragPoint2.y}}"></circle>
+    </g>
+  </svg>
+  <div class="fc-innercanvas">
+    <fc-node selected="modelservice.nodes.isSelected(node)" under-mouse="node === mouseOver.node" node="node"
+             mouse-over-connector="mouseOver.connector"
+             modelservice="modelservice"
+             dragged-node="nodeDragging.draggedNode"
+             callbacks="callbacks"
+             ng-repeat="node in model.nodes"></fc-node>
+  </div>
+</div>

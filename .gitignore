@@ -1,0 +1,15 @@
+logs/*
+!.gitkeep
+node_modules/
+app/bower_components/
+tmp
+.DS_Store
+.idea
+
+app/angular-flowchart.js
+
+
+dist/angular-flowchart.js
+dist/vendor.js
+
+dist/flowchart.css
