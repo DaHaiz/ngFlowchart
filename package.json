@@ -1,7 +1,7 @@
 {
   "name": "ngFlowchart",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.1",
   "description": "A starter project for AngularJS",
   "repository": "https://github.com/angular/angular-seed",
   "license": "MIT",
