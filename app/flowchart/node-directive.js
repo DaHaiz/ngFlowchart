@@ -23,8 +23,8 @@
         element.on('dragstart', scope.callbacks.nodeDragstart(scope.node));
         element.on('dragend', scope.callbacks.nodeDragend);
         element.on('click', scope.callbacks.nodeClicked(scope.node));
-        element.on('mouseenter', scope.callbacks.nodeMouseEnter(scope.node));
-        element.on('mouseleave', scope.callbacks.nodeMouseLeave(scope.node));
+        element.on('mouseover', scope.callbacks.nodeMouseOver(scope.node));
+        element.on('mouseout', scope.callbacks.nodeMouseOut(scope.node));
 
         element.addClass(flowchartConstants.nodeClass);
 

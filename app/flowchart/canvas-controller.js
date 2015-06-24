@@ -51,8 +51,8 @@
       edgeDrop: edgedraggingservice.drop,
       edgeDragoverConnector: edgedraggingservice.dragoverConnector,
       edgeDragoverMagnet: edgedraggingservice.dragoverMagnet,
-      nodeMouseEnter: mouseoverservice.nodeMouseEnter,
-      nodeMouseLeave: mouseoverservice.nodeMouseLeave,
+      nodeMouseOver: mouseoverservice.nodeMouseOver,
+      nodeMouseOut: mouseoverservice.nodeMouseOut,
       connectorMouseEnter: mouseoverservice.connectorMouseEnter,
       connectorMouseLeave: mouseoverservice.connectorMouseLeave,
       nodeClicked: function(node) {

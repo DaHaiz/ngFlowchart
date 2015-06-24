@@ -64,7 +64,7 @@ describe('test for node directive', function() {
     $rootScope.underMouse = false;
     $rootScope.draggedNode = null;
     $rootScope.callbacks = jasmine.createSpyObj('callbacks', ['nodeDragstart', 'nodeDragend', 'edgeDragstart', 'edgeDragend', 'edgeDrop', 'edgeDragoverConnector',
-      'nodeMouseEnter', 'nodeMouseLeave', 'connectorMouseEnter', 'connectorMouseLeave', 'edgeDragoverMagnet']);
+      'nodeMouseOver', 'nodeMouseOut', 'connectorMouseEnter', 'connectorMouseLeave', 'edgeDragoverMagnet']);
 
     this.innerNodeClicked = jasmine.createSpy('inner nodeClicked');
     $rootScope.callbacks.nodeClicked = jasmine.createSpy('nodeClicked').and.returnValue(this.innerNodeClicked);
@@ -72,11 +72,11 @@ describe('test for node directive', function() {
     this.innerNodeDragStart = jasmine.createSpy('inner dragstart');
     $rootScope.callbacks.nodeDragstart = jasmine.createSpy('nodeDragStart').and.returnValue(this.innerNodeDragStart);
 
-    this.innerNodeMouseEnter = jasmine.createSpy('inner nodeMouseEnter');
-    $rootScope.callbacks.nodeMouseEnter.and.returnValue(this.innerNodeMouseEnter);
+    this.innerNodeMouseOver = jasmine.createSpy('inner nodeMouseEnter');
+    $rootScope.callbacks.nodeMouseOver.and.returnValue(this.innerNodeMouseOver);
 
-    this.innerNodeMouseLeave = jasmine.createSpy('inner nodeMouseEnter');
-    $rootScope.callbacks.nodeMouseLeave.and.returnValue(this.innerNodeMouseLeave);
+    this.innerNodeMouseOut = jasmine.createSpy('inner nodeMouseEnter');
+    $rootScope.callbacks.nodeMouseOut.and.returnValue(this.innerNodeMouseOut);
 
     this.innerEdgeDragoverMagnet = jasmine.createSpy('inner nodeMouseEnter');
     $rootScope.callbacks.edgeDragoverMagnet.and.returnValue(this.innerEdgeDragoverMagnet);
@@ -152,13 +152,13 @@ describe('test for node directive', function() {
     htmlNode.triggerHandler('dragstart');
     expect(this.innerNodeDragStart).toHaveBeenCalled();
 
-    expect(this.innerNodeMouseEnter).not.toHaveBeenCalled();
-    htmlNode.triggerHandler('mouseenter');
-    expect(this.innerNodeMouseEnter).toHaveBeenCalled();
+    expect(this.innerNodeMouseOver).not.toHaveBeenCalled();
+    htmlNode.triggerHandler('mouseover');
+    expect(this.innerNodeMouseOver).toHaveBeenCalled();
 
-    expect(this.innerNodeMouseLeave).not.toHaveBeenCalled();
-    htmlNode.triggerHandler('mouseleave');
-    expect(this.innerNodeMouseLeave).toHaveBeenCalled();
+    expect(this.innerNodeMouseOut).not.toHaveBeenCalled();
+    htmlNode.triggerHandler('mouseout');
+    expect(this.innerNodeMouseOut).toHaveBeenCalled();
 
     expect($rootScope.callbacks.nodeDragend).not.toHaveBeenCalled();
     htmlNode.triggerHandler('dragend');
