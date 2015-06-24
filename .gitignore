@@ -4,7 +4,10 @@ node_modules/
 app/bower_components/
 tmp
 .DS_Store
+
+# JetBrains IDE project files
 .idea
+*.iml
 
 dist/ngFlowchart.js
 dist/vendor.js
