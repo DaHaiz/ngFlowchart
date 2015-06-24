@@ -118,29 +118,29 @@ describe('Test the modelservice', function() {
   });
 
   describe('testing modelservice.nodes', function() {
-    it('addNode', function() {
+    it('_addNode', function() {
       var that = this;
       var newNode = {id: 3, name: 'testnode', x: 0, y: 0, connectors: []};
 
       this.Modelvalidation.validateNodes.and.throwError(new Error('Test'));
-      expect(function() {that.modelservice.nodes.addNode(angular.copy(newNode));}).toThrowError('Test');
+      expect(function() {that.modelservice.nodes._addNode(angular.copy(newNode));}).toThrowError('Test');
       expect(this.model.nodes).not.toContain(newNode);
       this.Modelvalidation.validateNodes.and.stub();
 
-      this.modelservice.nodes.addNode(angular.copy(newNode));
+      this.modelservice.nodes._addNode(angular.copy(newNode));
       expect(this.model.nodes).toContain(jasmine.objectContaining(newNode));
     });
 
-    it('addConnector', function() {
+    it('_addConnector', function() {
       var that = this;
       var newConnector = {id: 10, type: flowchartConstants.topConnectorType};
 
       this.Modelvalidation.validateNode.and.throwError(new Error('Test'));
-      expect(function() {that.modelservice.nodes.addConnector(that.model.nodes[0], angular.copy(newConnector));}).toThrowError('Test');
+      expect(function() {that.modelservice.nodes._addConnector(that.model.nodes[0], angular.copy(newConnector));}).toThrowError('Test');
       expect(this.model.nodes[0].connectors).not.toContain(newConnector);
 
       this.Modelvalidation.validateNode.and.stub();
-      this.modelservice.nodes.addConnector(this.model.nodes[0], angular.copy(newConnector));
+      this.modelservice.nodes._addConnector(this.model.nodes[0], angular.copy(newConnector));
       expect(this.model.nodes[0].connectors).toContain(jasmine.objectContaining(newConnector));
     });
 
@@ -310,15 +310,15 @@ describe('Test the modelservice', function() {
       expect(this.selectedObjects.length).toEqual(2);
     });
 
-    it('addEdge', function() {
+    it('_addEdge', function() {
       var that = this;
 
       this.Modelvalidation.validateEdges.and.throwError(new Error('Test'));
-      expect(function() {that.modelservice.edges.addEdge(that.model.nodes[0].connectors[1], that.model.nodes[1].connectors[0])}).toThrowError('Test');
+      expect(function() {that.modelservice.edges._addEdge(that.model.nodes[0].connectors[1], that.model.nodes[1].connectors[0])}).toThrowError('Test');
       this.Modelvalidation.validateEdges.and.stub();
 
 
-      this.modelservice.edges.addEdge(this.model.nodes[0].connectors[1], this.model.nodes[1].connectors[0]);
+      this.modelservice.edges._addEdge(this.model.nodes[0].connectors[1], this.model.nodes[1].connectors[0]);
       expect(this.model.edges).toContain(jasmine.objectContaining({
         source: this.MODEL.nodes[0].connectors[0].id,
         destination: this.MODEL.nodes[1].connectors[0].id
@@ -330,11 +330,11 @@ describe('Test the modelservice', function() {
       this.modelservice
     });
 
-    it('addEdge with callback', function() {
+    it('_addEdge with callback', function() {
       this.addedEdgeCallback = jasmine.createSpy('addedEdgeCallback');
       getNewModelservice(this);
 
-      this.modelservice.edges.addEdge(this.model.nodes[0].connectors[1], this.model.nodes[1].connectors[0]);
+      this.modelservice.edges._addEdge(this.model.nodes[0].connectors[1], this.model.nodes[1].connectors[0]);
       expect(this.model.edges).toContain(jasmine.objectContaining({
         source: this.MODEL.nodes[0].connectors[0].id,
         destination: this.MODEL.nodes[1].connectors[0].id

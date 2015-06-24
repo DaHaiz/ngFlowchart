@@ -41,7 +41,7 @@ describe('edgedragging-service_test', function() {
     this.modelservice.connectors = jasmine.createSpyObj('modelservice.connectors', ['getCenteredCoord']);
     this.modelservice.connectors.getCenteredCoord.and.returnValue(angular.copy(this.connectorCoords));
     this.modelservice.edges = {};
-    this.modelservice.edges.addEdge = jasmine.createSpy('addEdge');
+    this.modelservice.edges._addEdge = jasmine.createSpy('_addEdge');
 
     this.edgeDragging = {};
     this.userIsValidEdgeCallback = jasmine.createSpy('isValidEdge').and.returnValue(true);
@@ -134,12 +134,12 @@ describe('edgedragging-service_test', function() {
     this.edgedraggingService.drop(this.destinationConnector)(this.dropEvent);
     expect(this.overEvent.stopPropagation).not.toHaveBeenCalled();
     expect(this.overEvent.preventDefault).not.toHaveBeenCalled();
-    expect(this.modelservice.edges.addEdge).not.toHaveBeenCalled();
+    expect(this.modelservice.edges._addEdge).not.toHaveBeenCalled();
 
     this.userIsValidEdgeCallback.and.returnValue(true);
     expect(this.edgedraggingService.drop(this.destinationConnector)(this.dropEvent)).toBe(false);
 
-    expect(this.modelservice.edges.addEdge).toHaveBeenCalledWith(this.connector, this.destinationConnector);
+    expect(this.modelservice.edges._addEdge).toHaveBeenCalledWith(this.connector, this.destinationConnector);
     expect(this.dropEvent.stopPropagation).toHaveBeenCalled();
     expect(this.dropEvent.preventDefault).toHaveBeenCalled();
   });
@@ -164,7 +164,7 @@ describe('edgedragging-service_test', function() {
     expect(this.edgedraggingService.drop(this.destinationConnector)(this.dropEvent)).toBe(true);
     expect(this.dropEvent.preventDefault).not.toHaveBeenCalled();
     expect(this.dropEvent.stopPropagation).not.toHaveBeenCalled();
-    expect(this.modelservice.edges.addEdge).not.toHaveBeenCalled();
+    expect(this.modelservice.edges._addEdge).not.toHaveBeenCalled();
 
     expect(this.edgedraggingService.dragoverConnector(this.destinationConnector)(this.overEvent)).toBe(true);
     expect(this.overEvent.preventDefault).not.toHaveBeenCalled();
@@ -180,7 +180,7 @@ describe('edgedragging-service_test', function() {
     expect(function() {that.edgedraggingService.drop(that.destinationConnector)(that.dropEvent);}).toThrowError('Test');
     expect(this.dropEvent.preventDefault).not.toHaveBeenCalled();
     expect(this.dropEvent.stopPropagation).not.toHaveBeenCalled();
-    expect(this.modelservice.edges.addEdge).not.toHaveBeenCalled();
+    expect(this.modelservice.edges._addEdge).not.toHaveBeenCalled();
 
     expect(function() {that.edgedraggingService.dragoverConnector(that.destinationConnector)(that.overEvent);}).toThrowError('Test');
     expect(this.overEvent.preventDefault).not.toHaveBeenCalled();

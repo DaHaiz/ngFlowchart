@@ -149,7 +149,7 @@
               }
             }
             if (isValidEdgeCallback(draggedEdgeSource, targetConnector)) {
-              modelservice.edges.addEdge(draggedEdgeSource, targetConnector);
+              modelservice.edges._addEdge(draggedEdgeSource, targetConnector);
               event.stopPropagation();
               event.preventDefault();
               return false;

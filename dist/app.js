@@ -180,10 +180,7 @@ angular.module('app', ['flowchart'])
       var selectedNodes = modelservice.nodes.getSelectedNodes($scope.model);
       for (var i = 0; i < selectedNodes.length; ++i) {
         var node = selectedNodes[i];
-        modelservice.nodes.addConnector(node, {
-          id: nextConnectorID++,
-          type: flowchartConstants.topConnectorType
-        });
+        node.connectors.push({id: nextConnectorID++, type: flowchartConstants.topConnectorType});
       }
     };
 
@@ -196,10 +193,7 @@ angular.module('app', ['flowchart'])
       var selectedNodes = modelservice.nodes.getSelectedNodes($scope.model);
       for (var i = 0; i < selectedNodes.length; ++i) {
         var node = selectedNodes[i];
-        modelservice.nodes.addConnector(node, {
-          id: nextConnectorID++,
-          type: flowchartConstants.bottomConnectorType
-        });
+        node.connectors.push({id: nextConnectorID++, type: flowchartConstants.bottomConnectorType});
       }
     };
 

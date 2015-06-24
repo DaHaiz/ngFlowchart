@@ -12,34 +12,58 @@ Run `gulp` in the ngFlowchart directory to start an interactive demo.
 
 Add stylesheet:
 ```html
-    <link rel="stylesheet" href="bower_components/ngFlowchart/dist/flowchart.css" type="text/css">
+<link rel="stylesheet" href="bower_components/ngFlowchart/dist/flowchart.css" type="text/css">
 ```
 
 Include script:
 ```html
-  <script src="bower_components/ngFlowchart/dist/ngFlowchart.js"></script>
+<script src="bower_components/ngFlowchart/dist/ngFlowchart.js"></script>
 ```
 
 Insert this line where you want the flowchart to appear. It should fill up the given space, but if you are working on a complex site,
 feel free to take a look in our flowchart.css stylesheet and overwrite the styles as you need.
 ```html
-    <fc-canvas model="model" selected-objects="flowchartselected" edge-style="line"></fc-canvas>
+<fc-canvas model="model" selected-objects="flowchartselected" edge-style="line"></fc-canvas>
 ```
 
 The structure of `model` and `flowchartselected` of the `fc-canvas` directive looks like the following:
 ```javascript
-  model = {
-    nodes: [
-      { id: 1, x: 10, y: 10, name: "My first node", connectors: [
-          {id: 1, type: bottomConnector}]
-      },
-      { id: 2, x: 50, y: 50, name: "My seconde node", connectors: [
-                {id: 2, type: topConnector}]
-      }],
-      edges: [{source: 1, destination: 2}]]
-    };
+model = {
+  nodes: [
+    { 
+      id: 1, 
+      x: 10, 
+      y: 10, 
+      name: "My first node", 
+      connectors: [
+        {
+          id: 1, 
+          type: bottomConnector
+        }
+      ]
+    },
+    { 
+      id: 2, 
+      x: 50, 
+      y: 50, 
+      name: "My seconde node", 
+      connectors: [
+        {
+          id: 2, 
+          type: topConnector
+        }
+      ]
+    }
+  ],
+  edges: [
+    {
+      source: 1, 
+      destination: 2
+    }
+  ]
+};
     
-  flowchartselected = [];
+flowchartselected = [];
 ```
 
 Your site should now show your first flowchart with two connected nodes.
@@ -107,7 +131,8 @@ The template of the node-directive is meant to be overwritten by yourself. You j
 ```javascript
 module.run(function($templateCache) {
   $templateCache.put('flowchart/node.html', '<my><node><template></template></node></my>');
-});```
+});
+```
 
 The $scope will include following variables:
 * `node` The nodeobject from the model.

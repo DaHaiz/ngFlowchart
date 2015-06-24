@@ -546,7 +546,7 @@ if (!Function.prototype.bind) {
         toggleSelected: toggleSelectedObject,
         isSelected: isSelectedObject,
 
-        addConnector: function(node, connector) {
+        _addConnector: function(node, connector) {
           node.connectors.push(connector);
           try {
             Modelvalidation.validateNode(node);
@@ -594,7 +594,7 @@ if (!Function.prototype.bind) {
           }
         },
 
-        addNode: function(node) {
+        _addNode: function(node) {
           try {
             model.nodes.push(node);
             Modelvalidation.validateNodes(model.nodes);
@@ -653,7 +653,7 @@ if (!Function.prototype.bind) {
           }
         },
 
-        addEdge: function(sourceConnector, destConnector) {
+        _addEdge: function(sourceConnector, destConnector) {
           Modelvalidation.validateConnector(sourceConnector);
           Modelvalidation.validateConnector(destConnector);
           var edge = {source: sourceConnector.id, destination: destConnector.id};
@@ -950,7 +950,7 @@ if (!Function.prototype.bind) {
               }
             }
             if (isValidEdgeCallback(draggedEdgeSource, targetConnector)) {
-              modelservice.edges.addEdge(draggedEdgeSource, targetConnector);
+              modelservice.edges._addEdge(draggedEdgeSource, targetConnector);
               event.stopPropagation();
               event.preventDefault();
               return false;
