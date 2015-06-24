@@ -43,7 +43,7 @@
           myToggleClass(flowchartConstants.hoverClass, value);
         });
         scope.$watch('draggedNode', function(value) {
-          myToggleClass(flowchartConstants.draggingClass, value);
+          myToggleClass(flowchartConstants.draggingClass, value===scope.node);
         });
       }
     };
