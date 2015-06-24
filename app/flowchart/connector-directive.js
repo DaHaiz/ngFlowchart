@@ -8,12 +8,12 @@
       link: function(scope, element) {
         element.attr('draggable', 'true');
 
-        element.on('dragover', scope.callbacks.edgeDragoverConnector);
-        element.on('drop', scope.callbacks.edgeDrop(scope.connector));
-        element.on('dragend', scope.callbacks.edgeDragend);
-        element.on('dragstart', scope.callbacks.edgeDragstart(scope.connector));
-        element.on('mouseenter', scope.callbacks.connectorMouseEnter(scope.connector));
-        element.on('mouseleave', scope.callbacks.connectorMouseLeave(scope.connector));
+        element.on('dragover', scope.fcCallbacks.edgeDragoverConnector);
+        element.on('drop', scope.fcCallbacks.edgeDrop(scope.connector));
+        element.on('dragend', scope.fcCallbacks.edgeDragend);
+        element.on('dragstart', scope.fcCallbacks.edgeDragstart(scope.connector));
+        element.on('mouseenter', scope.fcCallbacks.connectorMouseEnter(scope.connector));
+        element.on('mouseleave', scope.fcCallbacks.connectorMouseLeave(scope.connector));
 
         element.addClass(flowchartConstants.connectorClass);
         scope.$watch('mouseOverConnector', function(value) {

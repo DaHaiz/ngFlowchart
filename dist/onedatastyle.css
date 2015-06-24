@@ -1,19 +1,11 @@
-.fc-innercanvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+.fc-node {
   z-index: 1;
-  /*opacity: 0.999;*/
 }
 .innerNode {
   display: flex;
   justify-content: center;
   align-items: center;
   min-width: 100px;
-  /*min-height: 100px;*/
-
   border-radius: 5px;
 
   background-color: #F15B26;
@@ -35,7 +27,7 @@
 }
 
 .fc-node.fc-dragging {
-  /*z-index: 10;*/
+  z-index: 10;
 }
 
 .fc-node p {

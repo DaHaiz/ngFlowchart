@@ -8,9 +8,9 @@
       link: function(scope, element) {
         element.addClass(flowchartConstants.magnetClass);
 
-        element.on('dragover', scope.callbacks.edgeDragoverMagnet(scope.connector));
-        element.on('drop', scope.callbacks.edgeDrop(scope.connector));
-        element.on('dragend', scope.callbacks.edgeDragend);
+        element.on('dragover', scope.fcCallbacks.edgeDragoverMagnet(scope.connector));
+        element.on('drop', scope.fcCallbacks.edgeDrop(scope.connector));
+        element.on('dragend', scope.fcCallbacks.edgeDragend);
       }
     }
   }

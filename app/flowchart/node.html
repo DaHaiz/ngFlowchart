@@ -1,6 +1,7 @@
 <div
   id="{{node.id}}"
-  ng-attr-style="position: absolute; top: {{ node.y }}px; left: {{ node.x }}px;">
+  ng-attr-style="position: absolute; top: {{ node.y }}px; left: {{ node.x }}px;"
+  ng-dblclick="callbacks.doubleClick($event)">
   <div class="innerNode">
     <p>{{ node.name }}</p>
 

@@ -30,23 +30,23 @@ describe('test for connector directive', function() {
 
     $rootScope.connector = connector;
     $rootScope.mouseOverConnector = null;
-    $rootScope.callbacks = jasmine.createSpyObj('callbacks', ['edgeDragend', 'edgeDragoverConnector', 'connectorMouseEnter', 'connectorMouseLeave']);
-    $rootScope.callbacks.connectorMouseEnter.and.returnValue(function(event) {
+    $rootScope.fcCallbacks = jasmine.createSpyObj('callbacks', ['edgeDragend', 'edgeDragoverConnector', 'connectorMouseEnter', 'connectorMouseLeave']);
+    $rootScope.fcCallbacks.connectorMouseEnter.and.returnValue(function(event) {
     });
-    $rootScope.callbacks.connectorMouseLeave.and.returnValue(function(event) {
+    $rootScope.fcCallbacks.connectorMouseLeave.and.returnValue(function(event) {
     });
 
     this.innerDragStart = jasmine.createSpy('innerDragStart');
-    $rootScope.callbacks.edgeDragstart = jasmine.createSpy('edgeDragstart').and.returnValue(this.innerDragStart);
+    $rootScope.fcCallbacks.edgeDragstart = jasmine.createSpy('edgeDragstart').and.returnValue(this.innerDragStart);
 
     this.innerDrop = jasmine.createSpy('innerDrop');
-    $rootScope.callbacks.edgeDrop = jasmine.createSpy('edgeDrop').and.returnValue(this.innerDrop);
+    $rootScope.fcCallbacks.edgeDrop = jasmine.createSpy('edgeDrop').and.returnValue(this.innerDrop);
 
     this.innerMouseEnter = jasmine.createSpy('innerMouseEnter');
-    $rootScope.callbacks.connectorMouseEnter.and.returnValue(this.innerMouseEnter);
+    $rootScope.fcCallbacks.connectorMouseEnter.and.returnValue(this.innerMouseEnter);
 
     this.innerMouseLeave = jasmine.createSpy('innerMouseLeave');
-    $rootScope.callbacks.connectorMouseLeave.and.returnValue(this.innerMouseLeave);
+    $rootScope.fcCallbacks.connectorMouseLeave.and.returnValue(this.innerMouseLeave);
 
     $rootScope.modelservice = modelService;
   }));
@@ -89,13 +89,13 @@ describe('test for connector directive', function() {
     htmlConnector.triggerHandler('drop');
     expect(this.innerDrop).toHaveBeenCalled();
 
-    expect($rootScope.callbacks.edgeDragend).not.toHaveBeenCalled();
+    expect($rootScope.fcCallbacks.edgeDragend).not.toHaveBeenCalled();
     htmlConnector.triggerHandler('dragend');
-    expect($rootScope.callbacks.edgeDragend).toHaveBeenCalled();
+    expect($rootScope.fcCallbacks.edgeDragend).toHaveBeenCalled();
 
-    expect($rootScope.callbacks.edgeDragoverConnector).not.toHaveBeenCalled();
+    expect($rootScope.fcCallbacks.edgeDragoverConnector).not.toHaveBeenCalled();
     htmlConnector.triggerHandler('dragover');
-    expect($rootScope.callbacks.edgeDragoverConnector).toHaveBeenCalled();
+    expect($rootScope.fcCallbacks.edgeDragoverConnector).toHaveBeenCalled();
 
     expect(this.innerMouseEnter).not.toHaveBeenCalled();
     htmlConnector.triggerHandler('mouseenter');

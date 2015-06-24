@@ -9,7 +9,7 @@ describe('test canvas-controller', function() {
   beforeEach(inject(function(_$controller_, _$rootScope_) {
     $rootScope = _$rootScope_;
     this.$scope = $rootScope.$new();
-    this.Mouseoverfactory = jasmine.createSpy('mouseoverfactory').and.returnValue(jasmine.createSpyObj('mouseoverservice', ['nodeMouseEnter', 'nodeMouseLeave', 'connectorMouseEnter',
+    this.Mouseoverfactory = jasmine.createSpy('mouseoverfactory').and.returnValue(jasmine.createSpyObj('mouseoverservice', ['nodeMouseOver', 'nodeMouseOut', 'connectorMouseEnter',
       'connectorMouseLeave', 'edgeMouseEnter', 'edgeMouseLeave']));
     this.Nodedraggingfactory = jasmine.createSpy('Nodedraggingfactory').and.returnValue(jasmine.createSpyObj('nodedragging', ['drop', 'dragstart', 'dragend', 'dragover']));
     this.Modelfactory = jasmine.createSpy('Modelfactory').and.returnValue(jasmine.createSpyObj('modelservice', ['deselectAll']));
@@ -49,14 +49,14 @@ describe('test canvas-controller', function() {
     expect(this.$scope.callbacks.edgeDragoverConnector).toEqual(jasmine.any(Function));
     expect(this.$scope.callbacks.edgeDragoverMagnet).toEqual(jasmine.any(Function));
     expect(this.$scope.callbacks.nodeClicked).toEqual(jasmine.any(Function));
-    expect(this.$scope.callbacks.nodeMouseEnter).toEqual(jasmine.any(Function));
-    expect(this.$scope.callbacks.nodeMouseLeave).toEqual(jasmine.any(Function));
+    expect(this.$scope.callbacks.nodeMouseOver).toEqual(jasmine.any(Function));
+    expect(this.$scope.callbacks.nodeMouseOut).toEqual(jasmine.any(Function));
     expect(this.$scope.callbacks.connectorMouseEnter).toEqual(jasmine.any(Function));
     expect(this.$scope.callbacks.connectorMouseLeave).toEqual(jasmine.any(Function));
     expect(this.$scope.callbacks.nodeClicked()).toEqual(jasmine.any(Function)); // Should be of type function(node) {return function(event){};}
   });
 
-  it('should set $scope.userCallbacks if not given and controll if they are all functions', function() {
+  it('should set $scope.userCallbacks if not given and control if they are all functionsexcept the nodeCallbacks', function() {
     var that = this;
     expect(this.$scope.userCallbacks).toBeDefined();
 

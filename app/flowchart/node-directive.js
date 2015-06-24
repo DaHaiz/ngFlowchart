@@ -8,7 +8,8 @@
       templateUrl: 'flowchart/node.html',
       replace: true,
       scope: {
-        callbacks: '=',
+        fcCallbacks: '=callbacks',
+        callbacks: '=userNodeCallbacks',
         node: '=',
         selected: '=',
         underMouse: '=',
@@ -20,11 +21,11 @@
         scope.flowchartConstants = flowchartConstants;
         element.attr('draggable', 'true');
 
-        element.on('dragstart', scope.callbacks.nodeDragstart(scope.node));
-        element.on('dragend', scope.callbacks.nodeDragend);
-        element.on('click', scope.callbacks.nodeClicked(scope.node));
-        element.on('mouseenter', scope.callbacks.nodeMouseEnter(scope.node));
-        element.on('mouseleave', scope.callbacks.nodeMouseLeave(scope.node));
+        element.on('dragstart', scope.fcCallbacks.nodeDragstart(scope.node));
+        element.on('dragend', scope.fcCallbacks.nodeDragend);
+        element.on('click', scope.fcCallbacks.nodeClicked(scope.node));
+        element.on('mouseover', scope.fcCallbacks.nodeMouseOver(scope.node));
+        element.on('mouseout', scope.fcCallbacks.nodeMouseOut(scope.node));
 
         element.addClass(flowchartConstants.nodeClass);
 
@@ -43,7 +44,7 @@
           myToggleClass(flowchartConstants.hoverClass, value);
         });
         scope.$watch('draggedNode', function(value) {
-          myToggleClass(flowchartConstants.draggingClass, value);
+          myToggleClass(flowchartConstants.draggingClass, value===scope.node);
         });
       }
     };

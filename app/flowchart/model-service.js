@@ -6,11 +6,14 @@
     var connectorsHtmlElements = {};
     var canvasHtmlElement = null;
 
-    return function innerModelfactory(model, selectedObjects) {
+    return function innerModelfactory(model, selectedObjects, edgeAddedCallback) {
       Modelvalidation.validateModel(model);
       var modelservice = {
         selectedObjects: selectedObjects
       };
+      if (!angular.isFunction(edgeAddedCallback)) {
+        edgeAddedCallback = angular.noop;
+      }
 
       function selectObject(object) {
         if (modelservice.selectedObjects.indexOf(object) === -1) {
@@ -206,6 +209,7 @@
           var edge = {source: sourceConnector.id, destination: destConnector.id};
           Modelvalidation.validateEdges(model.edges.concat([edge]), model.nodes);
           model.edges.push(edge);
+          edgeAddedCallback(edge);
         }
       };
 

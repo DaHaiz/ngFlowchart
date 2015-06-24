@@ -17,12 +17,11 @@
               ng-attr-cy="{{edgeDragging.dragPoint2.y}}"></circle>
     </g>
   </svg>
-  <div class="fc-innercanvas">
-    <fc-node selected="modelservice.nodes.isSelected(node)" under-mouse="node === mouseOver.node" node="node"
-             mouse-over-connector="mouseOver.connector"
-             modelservice="modelservice"
-             dragged-node="nodeDragging.draggedNode"
-             callbacks="callbacks"
-             ng-repeat="node in model.nodes"></fc-node>
-  </div>
+  <fc-node selected="modelservice.nodes.isSelected(node)" under-mouse="node === mouseOver.node" node="node"
+           mouse-over-connector="mouseOver.connector"
+           modelservice="modelservice"
+           dragged-node="nodeDragging.draggedNode"
+           callbacks="callbacks"
+           user-node-callbacks="userNodeCallbacks"
+           ng-repeat="node in model.nodes"></fc-node>
 </div>

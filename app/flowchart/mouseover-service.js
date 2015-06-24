@@ -10,7 +10,7 @@
       mouseoverscope.edge = null;
       mouseoverscope.node = null;
 
-      mouseoverservice.nodeMouseEnter = function(node) {
+      mouseoverservice.nodeMouseOver = function(node) {
         return function(event) {
           return applyFunction(function() {
             mouseoverscope.node = node;
@@ -18,7 +18,7 @@
         };
       };
 
-      mouseoverservice.nodeMouseLeave = function(node) {
+      mouseoverservice.nodeMouseOut = function(node) {
         return function(event) {
           return applyFunction(function() {
             mouseoverscope.node = null;

@@ -5,13 +5,13 @@
   function canvasController($scope, Mouseoverfactory, Nodedraggingfactory, Modelfactory, Edgedraggingfactory, Edgedrawingservice) {
 
     $scope.userCallbacks = $scope.userCallbacks || {};
-    angular.forEach($scope.userCallbacks, function(callback) {
-      if (!angular.isFunction(callback)) {
+    angular.forEach($scope.userCallbacks, function(callback, key) {
+      if (!angular.isFunction(callback) && key !== 'nodeCallbacks') {
         throw new Error('All callbacks should be functions.');
       }
     });
 
-    $scope.modelservice = Modelfactory($scope.model, $scope.selectedObjects);
+    $scope.modelservice = Modelfactory($scope.model, $scope.selectedObjects, $scope.userCallbacks.edgeAdded || angular.noop);
 
     $scope.nodeDragging = {};
     var nodedraggingservice = Nodedraggingfactory($scope.modelservice, $scope.nodeDragging, $scope.$apply.bind($scope));
@@ -43,6 +43,7 @@
     $scope.edgeDoubleClick = $scope.userCallbacks.edgeDoubleClick || angular.noop;
     $scope.edgeMouseOver = $scope.userCallbacks.edgeMouseOver || angular.noop;
 
+    $scope.userNodeCallbacks = $scope.userCallbacks.nodeCallbacks;
     $scope.callbacks = {
       nodeDragstart: nodedraggingservice.dragstart,
       nodeDragend: nodedraggingservice.dragend,
@@ -51,8 +52,8 @@
       edgeDrop: edgedraggingservice.drop,
       edgeDragoverConnector: edgedraggingservice.dragoverConnector,
       edgeDragoverMagnet: edgedraggingservice.dragoverMagnet,
-      nodeMouseEnter: mouseoverservice.nodeMouseEnter,
-      nodeMouseLeave: mouseoverservice.nodeMouseLeave,
+      nodeMouseOver: mouseoverservice.nodeMouseOver,
+      nodeMouseOut: mouseoverservice.nodeMouseOut,
       connectorMouseEnter: mouseoverservice.connectorMouseEnter,
       connectorMouseLeave: mouseoverservice.connectorMouseLeave,
       nodeClicked: function(node) {

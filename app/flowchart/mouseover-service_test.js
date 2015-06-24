@@ -28,14 +28,14 @@ describe('The mouse-overservice', function() {
   });
 
   it('.nodeMouseEnter and .nodeMouseLeave should mark the node as hovered and call the applyFunction', function() {
-    this.mouseoverservice.nodeMouseEnter(this.node)(this.event);
+    this.mouseoverservice.nodeMouseOver(this.node)(this.event);
     expect(this.$scope.mouseOver.node).toBe(this.node);
     expect(this.applyFunction.calls.count()).toEqual(1);
 
     expect(this.$scope.mouseOver.connector).toBeNull();
     expect(this.$scope.mouseOver.edge).toBeNull();
 
-    this.mouseoverservice.nodeMouseLeave(this.node)(this.event);
+    this.mouseoverservice.nodeMouseOut(this.node)(this.event);
     expect(this.$scope.mouseOver.node).toBeNull();
     expect(this.applyFunction.calls.count()).toEqual(2);
 

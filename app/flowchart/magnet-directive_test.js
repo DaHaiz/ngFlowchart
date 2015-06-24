@@ -12,13 +12,13 @@ describe('The magnet-directive', function() {
     flowchartConstants = _flowchartConstants_;
 
     this.scope = $rootScope.$new();
-    this.scope.callbacks = jasmine.createSpyObj('callbacks', ['edgeDragoverMagnet', 'edgeDrop', 'edgeDragend']);
+    this.scope.fcCallbacks = jasmine.createSpyObj('callbacks', ['edgeDragoverMagnet', 'edgeDrop', 'edgeDragend']);
 
     this.innerEdgeDragoverMagnet = jasmine.createSpy('innerEdgeDragoverMagnet');
-    this.scope.callbacks.edgeDragoverMagnet.and.returnValue(this.innerEdgeDragoverMagnet);
+    this.scope.fcCallbacks.edgeDragoverMagnet.and.returnValue(this.innerEdgeDragoverMagnet);
 
     this.innerEdgeDrop = jasmine.createSpy('innerEdgeDrop');
-    this.scope.callbacks.edgeDrop.and.returnValue(this.innerEdgeDrop);
+    this.scope.fcCallbacks.edgeDrop.and.returnValue(this.innerEdgeDrop);
 
     this.magnet = $compile('<fc-magnet></fc-magnet>')(this.scope);
 
@@ -37,9 +37,9 @@ describe('The magnet-directive', function() {
   });
 
   it('should register a magnet dragend handler', function() {
-    expect(this.scope.callbacks.edgeDragend).not.toHaveBeenCalled();
+    expect(this.scope.fcCallbacks.edgeDragend).not.toHaveBeenCalled();
     this.magnet.triggerHandler('dragend');
-    expect(this.scope.callbacks.edgeDragend).toHaveBeenCalled();
+    expect(this.scope.fcCallbacks.edgeDragend).toHaveBeenCalled();
   });
 
   it('should add the fc-magnet class', function() {
