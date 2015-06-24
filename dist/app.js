@@ -168,7 +168,7 @@ angular.module('app', ['flowchart'])
         ]
       };
 
-      modelservice.nodes.addNode(newNode);
+      model.nodes.push(newNode);
     };
 
     $scope.addNewInputConnector = function() {
@@ -208,6 +208,9 @@ angular.module('app', ['flowchart'])
     };
 
     $scope.callbacks = {
+      edgeAdded: function() {
+        alert('Edge added');
+      },
       edgeDoubleClick: function() {
         alert('hi');
       },

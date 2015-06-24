@@ -456,11 +456,14 @@ if (!Function.prototype.bind) {
     var connectorsHtmlElements = {};
     var canvasHtmlElement = null;
 
-    return function innerModelfactory(model, selectedObjects) {
+    return function innerModelfactory(model, selectedObjects, edgeAddedCallback) {
       Modelvalidation.validateModel(model);
       var modelservice = {
         selectedObjects: selectedObjects
       };
+      if (!angular.isFunction(edgeAddedCallback)) {
+        edgeAddedCallback = angular.noop;
+      }
 
       function selectObject(object) {
         if (modelservice.selectedObjects.indexOf(object) === -1) {
@@ -656,6 +659,7 @@ if (!Function.prototype.bind) {
           var edge = {source: sourceConnector.id, destination: destConnector.id};
           Modelvalidation.validateEdges(model.edges.concat([edge]), model.nodes);
           model.edges.push(edge);
+          edgeAddedCallback(edge);
         }
       };
 
@@ -1056,7 +1060,7 @@ if (!Function.prototype.bind) {
       }
     });
 
-    $scope.modelservice = Modelfactory($scope.model, $scope.selectedObjects);
+    $scope.modelservice = Modelfactory($scope.model, $scope.selectedObjects, $scope.userCallbacks.edgeAdded || angular.noop);
 
     $scope.nodeDragging = {};
     var nodedraggingservice = Nodedraggingfactory($scope.modelservice, $scope.nodeDragging, $scope.$apply.bind($scope));

@@ -56,7 +56,7 @@ describe('test canvas-controller', function() {
     expect(this.$scope.callbacks.nodeClicked()).toEqual(jasmine.any(Function)); // Should be of type function(node) {return function(event){};}
   });
 
-  it('should set $scope.userCallbacks if not given and controll if they are all functions', function() {
+  it('should set $scope.userCallbacks if not given and control if they are all functionsexcept the nodeCallbacks', function() {
     var that = this;
     expect(this.$scope.userCallbacks).toBeDefined();
 

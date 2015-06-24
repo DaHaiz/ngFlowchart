@@ -91,6 +91,7 @@ Your site should now show your first flowchart with two connected nodes.
 * `selected-objects` The selected nodes and edges as objects. Example: `[{id: 1, name: "First node", {...}}, {source: 1, destination: 2}]`
 * `edge-style` "line" or "curved".
 * `callbacks` Object with callbacks.
+  * `edgeAdded` will be called if an edge is added by ngFlowchart. 
   * `edgeDoubleClick(event, edge)` will be called when an edge is doubleclicked.
   * `edgeMouseOver(event, edge)` will be called if the mouse hovers an edge.
   * `isValidEdge(sourceConnector, destinationConnector)` will be called, when the user tries to connect to edges. Returns `true` if this is an valid edge in your application or `false` otherwise.

@@ -11,7 +11,7 @@ describe('Test the modelservice', function() {
   function getNewModelservice(namespace) {
     namespace.model = angular.copy(namespace.MODEL);
     namespace.selectedObjects = angular.copy(namespace.SELECTEDOBJECTS);
-    namespace.modelservice = namespace.Modelfactory(namespace.model, namespace.selectedObjects);
+    namespace.modelservice = namespace.Modelfactory(namespace.model, namespace.selectedObjects, namespace.addedEdgeCallback || angular.noop);
   }
 
   beforeEach(inject(function(Modelfactory, Modelvalidation,  _flowchartConstants_) {
@@ -317,12 +317,30 @@ describe('Test the modelservice', function() {
       expect(function() {that.modelservice.edges.addEdge(that.model.nodes[0].connectors[1], that.model.nodes[1].connectors[0])}).toThrowError('Test');
       this.Modelvalidation.validateEdges.and.stub();
 
+
       this.modelservice.edges.addEdge(this.model.nodes[0].connectors[1], this.model.nodes[1].connectors[0]);
       expect(this.model.edges).toContain(jasmine.objectContaining({
         source: this.MODEL.nodes[0].connectors[0].id,
         destination: this.MODEL.nodes[1].connectors[0].id
       }));
       expect(this.model.edges.length).toEqual(this.MODEL.edges.length + 1);
+
+      this.addedEdgeCallback = jasmine.createSpy('addedEdgeCallback');
+      getNewModelservice(this);
+      this.modelservice
+    });
+
+    it('addEdge with callback', function() {
+      this.addedEdgeCallback = jasmine.createSpy('addedEdgeCallback');
+      getNewModelservice(this);
+
+      this.modelservice.edges.addEdge(this.model.nodes[0].connectors[1], this.model.nodes[1].connectors[0]);
+      expect(this.model.edges).toContain(jasmine.objectContaining({
+        source: this.MODEL.nodes[0].connectors[0].id,
+        destination: this.MODEL.nodes[1].connectors[0].id
+      }));
+      expect(this.model.edges.length).toEqual(this.MODEL.edges.length + 1);
+      expect(this.addedEdgeCallback).toHaveBeenCalled();
     });
 
     describe('tests with an empty model', function() {
