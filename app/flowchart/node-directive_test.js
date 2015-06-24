@@ -21,6 +21,21 @@ describe('test for node directive', function() {
     ]
   };
 
+  var node2 = {
+    id: 2,
+    name: 'testnode2',
+    connectors: [
+      {
+        type: 'bottomConnector',
+        id: 3
+      },
+      {
+        type: 'topConnector',
+        id: 4
+      }
+    ]
+  };
+
   beforeEach(function() {
     module(function($provide) {
       $provide.service('modelService', function() {
@@ -47,7 +62,7 @@ describe('test for node directive', function() {
     $rootScope.mouseOverConnector = null;
     $rootScope.selected = false;
     $rootScope.underMouse = false;
-    $rootScope.draggedNode = false;
+    $rootScope.draggedNode = null;
     $rootScope.callbacks = jasmine.createSpyObj('callbacks', ['nodeDragstart', 'nodeDragend', 'edgeDragstart', 'edgeDragend', 'edgeDrop', 'edgeDragoverConnector',
       'nodeMouseEnter', 'nodeMouseLeave', 'connectorMouseEnter', 'connectorMouseLeave', 'edgeDragoverMagnet']);
 
@@ -107,13 +122,24 @@ describe('test for node directive', function() {
   });
 
   it('should have a dragging class if dragged', function() {
+    $rootScope.node2 = node2;
     $rootScope.draggedNode = node;
-    var n = getCompiledNode();
-    expect(n.hasClass(flowchartConstants.draggingClass)).toBe(true);
+
+    // This tests works on two nodes, since issue https://github.com/ONE-LOGIC/ngFlowchart/issues/5
+    var nodes = $compile('<fc-node selected="selected" under-mouse="underMouse" node="node" mouse-over-connector="mouseOverConnector" modelservice="modelservice" dragged-node="draggedNode" callbacks="callbacks"></fc-node>' +
+      '<fc-node selected="selected" under-mouse="underMouse" node="node2" mouse-over-connector="mouseOverConnector" modelservice="modelservice" dragged-node="draggedNode" callbacks="callbacks"></fc-node>')($rootScope);
+    $rootScope.$digest();
+
+    var n1 = angular.element(nodes[0]);
+    var n2 = angular.element(nodes[1]);
+    expect(n1.hasClass(flowchartConstants.draggingClass)).toBe(true);
+    expect(n2.hasClass(flowchartConstants.draggingClass)).toBe(false);
 
     $rootScope.draggedNode = null;
     $rootScope.$apply();
-    expect(n.hasClass(flowchartConstants.draggingClass)).toBe(false);
+    expect(n1.hasClass(flowchartConstants.draggingClass)).toBe(false);
+
+
   });
 
 
