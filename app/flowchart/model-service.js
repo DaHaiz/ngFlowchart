@@ -96,7 +96,7 @@
         toggleSelected: toggleSelectedObject,
         isSelected: isSelectedObject,
 
-        addConnector: function(node, connector) {
+        _addConnector: function(node, connector) {
           node.connectors.push(connector);
           try {
             Modelvalidation.validateNode(node);
@@ -144,7 +144,7 @@
           }
         },
 
-        addNode: function(node) {
+        _addNode: function(node) {
           try {
             model.nodes.push(node);
             Modelvalidation.validateNodes(model.nodes);
@@ -203,7 +203,7 @@
           }
         },
 
-        addEdge: function(sourceConnector, destConnector) {
+        _addEdge: function(sourceConnector, destConnector) {
           Modelvalidation.validateConnector(sourceConnector);
           Modelvalidation.validateConnector(destConnector);
           var edge = {source: sourceConnector.id, destination: destConnector.id};
