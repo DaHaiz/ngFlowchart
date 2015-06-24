@@ -60,7 +60,7 @@ describe('test canvas-controller', function() {
     var that = this;
     expect(this.$scope.userCallbacks).toBeDefined();
 
-    var userCallbacks = {edgeDoubleClick: function() {}};
+    var userCallbacks = {edgeDoubleClick: function() {}, nodeCallbacks: {test: 'test'}};
     this.$scope.userCallbacks = angular.copy(userCallbacks);
     this.controller = $controller('canvasController', {
       $scope: this.$scope,
@@ -71,6 +71,7 @@ describe('test canvas-controller', function() {
       edgeDrawingService: this.edgeDrawingService
     });
     expect(this.$scope.userCallbacks).toEqual(userCallbacks);
+    expect(this.$scope.userNodeCallbacks).toEqual(userCallbacks.nodeCallbacks);
 
     this.$scope.userCallbacks.isValidEdge = {};
     expect(function() { $controller('canvasController', {
@@ -81,6 +82,25 @@ describe('test canvas-controller', function() {
       edgeDraggingFactory: that.edgeDraggingFactory,
       edgeDrawingService: that.edgeDrawingService
     });}).toThrowError('All callbacks should be functions.')
+
+  });
+
+  it('should give the edgeAddedCallback to the modelservice', function() {
+    expect(this.Modelfactory).toHaveBeenCalledWith(undefined, undefined, angular.noop);
+
+    var edgeAddedCallback = jasmine.createSpy('edgeAddedCallback');
+    var userCallbacks = {edgeAdded: edgeAddedCallback};
+    this.$scope.userCallbacks = angular.copy(userCallbacks);
+    this.controller = $controller('canvasController', {
+      $scope: this.$scope,
+      Mouseoverfactory: this.Mouseoverfactory,
+      Nodedraggingfactory: this.Nodedraggingfactory,
+      Modelfactory: this.Modelfactory,
+      edgeDraggingFactory: this.edgeDraggingFactory,
+      edgeDrawingService: this.edgeDrawingService
+    });
+    expect(this.Modelfactory.calls.argsFor(1)).toEqual([undefined, undefined, edgeAddedCallback]);
+
 
   });
 });
