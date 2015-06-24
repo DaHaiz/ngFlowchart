@@ -216,6 +216,11 @@ angular.module('app', ['flowchart'])
       },
       isValidEdge: function(source, destination) {
         return source.type === flowchartConstants.bottomConnectorType && destination.type === flowchartConstants.topConnectorType;
+      },
+      nodeCallbacks: {
+        'doubleClick': function(event) {
+          alert('Node was doubleclicked.')
+        }
       }
     };
   });

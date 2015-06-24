@@ -5,8 +5,8 @@
   function canvasController($scope, Mouseoverfactory, Nodedraggingfactory, Modelfactory, Edgedraggingfactory, Edgedrawingservice) {
 
     $scope.userCallbacks = $scope.userCallbacks || {};
-    angular.forEach($scope.userCallbacks, function(callback) {
-      if (!angular.isFunction(callback)) {
+    angular.forEach($scope.userCallbacks, function(callback, key) {
+      if (!angular.isFunction(callback) && key !== 'nodeCallbacks') {
         throw new Error('All callbacks should be functions.');
       }
     });
@@ -43,6 +43,7 @@
     $scope.edgeDoubleClick = $scope.userCallbacks.edgeDoubleClick || angular.noop;
     $scope.edgeMouseOver = $scope.userCallbacks.edgeMouseOver || angular.noop;
 
+    $scope.userNodeCallbacks = $scope.userCallbacks.nodeCallbacks;
     $scope.callbacks = {
       nodeDragstart: nodedraggingservice.dragstart,
       nodeDragend: nodedraggingservice.dragend,

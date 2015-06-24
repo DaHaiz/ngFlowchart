@@ -198,7 +198,8 @@ if (!Function.prototype.bind) {
       templateUrl: 'flowchart/node.html',
       replace: true,
       scope: {
-        callbacks: '=',
+        fcCallbacks: '=callbacks',
+        callbacks: '=userNodeCallbacks',
         node: '=',
         selected: '=',
         underMouse: '=',
@@ -210,11 +211,11 @@ if (!Function.prototype.bind) {
         scope.flowchartConstants = flowchartConstants;
         element.attr('draggable', 'true');
 
-        element.on('dragstart', scope.callbacks.nodeDragstart(scope.node));
-        element.on('dragend', scope.callbacks.nodeDragend);
-        element.on('click', scope.callbacks.nodeClicked(scope.node));
-        element.on('mouseenter', scope.callbacks.nodeMouseEnter(scope.node));
-        element.on('mouseleave', scope.callbacks.nodeMouseLeave(scope.node));
+        element.on('dragstart', scope.fcCallbacks.nodeDragstart(scope.node));
+        element.on('dragend', scope.fcCallbacks.nodeDragend);
+        element.on('click', scope.fcCallbacks.nodeClicked(scope.node));
+        element.on('mouseover', scope.fcCallbacks.nodeMouseOver(scope.node));
+        element.on('mouseout', scope.fcCallbacks.nodeMouseOut(scope.node));
 
         element.addClass(flowchartConstants.nodeClass);
 
@@ -233,7 +234,7 @@ if (!Function.prototype.bind) {
           myToggleClass(flowchartConstants.hoverClass, value);
         });
         scope.$watch('draggedNode', function(value) {
-          myToggleClass(flowchartConstants.draggingClass, value);
+          myToggleClass(flowchartConstants.draggingClass, value===scope.node);
         });
       }
     };
@@ -255,7 +256,7 @@ if (!Function.prototype.bind) {
       mouseoverscope.edge = null;
       mouseoverscope.node = null;
 
-      mouseoverservice.nodeMouseEnter = function(node) {
+      mouseoverservice.nodeMouseOver = function(node) {
         return function(event) {
           return applyFunction(function() {
             mouseoverscope.node = node;
@@ -263,7 +264,7 @@ if (!Function.prototype.bind) {
         };
       };
 
-      mouseoverservice.nodeMouseLeave = function(node) {
+      mouseoverservice.nodeMouseOut = function(node) {
         return function(event) {
           return applyFunction(function() {
             mouseoverscope.node = null;
@@ -711,9 +712,9 @@ if (!Function.prototype.bind) {
       link: function(scope, element) {
         element.addClass(flowchartConstants.magnetClass);
 
-        element.on('dragover', scope.callbacks.edgeDragoverMagnet(scope.connector));
-        element.on('drop', scope.callbacks.edgeDrop(scope.connector));
-        element.on('dragend', scope.callbacks.edgeDragend);
+        element.on('dragover', scope.fcCallbacks.edgeDragoverMagnet(scope.connector));
+        element.on('drop', scope.fcCallbacks.edgeDrop(scope.connector));
+        element.on('dragend', scope.fcCallbacks.edgeDragend);
       }
     }
   }
@@ -975,12 +976,12 @@ if (!Function.prototype.bind) {
       link: function(scope, element) {
         element.attr('draggable', 'true');
 
-        element.on('dragover', scope.callbacks.edgeDragoverConnector);
-        element.on('drop', scope.callbacks.edgeDrop(scope.connector));
-        element.on('dragend', scope.callbacks.edgeDragend);
-        element.on('dragstart', scope.callbacks.edgeDragstart(scope.connector));
-        element.on('mouseenter', scope.callbacks.connectorMouseEnter(scope.connector));
-        element.on('mouseleave', scope.callbacks.connectorMouseLeave(scope.connector));
+        element.on('dragover', scope.fcCallbacks.edgeDragoverConnector);
+        element.on('drop', scope.fcCallbacks.edgeDrop(scope.connector));
+        element.on('dragend', scope.fcCallbacks.edgeDragend);
+        element.on('dragstart', scope.fcCallbacks.edgeDragstart(scope.connector));
+        element.on('mouseenter', scope.fcCallbacks.connectorMouseEnter(scope.connector));
+        element.on('mouseleave', scope.fcCallbacks.connectorMouseLeave(scope.connector));
 
         element.addClass(flowchartConstants.connectorClass);
         scope.$watch('mouseOverConnector', function(value) {
@@ -1049,8 +1050,8 @@ if (!Function.prototype.bind) {
   function canvasController($scope, Mouseoverfactory, Nodedraggingfactory, Modelfactory, Edgedraggingfactory, Edgedrawingservice) {
 
     $scope.userCallbacks = $scope.userCallbacks || {};
-    angular.forEach($scope.userCallbacks, function(callback) {
-      if (!angular.isFunction(callback)) {
+    angular.forEach($scope.userCallbacks, function(callback, key) {
+      if (!angular.isFunction(callback) && key !== 'nodeCallbacks') {
         throw new Error('All callbacks should be functions.');
       }
     });
@@ -1087,6 +1088,7 @@ if (!Function.prototype.bind) {
     $scope.edgeDoubleClick = $scope.userCallbacks.edgeDoubleClick || angular.noop;
     $scope.edgeMouseOver = $scope.userCallbacks.edgeMouseOver || angular.noop;
 
+    $scope.userNodeCallbacks = $scope.userCallbacks.nodeCallbacks;
     $scope.callbacks = {
       nodeDragstart: nodedraggingservice.dragstart,
       nodeDragend: nodedraggingservice.dragend,
@@ -1095,8 +1097,8 @@ if (!Function.prototype.bind) {
       edgeDrop: edgedraggingservice.drop,
       edgeDragoverConnector: edgedraggingservice.dragoverConnector,
       edgeDragoverMagnet: edgedraggingservice.dragoverMagnet,
-      nodeMouseEnter: mouseoverservice.nodeMouseEnter,
-      nodeMouseLeave: mouseoverservice.nodeMouseLeave,
+      nodeMouseOver: mouseoverservice.nodeMouseOver,
+      nodeMouseOut: mouseoverservice.nodeMouseOut,
       connectorMouseEnter: mouseoverservice.connectorMouseEnter,
       connectorMouseLeave: mouseoverservice.connectorMouseLeave,
       nodeClicked: function(node) {
@@ -1150,14 +1152,13 @@ module.run(['$templateCache', function($templateCache) {
     '              ng-attr-cy="{{edgeDragging.dragPoint2.y}}"></circle>\n' +
     '    </g>\n' +
     '  </svg>\n' +
-    '  <div class="fc-innercanvas">\n' +
-    '    <fc-node selected="modelservice.nodes.isSelected(node)" under-mouse="node === mouseOver.node" node="node"\n' +
-    '             mouse-over-connector="mouseOver.connector"\n' +
-    '             modelservice="modelservice"\n' +
-    '             dragged-node="nodeDragging.draggedNode"\n' +
-    '             callbacks="callbacks"\n' +
-    '             ng-repeat="node in model.nodes"></fc-node>\n' +
-    '  </div>\n' +
+    '  <fc-node selected="modelservice.nodes.isSelected(node)" under-mouse="node === mouseOver.node" node="node"\n' +
+    '           mouse-over-connector="mouseOver.connector"\n' +
+    '           modelservice="modelservice"\n' +
+    '           dragged-node="nodeDragging.draggedNode"\n' +
+    '           callbacks="callbacks"\n' +
+    '           user-node-callbacks="userNodeCallbacks"\n' +
+    '           ng-repeat="node in model.nodes"></fc-node>\n' +
     '</div>\n' +
     '');
 }]);
@@ -1173,7 +1174,8 @@ module.run(['$templateCache', function($templateCache) {
   $templateCache.put('flowchart/node.html',
     '<div\n' +
     '  id="{{node.id}}"\n' +
-    '  ng-attr-style="position: absolute; top: {{ node.y }}px; left: {{ node.x }}px;">\n' +
+    '  ng-attr-style="position: absolute; top: {{ node.y }}px; left: {{ node.x }}px;"\n' +
+    '  ng-dblclick="callbacks.doubleClick($event)">\n' +
     '  <div class="innerNode">\n' +
     '    <p>{{ node.name }}</p>\n' +
     '\n' +
