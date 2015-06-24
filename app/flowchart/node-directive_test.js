@@ -138,8 +138,6 @@ describe('test for node directive', function() {
     $rootScope.draggedNode = null;
     $rootScope.$apply();
     expect(n1.hasClass(flowchartConstants.draggingClass)).toBe(false);
-
-
   });
 
 
