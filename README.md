@@ -94,7 +94,8 @@ Your site should now show your first flowchart with two connected nodes.
   * `edgeDoubleClick(event, edge)` will be called when an edge is doubleclicked.
   * `edgeMouseOver(event, edge)` will be called if the mouse hovers an edge.
   * `isValidEdge(sourceConnector, destinationConnector)` will be called, when the user tries to connect to edges. Returns `true` if this is an valid edge in your application or `false` otherwise.
-
+  * `nodeCallbacks` an object witch will be available in the scope of the node template. This is usefull, to register a doubleclick handler on a node or similiar things.
+  
 ### Modelservice
 Our `Modelfactory` could contain some interesting functions for you to use.
 Instantiate it with `Modelfactory(model, selectedObjects)` with model and selectedObjects as references to the same objects you gave the canvas.
@@ -114,6 +115,7 @@ The $scope will include following variables:
 * `selected` `true` if this node is selected, `false` otherwise.
 * `mouseOverConnector` The connectorobject from the model witch is hovered by the mouse or `null`.
 * `draggedNode` The nodeobject from the model witch is dragged.
+* `nodeCallbacks` The object you assigned to `nodeCallbacks` on the `callbacks` attribute of `fc-canvas`.
 
 ### Gulp
 We use gulp to build and manage our project. If you want to use some of our gulp tasks run `npm install` first. After you can run:
