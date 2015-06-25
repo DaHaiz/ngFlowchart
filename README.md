@@ -1,4 +1,4 @@
-# ngFlowchart
+# ngFlowchart [![Build Status](https://travis-ci.org/ONE-LOGIC/ngFlowchart.svg?branch=master)](https://travis-ci.org/ONE-LOGIC/ngFlowchart/)
 
 ngFlowchart is an easy and customizable way to draw flowchart graphs using AngularJS.
 
