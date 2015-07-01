@@ -119,7 +119,7 @@ Your site should now show your first flowchart with two connected nodes.
   * `edgeDoubleClick(event, edge)` will be called when an edge is doubleclicked.
   * `edgeMouseOver(event, edge)` will be called if the mouse hovers an edge.
   * `isValidEdge(sourceConnector, destinationConnector)` will be called, when the user tries to connect to edges. Returns `true` if this is an valid edge in your application or `false` otherwise.
-  * `nodeCallbacks` an object witch will be available in the scope of the node template. This is usefull, to register a doubleclick handler on a node or similiar things.
+  * `nodeCallbacks` an object which will be available in the scope of the node template. This is usefull, to register a doubleclick handler on a node or similiar things. Every method that is handed into the `nodeCallbacks` will be available in the node template via the `callbacks` attribute.
   
 ### Modelservice
 Our `Modelfactory` could contain some interesting functions for you to use.
@@ -148,7 +148,7 @@ We use gulp to build and manage our project. If you want to use some of our gulp
 
 * `gulp` Will run our demo application and open it in your standard browser
 * `gulp build` Will build the application and put the result in the dist folder.
-* `gulp clean` Will delete all builded files from dist directory.
+* `gulp clean` Will delete all built files from dist directory.
 * `gulp test` Will run our test via karma in PhantomJs, Chrome, Firefox and IE
 
 ## Browser Support
