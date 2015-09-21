@@ -26,10 +26,15 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "1.4.1",
-    "angular-loader": "1.4.1",
-    "angular-mocks": "1.4.1",
-    "angular-route": "1.4.1",
+    "angular": "1.4.6",
+    "angular-loader": "1.4.6",
+    "angular-route": "1.4.6",
     "bind-polyfill": "1.0.0"
+  },
+  "devDependencies": {
+    "angular-mocks": "1.4.6"
+  },
+  "resolutions": {
+    "angular": "1.4.6"
   }
 }
