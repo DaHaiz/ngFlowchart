@@ -1,4 +1,4 @@
-# ngFlowchart [![Build Status](https://travis-ci.org/ONE-LOGIC/ngFlowchart.svg?branch=master)](https://travis-ci.org/ONE-LOGIC/ngFlowchart/) [![Dependency Status](https://gemnasium.com/ONE-LOGIC/ngFlowchart.svg)](https://gemnasium.com/ONE-LOGIC/ngFlowchart)
+# ngFlowchart [![Bower version](https://badge.fury.io/bo/ngFlowchart@2x.png)](https://github.com/ONE-LOGIC/ngFlowchart) [![Build Status](https://travis-ci.org/ONE-LOGIC/ngFlowchart.svg?branch=master)](https://travis-ci.org/ONE-LOGIC/ngFlowchart/) [![Dependency Status](https://gemnasium.com/ONE-LOGIC/ngFlowchart.svg)](https://gemnasium.com/ONE-LOGIC/ngFlowchart)
 
 ngFlowchart is an easy and customizable way to draw flowchart graphs using AngularJS.
 
@@ -114,6 +114,7 @@ Your site should now show your first flowchart with two connected nodes.
 * `model` The model.
 * `selected-objects` The selected nodes and edges as objects. Example: `[{id: 1, name: "First node", {...}}, {source: 1, destination: 2}]`
 * `edge-style` "line" or "curved".
+* `automatic-resize` Set to `true` to grow the canvas when dragging nodes to the border.
 * `callbacks` Object with callbacks.
   * `edgeAdded` will be called if an edge is added by ngFlowchart. 
   * `edgeDoubleClick(event, edge)` will be called when an edge is doubleclicked.
