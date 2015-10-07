@@ -1041,22 +1041,40 @@ if (!Function.prototype.bind) {
         selectedObjects: "=",
         edgeStyle: '@',
         userCallbacks: '=?callbacks',
-        automaticResize: '=?'
+        automaticResize: '=?',
+        nodeWidth: '=?',
+        nodeHeight: '=?'
       },
       controller: 'canvasController',
       link: function(scope, element) {
+        function adjustCanvasSize() {
+          if (scope.model) {
+            var maxX = 0;
+            var maxY = 0;
+            angular.forEach(scope.model.nodes, function (node, key) {
+              maxX = Math.max(node.x + scope.nodeWidth, maxX);
+              maxY = Math.max(node.y + scope.nodeHeight, maxY);
+            });
+            element.style.width = Math.max(maxX, element.offsetWidth);
+            element.style.height = Math.max(maxY, element.offsetHeight);
+          }
+        }
         if (scope.edgeStyle !== flowchartConstants.curvedStyle && scope.edgeStyle !== flowchartConstants.lineStyle) {
           throw new Error('edgeStyle not supported.');
         }
+        scope.nodeHeight = scope.nodeHeight || 200;
+        scope.nodeWidth = scope.nodeWidth || 200;
 
         scope.flowchartConstants = flowchartConstants;
         element.addClass(flowchartConstants.canvasClass);
         element.on('dragover', scope.dragover);
         element.on('drop', scope.drop);
 
+        scope.watch('model', adjustCanvasSize);
+
         scope.modelservice.setCanvasHtmlElement(element[0]);
       }
-    }
+    };
   }
   fcCanvas.$inject = ["flowchartConstants"];
 
