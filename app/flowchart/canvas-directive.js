@@ -19,14 +19,16 @@
       controller: 'canvasController',
       link: function(scope, element) {
         function adjustCanvasSize() {
-          var maxX = 0;
-          var maxY = 0;
-          angular.forEach(scope.model.nodes, function (node, key) {
-            maxX = Math.max(node.x + scope.nodeWidth, maxX);
-            maxY = Math.max(node.y + scope.nodeHeight, maxY);
-          });
-          element.style.width = Math.max(maxX, element.offsetWidth);
-          element.style.height = Math.max(maxY, element.offsetHeight);
+          if (scope.model) {
+            var maxX = 0;
+            var maxY = 0;
+            angular.forEach(scope.model.nodes, function (node, key) {
+              maxX = Math.max(node.x + scope.nodeWidth, maxX);
+              maxY = Math.max(node.y + scope.nodeHeight, maxY);
+            });
+            element.style.width = Math.max(maxX, element.offsetWidth);
+            element.style.height = Math.max(maxY, element.offsetHeight);
+          }
         }
         if (scope.edgeStyle !== flowchartConstants.curvedStyle && scope.edgeStyle !== flowchartConstants.lineStyle) {
           throw new Error('edgeStyle not supported.');
