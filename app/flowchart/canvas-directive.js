@@ -11,7 +11,8 @@
         model: "=",
         selectedObjects: "=",
         edgeStyle: '@',
-        userCallbacks: '=?callbacks'
+        userCallbacks: '=?callbacks',
+        automaticResize: '=?'
       },
       controller: 'canvasController',
       link: function(scope, element) {
