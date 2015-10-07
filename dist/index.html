@@ -7,8 +7,8 @@
   <link rel="stylesheet" href="onedatastyle.css" type="text/css">
 </head>
 <body ng-app="app" ng-controller="AppCtrl" ng-keydown="keyDown($event)" ng-keyup="keyUp($event)">
-<div style="width: 100%; height: 1000px; overflow: hidden;">
-  <button ng-click="addNewNode()" title="Add a new node to the chart">Add Node</button>
+<div style="width: 100%; height: 1000px;">
+  <button ng-click="addNewNode()" title="Add a new node to then chart">Add Node</button>
   <button ng-click="addNewInputConnector()" ng-disabled="modelservice.nodes.getSelectedNodes().length == 0"
           title="Add a new input connector to the selected node">
     Add Input Connector

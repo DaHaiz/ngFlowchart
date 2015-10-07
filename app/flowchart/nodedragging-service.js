@@ -2,11 +2,13 @@
 
   'use strict';
 
-  function Nodedraggingfactory() {
+  function Nodedraggingfactory(flowchartConstants) {
     return function(modelservice, nodeDraggingScope, applyFunction) {
 
       var dragOffset = {};
+      var draggedElement = null;
       nodeDraggingScope.draggedNode = null;
+
 
       function getCoordinate(coordinate, max) {
         coordinate = Math.max(coordinate, 0);
@@ -25,6 +27,7 @@
             modelservice.deselectAll();
             modelservice.nodes.select(node);
             nodeDraggingScope.draggedNode = node;
+            draggedElement = event.target;
 
             var element = angular.element(event.target);
             dragOffset.x = parseInt(element.css('left')) - event.clientX;
@@ -57,6 +60,7 @@
             return applyFunction(function() {
               nodeDraggingScope.draggedNode.x = getXCoordinate(dragOffset.x + event.clientX);
               nodeDraggingScope.draggedNode.y =  getYCoordinate(dragOffset.y + event.clientY);
+              resizeCanvas(nodeDraggingScope.draggedNode, draggedElement);
               event.preventDefault();
               return false;
             });
@@ -66,6 +70,7 @@
         dragend: function(event) {
           if (nodeDraggingScope.draggedNode) {
             nodeDraggingScope.draggedNode = null;
+            draggedElement = null;
             dragOffset.x = 0;
             dragOffset.y = 0;
           }
