@@ -19,6 +19,8 @@
   constants.nodeClass = constants.htmlPrefix + '-node';
   constants.topConnectorClass = constants.htmlPrefix + '-' + constants.topConnectorType + 's';
   constants.bottomConnectorClass = constants.htmlPrefix + '-' + constants.bottomConnectorType + 's';
+  constants.canvasResizeThreshold = 200;
+  constants.canvasResizeStep = 200;
 
   angular
     .module('flowchart')
