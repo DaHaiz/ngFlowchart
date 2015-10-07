@@ -21,6 +21,15 @@
       function getYCoordinate(y) {
         return getCoordinate(y,  modelservice.getCanvasHtmlElement().offsetHeight);
       }
+      function resizeCanvas(draggedNode, nodeElement) {
+        var canvasElement = modelservice.getCanvasHtmlElement();
+        if (canvasElement.offsetWidth < draggedNode.x + nodeElement.offsetWidth + flowchartConstants.canvasResizeThreshold) {
+          canvasElement.style.width = canvasElement.offsetWidth + flowchartConstants.canvasResizeStep + 'px';
+        }
+        if (canvasElement.offsetHeight < draggedNode.y + nodeElement.offsetHeight + flowchartConstants.canvasResizeThreshold) {
+          canvasElement.style.height = canvasElement.offsetHeight + flowchartConstants.canvasResizeStep + 'px';
+        }
+      }
       return {
         dragstart: function(node) {
           return function(event) {
