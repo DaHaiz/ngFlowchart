@@ -47,11 +47,11 @@
 }
 
 .fc-topConnectors {
-  top: -55px;
+  top: -45px;
 }
 
 .fc-bottomConnectors {
-  bottom: -55px;
+  bottom: -45px;
 }
 
 .fc-magnet {
@@ -73,13 +73,18 @@
 .fc-connector {
   width: 18px;
   height: 18px;
+
+  border: 10px solid transparent;
+  -moz-background-clip: padding;     /* Firefox 3.6 */
+  -webkit-background-clip: padding;  /* Safari 4? Chrome 6? */
+  background-clip: padding-box;
   border-radius: 50% 50%;
-  background: #F7A789;
+  background-color: #F7A789;
   color: #fff;
 }
 
 .fc-connector.fc-hover {
-  background: #000;
+  background-color: #000;
 }
 
 .fc-edge {
