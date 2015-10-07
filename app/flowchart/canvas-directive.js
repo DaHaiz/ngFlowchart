@@ -26,8 +26,8 @@
               maxX = Math.max(node.x + scope.nodeWidth, maxX);
               maxY = Math.max(node.y + scope.nodeHeight, maxY);
             });
-            element.style.width = Math.max(maxX, element.offsetWidth);
-            element.style.height = Math.max(maxY, element.offsetHeight);
+            element.css('width', Math.max(maxX, element.prop('offsetWidth')) + 'px');
+            element.css('height', Math.max(maxY, element.prop('offsetHeight')) + 'px');
           }
         }
         if (scope.edgeStyle !== flowchartConstants.curvedStyle && scope.edgeStyle !== flowchartConstants.lineStyle) {
@@ -41,7 +41,7 @@
         element.on('dragover', scope.dragover);
         element.on('drop', scope.drop);
 
-        scope.watch('model', adjustCanvasSize);
+        scope.$watch('model', adjustCanvasSize);
 
         scope.modelservice.setCanvasHtmlElement(element[0]);
       }
