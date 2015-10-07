@@ -111,7 +111,7 @@ if (!Function.prototype.bind) {
   'use strict';
 
   function Nodedraggingfactory(flowchartConstants) {
-    return function(modelservice, nodeDraggingScope, applyFunction) {
+    return function(modelservice, nodeDraggingScope, applyFunction, automaticResize) {
 
       var dragOffset = {};
       var draggedElement = null;
@@ -128,6 +128,17 @@ if (!Function.prototype.bind) {
       }
       function getYCoordinate(y) {
         return getCoordinate(y,  modelservice.getCanvasHtmlElement().offsetHeight);
+      }
+      function resizeCanvas(draggedNode, nodeElement) {
+        if (automaticResize) {
+          var canvasElement = modelservice.getCanvasHtmlElement();
+          if (canvasElement.offsetWidth < draggedNode.x + nodeElement.offsetWidth + flowchartConstants.canvasResizeThreshold) {
+            canvasElement.style.width = canvasElement.offsetWidth + flowchartConstants.canvasResizeStep + 'px';
+          }
+          if (canvasElement.offsetHeight < draggedNode.y + nodeElement.offsetHeight + flowchartConstants.canvasResizeThreshold) {
+            canvasElement.style.height = canvasElement.offsetHeight + flowchartConstants.canvasResizeStep + 'px';
+          }
+        }
       }
       return {
         dragstart: function(node) {
@@ -1029,7 +1040,8 @@ if (!Function.prototype.bind) {
         model: "=",
         selectedObjects: "=",
         edgeStyle: '@',
-        userCallbacks: '=?callbacks'
+        userCallbacks: '=?callbacks',
+        automaticResize: '=?'
       },
       controller: 'canvasController',
       link: function(scope, element) {
@@ -1062,6 +1074,7 @@ if (!Function.prototype.bind) {
   function canvasController($scope, Mouseoverfactory, Nodedraggingfactory, Modelfactory, Edgedraggingfactory, Edgedrawingservice) {
 
     $scope.userCallbacks = $scope.userCallbacks || {};
+    $scope.automaticResize = $scope.automaticResize || false;
     angular.forEach($scope.userCallbacks, function(callback, key) {
       if (!angular.isFunction(callback) && key !== 'nodeCallbacks') {
         throw new Error('All callbacks should be functions.');
@@ -1071,7 +1084,7 @@ if (!Function.prototype.bind) {
     $scope.modelservice = Modelfactory($scope.model, $scope.selectedObjects, $scope.userCallbacks.edgeAdded || angular.noop);
 
     $scope.nodeDragging = {};
-    var nodedraggingservice = Nodedraggingfactory($scope.modelservice, $scope.nodeDragging, $scope.$apply.bind($scope));
+    var nodedraggingservice = Nodedraggingfactory($scope.modelservice, $scope.nodeDragging, $scope.$apply.bind($scope), $scope.automaticResize);
 
     $scope.edgeDragging = {};
     var edgedraggingservice = Edgedraggingfactory($scope.modelservice, $scope.model, $scope.edgeDragging, $scope.userCallbacks.isValidEdge || null, $scope.$apply.bind($scope));
