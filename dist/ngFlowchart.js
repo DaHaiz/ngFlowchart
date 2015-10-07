@@ -110,11 +110,13 @@ if (!Function.prototype.bind) {
 
   'use strict';
 
-  function Nodedraggingfactory() {
-    return function(modelservice, nodeDraggingScope, applyFunction) {
+  function Nodedraggingfactory(flowchartConstants) {
+    return function(modelservice, nodeDraggingScope, applyFunction, automaticResize) {
 
       var dragOffset = {};
+      var draggedElement = null;
       nodeDraggingScope.draggedNode = null;
+
 
       function getCoordinate(coordinate, max) {
         coordinate = Math.max(coordinate, 0);
@@ -127,12 +129,24 @@ if (!Function.prototype.bind) {
       function getYCoordinate(y) {
         return getCoordinate(y,  modelservice.getCanvasHtmlElement().offsetHeight);
       }
+      function resizeCanvas(draggedNode, nodeElement) {
+        if (automaticResize) {
+          var canvasElement = modelservice.getCanvasHtmlElement();
+          if (canvasElement.offsetWidth < draggedNode.x + nodeElement.offsetWidth + flowchartConstants.canvasResizeThreshold) {
+            canvasElement.style.width = canvasElement.offsetWidth + flowchartConstants.canvasResizeStep + 'px';
+          }
+          if (canvasElement.offsetHeight < draggedNode.y + nodeElement.offsetHeight + flowchartConstants.canvasResizeThreshold) {
+            canvasElement.style.height = canvasElement.offsetHeight + flowchartConstants.canvasResizeStep + 'px';
+          }
+        }
+      }
       return {
         dragstart: function(node) {
           return function(event) {
             modelservice.deselectAll();
             modelservice.nodes.select(node);
             nodeDraggingScope.draggedNode = node;
+            draggedElement = event.target;
 
             var element = angular.element(event.target);
             dragOffset.x = parseInt(element.css('left')) - event.clientX;
@@ -165,6 +179,7 @@ if (!Function.prototype.bind) {
             return applyFunction(function() {
               nodeDraggingScope.draggedNode.x = getXCoordinate(dragOffset.x + event.clientX);
               nodeDraggingScope.draggedNode.y =  getYCoordinate(dragOffset.y + event.clientY);
+              resizeCanvas(nodeDraggingScope.draggedNode, draggedElement);
               event.preventDefault();
               return false;
             });
@@ -174,6 +189,7 @@ if (!Function.prototype.bind) {
         dragend: function(event) {
           if (nodeDraggingScope.draggedNode) {
             nodeDraggingScope.draggedNode = null;
+            draggedElement = null;
             dragOffset.x = 0;
             dragOffset.y = 0;
           }
@@ -181,6 +197,7 @@ if (!Function.prototype.bind) {
       };
     };
   }
+  Nodedraggingfactory.$inject = ["flowchartConstants"];
 
   angular
     .module('flowchart')
@@ -749,6 +766,8 @@ if (!Function.prototype.bind) {
   constants.nodeClass = constants.htmlPrefix + '-node';
   constants.topConnectorClass = constants.htmlPrefix + '-' + constants.topConnectorType + 's';
   constants.bottomConnectorClass = constants.htmlPrefix + '-' + constants.bottomConnectorType + 's';
+  constants.canvasResizeThreshold = 200;
+  constants.canvasResizeStep = 200;
 
   angular
     .module('flowchart')
@@ -1021,22 +1040,41 @@ if (!Function.prototype.bind) {
         model: "=",
         selectedObjects: "=",
         edgeStyle: '@',
-        userCallbacks: '=?callbacks'
+        userCallbacks: '=?callbacks',
+        automaticResize: '=?',
+        nodeWidth: '=?',
+        nodeHeight: '=?'
       },
       controller: 'canvasController',
       link: function(scope, element) {
+        function adjustCanvasSize() {
+          if (scope.model) {
+            var maxX = 0;
+            var maxY = 0;
+            angular.forEach(scope.model.nodes, function (node, key) {
+              maxX = Math.max(node.x + scope.nodeWidth, maxX);
+              maxY = Math.max(node.y + scope.nodeHeight, maxY);
+            });
+            element.css('width', Math.max(maxX, element.prop('offsetWidth')) + 'px');
+            element.css('height', Math.max(maxY, element.prop('offsetHeight')) + 'px');
+          }
+        }
         if (scope.edgeStyle !== flowchartConstants.curvedStyle && scope.edgeStyle !== flowchartConstants.lineStyle) {
           throw new Error('edgeStyle not supported.');
         }
+        scope.nodeHeight = scope.nodeHeight || 200;
+        scope.nodeWidth = scope.nodeWidth || 200;
 
         scope.flowchartConstants = flowchartConstants;
         element.addClass(flowchartConstants.canvasClass);
         element.on('dragover', scope.dragover);
         element.on('drop', scope.drop);
 
+        scope.$watch('model', adjustCanvasSize);
+
         scope.modelservice.setCanvasHtmlElement(element[0]);
       }
-    }
+    };
   }
   fcCanvas.$inject = ["flowchartConstants"];
 
@@ -1054,6 +1092,7 @@ if (!Function.prototype.bind) {
   function canvasController($scope, Mouseoverfactory, Nodedraggingfactory, Modelfactory, Edgedraggingfactory, Edgedrawingservice) {
 
     $scope.userCallbacks = $scope.userCallbacks || {};
+    $scope.automaticResize = $scope.automaticResize || false;
     angular.forEach($scope.userCallbacks, function(callback, key) {
       if (!angular.isFunction(callback) && key !== 'nodeCallbacks') {
         throw new Error('All callbacks should be functions.');
@@ -1063,7 +1102,7 @@ if (!Function.prototype.bind) {
     $scope.modelservice = Modelfactory($scope.model, $scope.selectedObjects, $scope.userCallbacks.edgeAdded || angular.noop);
 
     $scope.nodeDragging = {};
-    var nodedraggingservice = Nodedraggingfactory($scope.modelservice, $scope.nodeDragging, $scope.$apply.bind($scope));
+    var nodedraggingservice = Nodedraggingfactory($scope.modelservice, $scope.nodeDragging, $scope.$apply.bind($scope), $scope.automaticResize);
 
     $scope.edgeDragging = {};
     var edgedraggingservice = Edgedraggingfactory($scope.modelservice, $scope.model, $scope.edgeDragging, $scope.userCallbacks.isValidEdge || null, $scope.$apply.bind($scope));
