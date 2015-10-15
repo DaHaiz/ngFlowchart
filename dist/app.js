@@ -1,7 +1,9 @@
 angular.module('app', ['flowchart'])
-
   .factory('prompt', function() {
     return prompt;
+  })
+  .config(function(NodeTemplatePathProvider) {
+    NodeTemplatePathProvider.setTemplatePath("flowchart/node.html");
   })
 
   .controller('AppCtrl', function AppCtrl($scope, prompt, Modelfactory, flowchartConstants) {

@@ -110,6 +110,31 @@ if (!Function.prototype.bind) {
 
   'use strict';
 
+  angular
+    .module('flowchart')
+    .provider('NodeTemplatePath', NodeTemplatePath);
+
+  function NodeTemplatePath() {
+    var templatePath = "flowchart/node.html";
+
+    this.setTemplatePath = setTemplatePath;
+    this.$get = NodeTemplatePath;
+
+    function setTemplatePath(path) {
+      templatePath = path;
+    }
+
+    function NodeTemplatePath() {
+      return templatePath;
+    }
+  }
+
+}());
+
+(function() {
+
+  'use strict';
+
   function Nodedraggingfactory(flowchartConstants) {
     return function(modelservice, nodeDraggingScope, applyFunction, automaticResize) {
 
@@ -209,10 +234,12 @@ if (!Function.prototype.bind) {
 
   'use strict';
 
-  function fcNode(flowchartConstants) {
+  function fcNode(flowchartConstants, NodeTemplatePath) {
     return {
       restrict: 'E',
-      templateUrl: 'flowchart/node.html',
+      templateUrl: function() {
+        return NodeTemplatePath;
+      },
       replace: true,
       scope: {
         fcCallbacks: '=callbacks',
@@ -256,7 +283,7 @@ if (!Function.prototype.bind) {
       }
     };
   }
-  fcNode.$inject = ["flowchartConstants"];
+  fcNode.$inject = ["flowchartConstants", "NodeTemplatePath"];
 
   angular.module('flowchart').directive('fcNode', fcNode);
 }());
