@@ -68,10 +68,6 @@ flowchartselected = [];
 
 Your site should now show your first flowchart with two connected nodes.
 
-## Program structure
-
-![Dependency graph](https://github.com/ONE-LOGIC/ngFlowchart/blob/master/ngFlowchartDependency.png)
-
 ## Api
 
 ### The model
@@ -143,14 +139,6 @@ The $scope will include following variables:
 * `mouseOverConnector` The connectorobject from the model witch is hovered by the mouse or `null`.
 * `draggedNode` The nodeobject from the model witch is dragged.
 * `nodeCallbacks` The object you assigned to `nodeCallbacks` on the `callbacks` attribute of `fc-canvas`.
-
-### Gulp
-We use gulp to build and manage our project. If you want to use some of our gulp tasks run `npm install` first. After you can run:
-
-* `gulp` Will run our demo application and open it in your standard browser
-* `gulp build` Will build the application and put the result in the dist folder.
-* `gulp clean` Will delete all built files from dist directory.
-* `gulp test` Will run our test via karma in PhantomJs, Chrome, Firefox and IE
 
 ## Browser Support
 ngFlowchart supports Chrome, Firefox, Opera, IE10+. Safari is not supported. PRs to expand support are welcome.
