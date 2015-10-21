@@ -808,11 +808,7 @@ if (!Function.prototype.bind) {
 
   function Edgedrawingservice(flowchartConstants) {
     function computeEdgeTangentOffset(pt1, pt2) {
-      if (pt1.y < pt2.y) {
         return (pt2.y - pt1.y) / 2;
-      } else {
-        return Math.abs(pt1.y - pt2.y);
-      }
     }
 
     function computeEdgeSourceTangent(pt1, pt2) {
