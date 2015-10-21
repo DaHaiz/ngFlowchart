@@ -122,7 +122,7 @@ Your site should now show your first flowchart with two connected nodes.
 * `model` The model.
 * `selected-objects` The selected nodes and edges as objects. Example: `[{id: 1, name: "First node", {...}}, {source: 1, destination: 2}]`
 * `edge-style` "line" or "curved".
-* `automatic-resize` Set to `true` to grow the canvas when dragging nodes to the border.
+* `automatic-resize` If `true` the canvas will adjust its size while node dragging and allow "endless" dragging.
 * `callbacks` Object with callbacks.
   * `edgeAdded` will be called if an edge is added by ngFlowchart. 
   * `edgeDoubleClick(event, edge)` will be called when an edge is doubleclicked.
