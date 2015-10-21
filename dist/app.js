@@ -1,8 +1,8 @@
 angular.module('app', ['flowchart'])
-  .factory('prompt', function() {
+  .factory('prompt', function () {
     return prompt;
   })
-  .config(function(NodeTemplatePathProvider) {
+  .config(function (NodeTemplatePathProvider) {
     NodeTemplatePathProvider.setTemplatePath("flowchart/node.html");
   })
 
@@ -19,25 +19,13 @@ angular.module('app', ['flowchart'])
     var model = {
       nodes: [
         {
-          name: "Example Node 1",
-          id: 0,
-          x: 0,
-          y: 0,
+          name: "ngFlowchart",
+          id: 2,
+          x: 400,
+          y: 100,
           color: '#000',
           borderColor: '#000',
           connectors: [
-            {
-              type: flowchartConstants.topConnectorType,
-              id: 6
-            },
-            {
-              type: flowchartConstants.topConnectorType,
-              id: 7
-            },
-            {
-              type: flowchartConstants.topConnectorType,
-              id: 8
-            },
             {
               type: flowchartConstants.bottomConnectorType,
               id: 9
@@ -45,19 +33,14 @@ angular.module('app', ['flowchart'])
             {
               type: flowchartConstants.bottomConnectorType,
               id: 10
-            },
-            {
-              type: flowchartConstants.bottomConnectorType,
-              id: 11
-
             }
           ]
         },
         {
-          name: "Example Node 2",
-          id: 1,
+          name: "Implemented with AngularJS",
+          id: 3,
           x: 400,
-          y: 200,
+          y: 300,
           color: '#F15B26',
           connectors: [
             {
@@ -85,141 +68,183 @@ angular.module('app', ['flowchart'])
               id: 12
             }
           ]
+        },
+        {
+          name: "Easy Integration",
+          id: 4,
+          x: 200,
+          y: 600,
+          color: '#000',
+          borderColor: '#000',
+          connectors: [
+            {
+              type: flowchartConstants.topConnectorType,
+              id: 13
+            },
+            {
+              type: flowchartConstants.topConnectorType,
+              id: 14
+            },
+            {
+              type: flowchartConstants.topConnectorType,
+              id: 15
+            }
+          ]
+        },
+        {
+          name: "Customizable templates",
+          id: 5,
+          x: 600,
+          y: 600,
+          color: '#000',
+          borderColor: '#000',
+          connectors: [
+            {
+              type: flowchartConstants.topConnectorType,
+              id: 16
+            },
+            {
+              type: flowchartConstants.topConnectorType,
+              id: 17
+            },
+            {
+              type: flowchartConstants.topConnectorType,
+              id: 18
+            }
+          ]
         }
       ],
-      edges: [
-        {
-          source: 10,
-          destination: 1
-        }
-      ]
-    };
-
-    $scope.flowchartselected = [];
-    var modelservice = Modelfactory(model, $scope.flowchartselected);
-
-    $scope.model = model;
-    $scope.modelservice = modelservice;
-
-    $scope.keyDown = function(evt) {
-      if (evt.keyCode === ctrlKeyCode) {
-        ctrlDown = true;
-        evt.stopPropagation();
-        evt.preventDefault();
-      }
-    };
-
-    $scope.keyUp = function(evt) {
-
-      if (evt.keyCode === deleteKeyCode) {
-        modelservice.deleteSelected();
-      }
-
-      if (evt.keyCode == aKeyCode && ctrlDown) {
-        modelservice.selectAll();
-      }
-
-      if (evt.keyCode == escKeyCode) {
-        modelservice.deselectAll();
-      }
-
-      if (evt.keyCode === ctrlKeyCode) {
-        ctrlDown = false;
-        evt.stopPropagation();
-        evt.preventDefault();
-      }
-    };
-
-    $scope.addNewNode = function() {
-      var nodeName = prompt("Enter a node name:", "New node");
-      if (!nodeName) {
-        return;
-      }
-
-      var newNode = {
-        name: nodeName,
-        id: nextNodeID++,
-        x: 0,
-        y: 0,
-        color: '#F15B26',
-        connectors: [
-          {
-            id: nextConnectorID++,
-            type: flowchartConstants.topConnectorType
-          },
-          {
-            id: nextConnectorID++,
-            type: flowchartConstants.topConnectorType
-          },
-          {
-            id: nextConnectorID++,
-            type: flowchartConstants.topConnectorType
-          },
-          {
-            id: nextConnectorID++,
-            type: flowchartConstants.bottomConnectorType
-          },
-          {
-            id: nextConnectorID++,
-            type: flowchartConstants.bottomConnectorType
-          },
-          {
-            id: nextConnectorID++,
-            type: flowchartConstants.bottomConnectorType
-          }
-        ]
-      };
-
-      model.nodes.push(newNode);
-    };
-
-    $scope.addNewInputConnector = function() {
-      var connectorName = prompt("Enter a connector name:", "New connector");
-      if (!connectorName) {
-        return;
-      }
-
-      var selectedNodes = modelservice.nodes.getSelectedNodes($scope.model);
-      for (var i = 0; i < selectedNodes.length; ++i) {
-        var node = selectedNodes[i];
-        node.connectors.push({id: nextConnectorID++, type: flowchartConstants.topConnectorType});
-      }
-    };
-
-    $scope.addNewOutputConnector = function() {
-      var connectorName = prompt("Enter a connector name:", "New connector");
-      if (!connectorName) {
-        return;
-      }
-
-      var selectedNodes = modelservice.nodes.getSelectedNodes($scope.model);
-      for (var i = 0; i < selectedNodes.length; ++i) {
-        var node = selectedNodes[i];
-        node.connectors.push({id: nextConnectorID++, type: flowchartConstants.bottomConnectorType});
-      }
-    };
-
-    $scope.deleteSelected = function() {
-      modelservice.deleteSelected();
-    };
-
-    $scope.callbacks = {
-      edgeAdded: function() {
-        alert('Edge added');
+    edges: [
+      {
+        source: 10,
+        destination: 1
       },
-      edgeDoubleClick: function() {
-        alert('hi');
+      {
+        source: 5,
+        destination: 14
       },
-      edgeMouseOver: function() {
-        console.log('mouserover')
-      },
-      isValidEdge: function(source, destination) {
-        return source.type === flowchartConstants.bottomConnectorType && destination.type === flowchartConstants.topConnectorType;
-      },
-      nodeCallbacks: {
-        'doubleClick': function(event) {
-          alert('Node was doubleclicked.')
-        }
+      {
+        source: 5,
+        destination: 17
       }
-    };
-  });
+    ]
+  };
+
+$scope.flowchartselected = [];
+var modelservice = Modelfactory(model, $scope.flowchartselected);
+
+$scope.model = model;
+$scope.modelservice = modelservice;
+
+$scope.keyDown = function (evt) {
+  if (evt.keyCode === ctrlKeyCode) {
+    ctrlDown = true;
+    evt.stopPropagation();
+    evt.preventDefault();
+  }
+};
+
+$scope.keyUp = function (evt) {
+
+  if (evt.keyCode === deleteKeyCode) {
+    modelservice.deleteSelected();
+  }
+
+  if (evt.keyCode == aKeyCode && ctrlDown) {
+    modelservice.selectAll();
+  }
+
+  if (evt.keyCode == escKeyCode) {
+    modelservice.deselectAll();
+  }
+
+  if (evt.keyCode === ctrlKeyCode) {
+    ctrlDown = false;
+    evt.stopPropagation();
+    evt.preventDefault();
+  }
+};
+
+$scope.addNewNode = function () {
+  var nodeName = prompt("Enter a node name:", "New node");
+  if (!nodeName) {
+    return;
+  }
+
+  var newNode = {
+    name: nodeName,
+    id: nextNodeID++,
+    x: 200,
+    y: 100,
+    color: '#F15B26',
+    connectors: [
+      {
+        id: nextConnectorID++,
+        type: flowchartConstants.topConnectorType
+      },
+      {
+        id: nextConnectorID++,
+        type: flowchartConstants.topConnectorType
+      },
+      {
+        id: nextConnectorID++,
+        type: flowchartConstants.bottomConnectorType
+      },
+      {
+        id: nextConnectorID++,
+        type: flowchartConstants.bottomConnectorType
+      }
+    ]
+  };
+
+  model.nodes.push(newNode);
+};
+
+$scope.addNewInputConnector = function () {
+  var connectorName = prompt("Enter a connector name:", "New connector");
+  if (!connectorName) {
+    return;
+  }
+
+  var selectedNodes = modelservice.nodes.getSelectedNodes($scope.model);
+  for (var i = 0; i < selectedNodes.length; ++i) {
+    var node = selectedNodes[i];
+    node.connectors.push({id: nextConnectorID++, type: flowchartConstants.topConnectorType});
+  }
+};
+
+$scope.addNewOutputConnector = function () {
+  var connectorName = prompt("Enter a connector name:", "New connector");
+  if (!connectorName) {
+    return;
+  }
+
+  var selectedNodes = modelservice.nodes.getSelectedNodes($scope.model);
+  for (var i = 0; i < selectedNodes.length; ++i) {
+    var node = selectedNodes[i];
+    node.connectors.push({id: nextConnectorID++, type: flowchartConstants.bottomConnectorType});
+  }
+};
+
+$scope.deleteSelected = function () {
+  modelservice.deleteSelected();
+};
+
+$scope.callbacks = {
+  edgeDoubleClick: function () {
+    console.log('Edge double clicked.');
+  },
+  edgeMouseOver: function () {
+    console.log('mouserover')
+  },
+  isValidEdge: function (source, destination) {
+    return source.type === flowchartConstants.bottomConnectorType && destination.type === flowchartConstants.topConnectorType;
+  },
+  nodeCallbacks: {
+    'doubleClick': function (event) {
+      console.log('Node was doubleclicked.')
+    }
+  }
+};
+})
+;
