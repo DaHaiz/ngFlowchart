@@ -5,11 +5,21 @@ ngFlowchart is an easy and customizable way to draw flowchart graphs using Angul
 * An easy way to customize the look of nodes, by writing your own [template](#the-node-template) 
 * Automatically adjusts size to its graph
 
+
 ## Getting Started
 
 Install ngFlowchart via bower with `bower install ngFlowchart`
 
 Run `gulp` in the ngFlowchart directory to start an interactive demo.
+
+## Table of Contents
+* [Getting Started](#getting-started)
+* [Integration](#integration)
+* [API](#api)
+  * [Model](#the-model) 
+  * [fc-canvas attribute](fc-canvas-attributes)
+  * [Setting your own node template](#the-node-template)
+* [Browser Support](#browser-support)
 
 ## Integration
 
