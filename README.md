@@ -119,13 +119,9 @@ Your site should now show your first flowchart with two connected nodes.
   * `edgeMouseOver(event, edge)` will be called if the mouse hovers an edge.
   * `isValidEdge(sourceConnector, destinationConnector)` will be called, when the user tries to connect to edges. Returns `true` if this is an valid edge in your application or `false` otherwise.
   * `nodeCallbacks` an object which will be available in the scope of the node template. This is usefull, to register a doubleclick handler on a node or similiar things. Every method that is handed into the `nodeCallbacks` will be available in the node template via the `callbacks` attribute.
-  
-### Modelservice
-Our `Modelfactory` could contain some interesting functions for you to use.
-Instantiate it with `Modelfactory(model, selectedObjects)` with model and selectedObjects as references to the same objects you gave the canvas.
 
 ### The Node template
-The template of the node-directive is meant to be overwritten by yourself. To do so configure the `NodeTemplatePath` provider:
+Easily change the look and feel of the graph by writing your own node template. This is a simple AngularJS template registered with our `NodeTemplatePath` provider:
 
 ```javascript
 angular.module('yourApp', ['flowchart'])
@@ -142,6 +138,11 @@ The $scope in this template includes following variables:
 * `mouseOverConnector` The connector object from the model witch is hovered by the mouse or `null`.
 * `draggedNode` The node object from the model witch is dragged.
 * `nodeCallbacks` The object you assigned to `nodeCallbacks` on the `callbacks` attribute of `fc-canvas`.
+
+### Modelservice
+Our `Modelfactory` could contain some interesting functions for you to use.
+Instantiate it with `Modelfactory(model, selectedObjects)` with model and selectedObjects as references to the same objects you gave the canvas.
+
 
 ## Browser Support
 ngFlowchart supports Chrome, Firefox, Opera and IE10+. Safari is not supported. PRs to expand support are welcome.
