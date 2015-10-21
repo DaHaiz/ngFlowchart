@@ -1,6 +1,8 @@
 # ngFlowchart [![Bower version](https://badge.fury.io/bo/ngFlowchart@2x.png)](https://github.com/ONE-LOGIC/ngFlowchart) [![Build Status](https://travis-ci.org/ONE-LOGIC/ngFlowchart.svg?branch=master)](https://travis-ci.org/ONE-LOGIC/ngFlowchart/) [![Dependency Status](https://gemnasium.com/ONE-LOGIC/ngFlowchart.svg)](https://gemnasium.com/ONE-LOGIC/ngFlowchart)
 
-ngFlowchart is an easy and customizable way to draw flowchart graphs using AngularJS.
+ngFlowchart is an easy and customizable way to draw flowchart graphs using AngularJS. Its main features are:
+* Native AngularJS support
+* An easy way to customize the look of nodes, by writing your own [template](#TheNodetemplate). 
 
 ## Getting Started
 
@@ -123,21 +125,22 @@ Our `Modelfactory` could contain some interesting functions for you to use.
 Instantiate it with `Modelfactory(model, selectedObjects)` with model and selectedObjects as references to the same objects you gave the canvas.
 
 ### The Node template
-The template of the node-directive is meant to be overwritten by yourself. You just need to register your own node.html file in the template cache with the key/path `flowchart/node.html`.
+The template of the node-directive is meant to be overwritten by yourself. To do so configure the `NodeTemplatePath` provider:
 
 ```javascript
-module.run(function($templateCache) {
-  $templateCache.put('flowchart/node.html', '<my><node><template></template></node></my>');
-});
+angular.module('yourApp', ['flowchart'])
+  .config(function(NodeTemplatePathProvider) {
+    NodeTemplatePathProvider.setTemplatePath("path/to/your/template/node.html");
+  })
 ```
 
-The $scope will include following variables:
-* `node` The nodeobject from the model.
-* `modelservice` The modelservice instance of this canvas
+The $scope in this template includes following variables:
+* `node` The node object from the model.
+* `modelservice` The modelservice instance of this canvas.
 * `underMouse` `true` when the mouse hovers this node, `false` otherwise.
 * `selected` `true` if this node is selected, `false` otherwise.
-* `mouseOverConnector` The connectorobject from the model witch is hovered by the mouse or `null`.
-* `draggedNode` The nodeobject from the model witch is dragged.
+* `mouseOverConnector` The connector object from the model witch is hovered by the mouse or `null`.
+* `draggedNode` The node object from the model witch is dragged.
 * `nodeCallbacks` The object you assigned to `nodeCallbacks` on the `callbacks` attribute of `fc-canvas`.
 
 ## Browser Support
