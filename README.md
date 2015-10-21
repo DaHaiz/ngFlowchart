@@ -17,7 +17,7 @@ Run `gulp` in the ngFlowchart directory to start an interactive demo.
 * [Integration](#integration)
 * [API](#api)
   * [Model](#the-model) 
-  * [fc-canvas attribute](fc-canvas-attributes)
+  * [fc-canvas attribute](#fc-canvas-attributes)
   * [Setting your own node template](#the-node-template)
 * [Browser Support](#browser-support)
 
