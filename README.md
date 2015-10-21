@@ -2,7 +2,8 @@
 
 ngFlowchart is an easy and customizable way to draw flowchart graphs using AngularJS. Its main features are:
 * Native AngularJS support
-* An easy way to customize the look of nodes, by writing your own [template](#TheNodetemplate). 
+* An easy way to customize the look of nodes, by writing your own [template](#the-node-template) 
+* Automatically adjusts size to its graph
 
 ## Getting Started
 
@@ -22,13 +23,12 @@ Include script:
 <script src="bower_components/ngFlowchart/dist/ngFlowchart.js"></script>
 ```
 
-Insert this line where you want the flowchart to appear. It should fill up the given space, but if you are working on a complex site,
-feel free to take a look in our flowchart.css stylesheet and overwrite the styles as you need.
+Use the `fc-canvas` directive to display the graph:
 ```html
 <fc-canvas model="model" selected-objects="flowchartselected" edge-style="line"></fc-canvas>
 ```
 
-The structure of `model` and `flowchartselected` of the `fc-canvas` directive looks like the following:
+Add `model` and `selectedObjects` to your scope:
 ```javascript
 model = {
   nodes: [
@@ -144,6 +144,6 @@ The $scope in this template includes following variables:
 * `nodeCallbacks` The object you assigned to `nodeCallbacks` on the `callbacks` attribute of `fc-canvas`.
 
 ## Browser Support
-ngFlowchart supports Chrome, Firefox, Opera, IE10+. Safari is not supported. PRs to expand support are welcome.
+ngFlowchart supports Chrome, Firefox, Opera and IE10+. Safari is not supported. PRs to expand support are welcome.
 
 Right now it is only possible to have one canvas per site, this may changes in future.
