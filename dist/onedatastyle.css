@@ -1,3 +1,7 @@
+body {
+  font-family: sans-serif;
+}
+
 .button-overlay {
   position: absolute;
   top: 40px;
@@ -155,15 +159,21 @@
 .fc-selected .fc-nodedelete {
   display: block;
   position: absolute;
-  right: -20px;
-  top: -20px;
+  right: -13px;
+  top: -13px;
+  border: solid 2px white;
 
-  width: 18px;
-  height: 18px;
   border-radius: 50%;
-  padding-left: 8px;
+  font-weight: 600;
+  font-size: 20px;
 
-  background: #000;
+  height: 25px;
+  padding-top: 2px;
+  width: 27px;
+
+  background: #494949;
   color: #fff;
+  text-align: center;
+  vertical-align: bottom;
 }
 

@@ -1264,7 +1264,7 @@ module.run(['$templateCache', function($templateCache) {
     '    </div>\n' +
     '  </div>\n' +
     '  <div class="fc-nodedelete" ng-click="modelservice.nodes.delete(node)">\n' +
-    '    X\n' +
+    '    &times;\n' +
     '  </div>\n' +
     '</div>\n' +
     '');
