@@ -5,9 +5,9 @@ ngFlowchart is an easy and customizable way to draw flowchart graphs using Angul
 * An easy way to customize the look of nodes, by writing your own [template](#the-node-template) 
 * Automatically adjusts size to its graph
 
-
-![LiveDemo](liveDemo.gif)
-
+<a href="http://one-logic.github.io/ngFlowchart/dist/index.html" target="_blank">
+  <img src="liveDemo.gif" alt="Live Demo"/>
+</a>
 <a href="http://one-logic.github.io/ngFlowchart/dist/index.html" target="_blank">Visit the live demo</a>
 
 ## Getting Started
