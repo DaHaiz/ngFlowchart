@@ -7,6 +7,8 @@ ngFlowchart is an easy and customizable way to draw flowchart graphs using Angul
 
 ![LiveDemo](liveDemo.gif)
 
+[Open Live Demo](http://one-logic.github.io/ngFlowchart/dist/index.html)
+
 ## Getting Started
 
 Install ngFlowchart via bower with `bower install ngFlowchart`
