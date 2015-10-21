@@ -5,6 +5,7 @@ ngFlowchart is an easy and customizable way to draw flowchart graphs using Angul
 * An easy way to customize the look of nodes, by writing your own [template](#the-node-template) 
 * Automatically adjusts size to its graph
 
+![LiveDemo](liveDemo.gif)
 
 ## Getting Started
 
