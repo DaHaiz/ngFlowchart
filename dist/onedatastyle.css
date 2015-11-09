@@ -1,3 +1,41 @@
+body {
+  font-family: sans-serif;
+}
+
+.button-overlay {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  z-index: 10;
+}
+
+.button-overlay button {
+  display: block;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  border: none;
+  box-shadow: none;
+  color: #fff;
+  font-size: 20px;
+  background-color: #F15B26;
+}
+
+
+.button-overlay button:hover:not(:disabled) {
+  border: 4px solid #b03911;
+  border-radius: 5px;
+
+  margin: -4px;
+  margin-bottom: 11px;
+}
+
+.button-overlay button:disabled {
+  -webkit-filter: brightness(70%);
+  filter: brightness(70%);
+}
+
+
 .fc-node {
   z-index: 1;
 }
@@ -10,20 +48,17 @@
 
   background-color: #F15B26;
   color: #fff;
+  font-size: 20px;
 }
 
-.fc-node.fc-hover .innerNode {
-  border: 4px solid #b03911;
-  border-radius: 5px;
-
-  margin: -4px;
+.fc-node.fc-hover {
+  -webkit-filter: brightness(70%);
+  filter: brightness(70%);;
 }
 
-.fc-node.fc-selected .innerNode {
-  border: 4px solid #b03911;
-  border-radius: 5px;
-
-  margin: -4px;
+.fc-node.fc-selected {
+  -webkit-filter: brightness(70%);
+  filter: brightness(70%);
 }
 
 .fc-node.fc-dragging {
@@ -47,11 +82,11 @@
 }
 
 .fc-topConnectors {
-  top: -55px;
+  top: -40px;
 }
 
 .fc-bottomConnectors {
-  bottom: -55px;
+  bottom: -40px;
 }
 
 .fc-magnet {
@@ -73,13 +108,18 @@
 .fc-connector {
   width: 18px;
   height: 18px;
+
+  border: 10px solid transparent;
+  -moz-background-clip: padding;     /* Firefox 3.6 */
+  -webkit-background-clip: padding;  /* Safari 4? Chrome 6? */
+  background-clip: padding-box;
   border-radius: 50% 50%;
-  background: #F7A789;
+  background-color: #F7A789;
   color: #fff;
 }
 
 .fc-connector.fc-hover {
-  background: #000;
+  background-color: #000;
 }
 
 .fc-edge {
@@ -115,15 +155,21 @@
 .fc-selected .fc-nodedelete {
   display: block;
   position: absolute;
-  right: -20px;
-  top: -20px;
+  right: -13px;
+  top: -13px;
+  border: solid 2px white;
 
-  width: 18px;
-  height: 18px;
   border-radius: 50%;
-  padding-left: 8px;
+  font-weight: 600;
+  font-size: 20px;
 
-  background: #000;
+  height: 25px;
+  padding-top: 2px;
+  width: 27px;
+
+  background: #494949;
   color: #fff;
+  text-align: center;
+  vertical-align: bottom;
 }
 

@@ -2,10 +2,12 @@
 
   'use strict';
 
-  function fcNode(flowchartConstants) {
+  function fcNode(flowchartConstants, NodeTemplatePath) {
     return {
       restrict: 'E',
-      templateUrl: 'flowchart/node.html',
+      templateUrl: function() {
+        return NodeTemplatePath;
+      },
       replace: true,
       scope: {
         fcCallbacks: '=callbacks',

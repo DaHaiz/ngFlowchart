@@ -4,7 +4,7 @@
 
   function Edgedrawingservice(flowchartConstants) {
     function computeEdgeTangentOffset(pt1, pt2) {
-      return (pt2.x - pt1.x) / 2;
+        return (pt2.y - pt1.y) / 2;
     }
 
     function computeEdgeSourceTangent(pt1, pt2) {
