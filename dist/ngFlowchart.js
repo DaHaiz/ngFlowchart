@@ -110,6 +110,31 @@ if (!Function.prototype.bind) {
 
   'use strict';
 
+  angular
+    .module('flowchart')
+    .provider('NodeTemplatePath', NodeTemplatePath);
+
+  function NodeTemplatePath() {
+    var templatePath = "flowchart/node.html";
+
+    this.setTemplatePath = setTemplatePath;
+    this.$get = NodeTemplatePath;
+
+    function setTemplatePath(path) {
+      templatePath = path;
+    }
+
+    function NodeTemplatePath() {
+      return templatePath;
+    }
+  }
+
+}());
+
+(function() {
+
+  'use strict';
+
   function Nodedraggingfactory(flowchartConstants) {
     return function(modelservice, nodeDraggingScope, applyFunction, automaticResize) {
 
@@ -202,31 +227,6 @@ if (!Function.prototype.bind) {
   angular
     .module('flowchart')
     .factory('Nodedraggingfactory', Nodedraggingfactory);
-
-}());
-
-(function() {
-
-  'use strict';
-
-  angular
-    .module('flowchart')
-    .provider('NodeTemplatePath', NodeTemplatePath);
-
-  function NodeTemplatePath() {
-    var templatePath = "flowchart/node.html";
-
-    this.setTemplatePath = setTemplatePath;
-    this.$get = NodeTemplatePath;
-
-    function setTemplatePath(path) {
-      templatePath = path;
-    }
-
-    function NodeTemplatePath() {
-      return templatePath;
-    }
-  }
 
 }());
 
@@ -785,6 +785,7 @@ if (!Function.prototype.bind) {
   };
   constants.canvasClass = constants.htmlPrefix + '-canvas';
   constants.selectedClass = constants.htmlPrefix + '-selected';
+  constants.activeClass = constants.htmlPrefix + '-active';
   constants.hoverClass = constants.htmlPrefix + '-hover';
   constants.draggingClass = constants.htmlPrefix + '-dragging';
   constants.edgeClass = constants.htmlPrefix + '-edge';
@@ -1158,6 +1159,7 @@ if (!Function.prototype.bind) {
 
     $scope.edgeDoubleClick = $scope.userCallbacks.edgeDoubleClick || angular.noop;
     $scope.edgeMouseOver = $scope.userCallbacks.edgeMouseOver || angular.noop;
+    $scope.isFlowchartActive = $scope.userCallbacks.isFlowchartActive || angular.noop;
 
     $scope.userNodeCallbacks = $scope.userCallbacks.nodeCallbacks;
     $scope.callbacks = {
