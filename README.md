@@ -133,6 +133,7 @@ Your site should now show your first flowchart with two connected nodes.
   * `edgeMouseOver(event, edge)` will be called if the mouse hovers an edge.
   * `isValidEdge(sourceConnector, destinationConnector)` will be called, when the user tries to connect to edges. Returns `true` if this is an valid edge in your application or `false` otherwise.
   * `nodeCallbacks` an object which will be available in the scope of the node template. This is usefull, to register a doubleclick handler on a node or similiar things. Every method that is handed into the `nodeCallbacks` will be available in the node template via the `callbacks` attribute.
+  * `isFlowchartActive` will check if the flowchart should be shown as active. If it returns `true` it will add the `fc-active` class to the edges.
 
 ### The Node template
 Easily change the look and feel of the graph by writing your own node template. This is a simple AngularJS template registered with our `NodeTemplatePath` provider:
