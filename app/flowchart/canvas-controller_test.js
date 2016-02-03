@@ -41,6 +41,7 @@ describe('test canvas-controller', function() {
     expect(this.$scope.edgeDoubleClick).toEqual(jasmine.any(Function));
     expect(this.$scope.edgeMouseOver).toEqual(jasmine.any(Function));
     expect(this.$scope.getEdgeDAttribute).toEqual(jasmine.any(Function));
+    expect(this.$scope.isFlowchartActive).toEqual(jasmine.any(Function));
     expect(this.$scope.callbacks.nodeDragstart).toEqual(jasmine.any(Function));
     expect(this.$scope.callbacks.nodeDragend).toEqual(jasmine.any(Function));
     expect(this.$scope.callbacks.edgeDragstart).toEqual(jasmine.any(Function));

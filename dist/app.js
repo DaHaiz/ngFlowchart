@@ -230,7 +230,12 @@ $scope.deleteSelected = function () {
   modelservice.deleteSelected();
 };
 
+$scope.workflowActive = false;
+
 $scope.callbacks = {
+  isFlowchartActive: function () {
+    return $scope.workflowActive;
+  },
   edgeDoubleClick: function () {
     console.log('Edge double clicked.');
   },
