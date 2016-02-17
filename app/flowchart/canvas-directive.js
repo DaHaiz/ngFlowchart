@@ -26,7 +26,6 @@
               maxX = Math.max(node.x + scope.nodeWidth, maxX);
               maxY = Math.max(node.y + scope.nodeHeight, maxY);
             });
-            console.log(element.prop('offsetHeight'))
             element.css('width', Math.max(maxX, element.prop('offsetWidth')) + 'px');
             element.css('height', Math.max(maxY, element.prop('offsetHeight')) + 'px');
           }

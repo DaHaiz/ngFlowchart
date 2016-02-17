@@ -43,7 +43,6 @@
 
     $scope.edgeDoubleClick = $scope.userCallbacks.edgeDoubleClick || angular.noop;
     $scope.edgeMouseOver = $scope.userCallbacks.edgeMouseOver || angular.noop;
-    $scope.isFlowchartActive = $scope.userCallbacks.isFlowchartActive || angular.noop;
 
     $scope.userNodeCallbacks = $scope.userCallbacks.nodeCallbacks;
     $scope.callbacks = {

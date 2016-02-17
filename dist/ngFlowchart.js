@@ -1083,7 +1083,6 @@ if (!Function.prototype.bind) {
               maxX = Math.max(node.x + scope.nodeWidth, maxX);
               maxY = Math.max(node.y + scope.nodeHeight, maxY);
             });
-            console.log(element.prop('offsetHeight'))
             element.css('width', Math.max(maxX, element.prop('offsetWidth')) + 'px');
             element.css('height', Math.max(maxY, element.prop('offsetHeight')) + 'px');
           }
@@ -1159,7 +1158,6 @@ if (!Function.prototype.bind) {
 
     $scope.edgeDoubleClick = $scope.userCallbacks.edgeDoubleClick || angular.noop;
     $scope.edgeMouseOver = $scope.userCallbacks.edgeMouseOver || angular.noop;
-    $scope.isFlowchartActive = $scope.userCallbacks.isFlowchartActive || angular.noop;
 
     $scope.userNodeCallbacks = $scope.userCallbacks.nodeCallbacks;
     $scope.callbacks = {
@@ -1215,7 +1213,7 @@ module.run(['$templateCache', function($templateCache) {
     '        ng-mouseover="edgeMouseOver($event, edge)"\n' +
     '        ng-mouseenter="edgeMouseEnter($event, edge)"\n' +
     '        ng-mouseleave="edgeMouseLeave($event, edge)"\n' +
-    '        ng-attr-class="{{(modelservice.edges.isSelected(edge) && flowchartConstants.selectedClass + \' \' + flowchartConstants.edgeClass) || edge == mouseOver.edge && flowchartConstants.hoverClass + \' \' + flowchartConstants.edgeClass || isFlowchartActive() && flowchartConstants.activeClass + \' \' + flowchartConstants.edgeClass || flowchartConstants.edgeClass}}"\n' +
+    '        ng-attr-class="{{(modelservice.edges.isSelected(edge) && flowchartConstants.selectedClass + \' \' + flowchartConstants.edgeClass) || edge == mouseOver.edge && flowchartConstants.hoverClass + \' \' + flowchartConstants.edgeClass || edge.active && flowchartConstants.activeClass + \' \' + flowchartConstants.edgeClass || flowchartConstants.edgeClass}}"\n' +
     '        ng-attr-d="{{getEdgeDAttribute(modelservice.edges.sourceCoord(edge), modelservice.edges.destCoord(edge), edgeStyle)}}"></path>\n' +
     '    </g>\n' +
     '    <g ng-if="edgeDragging.isDragging">\n' +
