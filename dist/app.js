@@ -200,6 +200,12 @@ $scope.addNewNode = function () {
   model.nodes.push(newNode);
 };
 
+$scope.activateWorkflow = function() {
+  angular.forEach($scope.model.edges, function(edge) {
+    edge.active = !edge.active;
+  });
+};
+
 $scope.addNewInputConnector = function () {
   var connectorName = prompt("Enter a connector name:", "New connector");
   if (!connectorName) {
@@ -230,12 +236,7 @@ $scope.deleteSelected = function () {
   modelservice.deleteSelected();
 };
 
-$scope.workflowActive = false;
-
 $scope.callbacks = {
-  isFlowchartActive: function () {
-    return $scope.workflowActive;
-  },
   edgeDoubleClick: function () {
     console.log('Edge double clicked.');
   },
