@@ -15,7 +15,7 @@
     $scope.modelservice = Modelfactory($scope.model, $scope.selectedObjects, $scope.userCallbacks.edgeAdded || angular.noop);
 
     $scope.nodeDragging = {};
-    var nodedraggingservice = Nodedraggingfactory($scope.modelservice, $scope.nodeDragging, $scope.$apply.bind($scope), $scope.automaticResize);
+    var nodedraggingservice = Nodedraggingfactory($scope.modelservice, $scope.nodeDragging, $scope.$apply.bind($scope), $scope.automaticResize, $scope.dragAnimation);
 
     $scope.edgeDragging = {};
     var edgedraggingservice = Edgedraggingfactory($scope.modelservice, $scope.model, $scope.edgeDragging, $scope.userCallbacks.isValidEdge || null, $scope.$apply.bind($scope));

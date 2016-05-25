@@ -13,6 +13,7 @@
         edgeStyle: '@',
         userCallbacks: '=?callbacks',
         automaticResize: '=?',
+        dragAnimation: '=',
         nodeWidth: '=?',
         nodeHeight: '=?'
       },
@@ -35,6 +36,7 @@
         }
         scope.nodeHeight = scope.nodeHeight || 200;
         scope.nodeWidth = scope.nodeWidth || 200;
+        scope.dragAnimation = scope.dragAnimation || 'repaint';
 
         scope.flowchartConstants = flowchartConstants;
         element.addClass(flowchartConstants.canvasClass);
