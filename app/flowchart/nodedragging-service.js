@@ -85,8 +85,10 @@
               });
             }
           } else if (dragAnimation == flowchartConstants.dragAnimationShadow) {
-            nodeDraggingScope.shadowElement.css('left', getXCoordinate(dragOffset.x + event.clientX) + 'px');
-            nodeDraggingScope.shadowElement.css('top', getYCoordinate(dragOffset.y + event.clientY) + 'px');
+            if (nodeDraggingScope.draggedNode) {
+              nodeDraggingScope.shadowElement.css('left', getXCoordinate(dragOffset.x + event.clientX) + 'px');
+              nodeDraggingScope.shadowElement.css('top', getYCoordinate(dragOffset.y + event.clientY) + 'px');
+            }
           }
         },
 

@@ -2,8 +2,8 @@
 
   'use strict';
 
-  function Edgedraggingfactory(Modelvalidation) {
-    function factory(modelservice, model, edgeDragging, isValidEdgeCallback, applyFunction) {
+  function Edgedraggingfactory(Modelvalidation, flowchartConstants, Edgedrawingservice) {
+    function factory(modelservice, model, edgeDragging, isValidEdgeCallback, applyFunction, dragAnimation, edgeStyle) {
       if (isValidEdgeCallback === null) {
         isValidEdgeCallback = function() {
           return true;
@@ -25,6 +25,7 @@
       edgedraggingService.dragstart = function(connector) {
         return function(event) {
           edgeDragging.isDragging = true;
+
           draggedEdgeSource = connector;
           edgeDragging.dragPoint1 = modelservice.connectors.getCenteredCoord(connector.id);
 
@@ -50,28 +51,56 @@
             event.target.style.display = 'none'; // Internetexplorer does not support setDragImage, but it takes an screenshot, from the draggedelement and uses it as dragimage.
             // Since angular redraws the element in the next dragover call, display: none never gets visible to the user.
           }
+
+          if (dragAnimation == flowchartConstants.dragAnimationShadow) {
+
+            var el = angular.element(modelservice.getSvgHtmlElement());
+            angular.element(el[0].getElementsByClassName('shadow-svg-class')).css('display', 'block');
+            angular.element(el[0].getElementsByClassName('shadow-svg-class')).find('path').attr('d', Edgedrawingservice.getEdgeDAttribute(edgeDragging.dragPoint1, edgeDragging.dragPoint2, edgeStyle));
+            angular.element(el[0].getElementsByClassName('shadow-svg-class')).find('circle').attr('cx', edgeDragging.dragPoint2.x);
+            angular.element(el[0].getElementsByClassName('shadow-svg-class')).find('circle').attr('cy', edgeDragging.dragPoint2.y);
+          }
           event.stopPropagation();
         };
       };
 
       edgedraggingService.dragover = function(event) {
+
+        edgeDragging.endCounter -= 1;
+
         if (edgeDragging.isDragging) {
-          return applyFunction(function() {
-            if (destinationHtmlElement !== null) {
-              destinationHtmlElement.style.display = oldDisplayStyle;
-            }
+
+          if(!edgeDragging.magnetActive && dragAnimation == flowchartConstants.dragAnimationShadow) {
 
             edgeDragging.dragPoint2 = {
               x: event.clientX + dragOffset.x,
               y: event.clientY + dragOffset.y
             };
 
-          });
+            var el = angular.element(modelservice.getSvgHtmlElement());
+            angular.element(el[0].getElementsByClassName('shadow-svg-class')).find('path').attr('d', Edgedrawingservice.getEdgeDAttribute(edgeDragging.dragPoint1, edgeDragging.dragPoint2, edgeStyle));
+            angular.element(el[0].getElementsByClassName('shadow-svg-class')).find('circle').attr('cx', edgeDragging.dragPoint2.x);
+            angular.element(el[0].getElementsByClassName('shadow-svg-class')).find('circle').attr('cy', edgeDragging.dragPoint2.y);
+
+          } else if(dragAnimation == flowchartConstants.dragAnimationRepaint) {
+            return applyFunction(function () {
+
+              if (destinationHtmlElement !== null) {
+                destinationHtmlElement.style.display = oldDisplayStyle;
+              }
+
+              edgeDragging.dragPoint2 = {
+                x: event.clientX + dragOffset.x,
+                y: event.clientY + dragOffset.y
+              };
+            });
+          }
         }
       };
 
       edgedraggingService.dragoverConnector = function(connector) {
         return function(event) {
+
           if (edgeDragging.isDragging) {
             edgedraggingService.dragover(event);
             try {
@@ -95,6 +124,28 @@
         };
       };
 
+      edgedraggingService.dragleaveMagnet = function() {
+        return function (event) {
+
+          if(event.clientX === 0) {
+            if(dragAnimation == flowchartConstants.dragAnimationShadow) {
+
+              if(edgeDragging.connector !== undefined) {
+                if (isValidEdgeCallback(draggedEdgeSource, edgeDragging.connector)) {
+                  modelservice.edges._addEdge(draggedEdgeSource, edgeDragging.connector);
+                  event.stopPropagation();
+                  event.preventDefault();
+                  return false;
+                }
+              }
+            }
+          }
+
+          edgeDragging.magnetActive = false;
+        }
+      };
+
+
       edgedraggingService.dragoverMagnet = function(connector) {
         return function(event) {
           if (edgeDragging.isDragging) {
@@ -112,24 +163,44 @@
               }
             }
             if (isValidEdgeCallback(draggedEdgeSource, connector)) {
-              return applyFunction(function() {
+              if(dragAnimation == flowchartConstants.dragAnimationShadow) {
+
+                edgeDragging.connector = connector;
+                edgeDragging.magnetActive = true;
+                var el = angular.element(modelservice.getSvgHtmlElement());
                 edgeDragging.dragPoint2 = modelservice.connectors.getCenteredCoord(connector.id);
-                event.preventDefault();
-                event.stopPropagation();
-                return false;
-              });
+                angular.element(el[0].getElementsByClassName('shadow-svg-class')).find('path').attr('d', Edgedrawingservice.getEdgeDAttribute(edgeDragging.dragPoint1, edgeDragging.dragPoint2, edgeStyle));
+                angular.element(el[0].getElementsByClassName('shadow-svg-class')).find('circle').attr('cx', edgeDragging.dragPoint2.x);
+                angular.element(el[0].getElementsByClassName('shadow-svg-class')).find('circle').attr('cy', edgeDragging.dragPoint2.y);
+
+              } else {
+                return applyFunction(function() {
+                  edgeDragging.dragPoint2 = modelservice.connectors.getCenteredCoord(connector.id);
+                  event.preventDefault();
+                  event.stopPropagation();
+                  return false;
+                });
+              }
             }
           }
 
         }
       };
 
-      edgedraggingService.dragend = function(event) {
-        if (edgeDragging.isDragging) {
-          edgeDragging.isDragging = false;
-          edgeDragging.dragPoint1 = null;
-          edgeDragging.dragPoint2 = null;
-          event.stopPropagation();
+      edgedraggingService.dragend = function() {
+        return function(event) {
+
+          if (edgeDragging.isDragging) {
+            edgeDragging.isDragging = false;
+            edgeDragging.dragPoint1 = null;
+            edgeDragging.dragPoint2 = null;
+            event.stopPropagation();
+
+            if(dragAnimation == flowchartConstants.dragAnimationShadow) {
+              var el = angular.element(modelservice.getSvgHtmlElement());
+              angular.element(el[0].getElementsByClassName('shadow-svg-class')).css('display', 'none');
+            }
+          }
         }
       };
 
