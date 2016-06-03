@@ -4,6 +4,8 @@
 
   function canvasController($scope, Mouseoverfactory, Nodedraggingfactory, Modelfactory, Edgedraggingfactory, Edgedrawingservice) {
 
+    $scope.dragAnimation = angular.isDefined($scope.dragAnimation) ? $scope.dragAnimation : 'repaint';
+
     $scope.userCallbacks = $scope.userCallbacks || {};
     $scope.automaticResize = $scope.automaticResize || false;
     angular.forEach($scope.userCallbacks, function(callback, key) {
@@ -18,7 +20,7 @@
     var nodedraggingservice = Nodedraggingfactory($scope.modelservice, $scope.nodeDragging, $scope.$apply.bind($scope), $scope.automaticResize, $scope.dragAnimation);
 
     $scope.edgeDragging = {};
-    var edgedraggingservice = Edgedraggingfactory($scope.modelservice, $scope.model, $scope.edgeDragging, $scope.userCallbacks.isValidEdge || null, $scope.$apply.bind($scope));
+    var edgedraggingservice = Edgedraggingfactory($scope.modelservice, $scope.model, $scope.edgeDragging, $scope.userCallbacks.isValidEdge || null, $scope.$apply.bind($scope), $scope.dragAnimation, $scope.edgeStyle);
 
     $scope.mouseOver = {};
     var mouseoverservice = Mouseoverfactory($scope.mouseOver, $scope.$apply.bind($scope));
@@ -53,6 +55,7 @@
       edgeDrop: edgedraggingservice.drop,
       edgeDragoverConnector: edgedraggingservice.dragoverConnector,
       edgeDragoverMagnet: edgedraggingservice.dragoverMagnet,
+      edgeDragleaveMagnet: edgedraggingservice.dragleaveMagnet,
       nodeMouseOver: mouseoverservice.nodeMouseOver,
       nodeMouseOut: mouseoverservice.nodeMouseOut,
       connectorMouseEnter: mouseoverservice.connectorMouseEnter,

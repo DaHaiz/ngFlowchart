@@ -5,6 +5,7 @@
   function Modelfactory(Modelvalidation) {
     var connectorsHtmlElements = {};
     var canvasHtmlElement = null;
+    var svgHtmlElement = null;
 
     return function innerModelfactory(model, selectedObjects, edgeAddedCallback) {
       Modelvalidation.validateModel(model);
@@ -243,6 +244,14 @@
 
       modelservice.getCanvasHtmlElement = function() {
         return canvasHtmlElement;
+      };
+
+      modelservice.setSvgHtmlElement = function(element) {
+        svgHtmlElement = element;
+      };
+
+      modelservice.getSvgHtmlElement = function() {
+        return svgHtmlElement;
       };
 
       return modelservice;

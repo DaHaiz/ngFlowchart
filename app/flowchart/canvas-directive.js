@@ -13,7 +13,7 @@
         edgeStyle: '@',
         userCallbacks: '=?callbacks',
         automaticResize: '=?',
-        dragAnimation: '=',
+        dragAnimation: '=?',
         nodeWidth: '=?',
         nodeHeight: '=?'
       },
@@ -46,6 +46,7 @@
         scope.$watch('model', adjustCanvasSize);
 
         scope.modelservice.setCanvasHtmlElement(element[0]);
+        scope.modelservice.setSvgHtmlElement(element[0].querySelector('svg'));
       }
     };
   }

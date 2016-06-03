@@ -2,8 +2,8 @@
 
   'use strict';
 
-  function Edgedraggingfactory(Modelvalidation) {
-    function factory(modelservice, model, edgeDragging, isValidEdgeCallback, applyFunction) {
+  function Edgedraggingfactory(Modelvalidation, flowchartConstants, Edgedrawingservice) {
+    function factory(modelservice, model, edgeDragging, isValidEdgeCallback, applyFunction, dragAnimation, edgeStyle) {
       if (isValidEdgeCallback === null) {
         isValidEdgeCallback = function() {
           return true;
@@ -24,7 +24,9 @@
 
       edgedraggingService.dragstart = function(connector) {
         return function(event) {
+
           edgeDragging.isDragging = true;
+
           draggedEdgeSource = connector;
           edgeDragging.dragPoint1 = modelservice.connectors.getCenteredCoord(connector.id);
 
@@ -50,13 +52,32 @@
             event.target.style.display = 'none'; // Internetexplorer does not support setDragImage, but it takes an screenshot, from the draggedelement and uses it as dragimage.
             // Since angular redraws the element in the next dragover call, display: none never gets visible to the user.
           }
+
+          if (dragAnimation == flowchartConstants.dragAnimationShadow) {
+
+            if (edgeDragging.gElement == undefined) {
+              //set shadow elements once
+              // IE Support
+              edgeDragging.gElement = angular.element(document.querySelectorAll('.shadow-svg-class'));
+              edgeDragging.pathElement = angular.element(document.querySelectorAll('.shadow-svg-class')).find('path');
+              edgeDragging.circleElement = angular.element(document.querySelectorAll('.shadow-svg-class')).find('circle');
+            }
+
+            edgeDragging.gElement.css('display', 'block');
+            edgeDragging.pathElement.attr('d', Edgedrawingservice.getEdgeDAttribute(edgeDragging.dragPoint1, edgeDragging.dragPoint2, edgeStyle));
+            edgeDragging.circleElement.attr('cx', edgeDragging.dragPoint2.x);
+            edgeDragging.circleElement.attr('cy', edgeDragging.dragPoint2.y);
+          }
           event.stopPropagation();
         };
       };
 
       edgedraggingService.dragover = function(event) {
+
         if (edgeDragging.isDragging) {
-          return applyFunction(function() {
+
+          if(!edgeDragging.magnetActive && dragAnimation == flowchartConstants.dragAnimationShadow) {
+
             if (destinationHtmlElement !== null) {
               destinationHtmlElement.style.display = oldDisplayStyle;
             }
@@ -66,12 +87,29 @@
               y: event.clientY + dragOffset.y
             };
 
-          });
+            edgeDragging.pathElement.attr('d', Edgedrawingservice.getEdgeDAttribute(edgeDragging.dragPoint1, edgeDragging.dragPoint2, edgeStyle));
+            edgeDragging.circleElement.attr('cx', edgeDragging.dragPoint2.x);
+            edgeDragging.circleElement.attr('cy', edgeDragging.dragPoint2.y);
+
+          } else if(dragAnimation == flowchartConstants.dragAnimationRepaint) {
+            return applyFunction(function () {
+
+              if (destinationHtmlElement !== null) {
+                destinationHtmlElement.style.display = oldDisplayStyle;
+              }
+
+              edgeDragging.dragPoint2 = {
+                x: event.clientX + dragOffset.x,
+                y: event.clientY + dragOffset.y
+              };
+            });
+          }
         }
       };
 
       edgedraggingService.dragoverConnector = function(connector) {
         return function(event) {
+
           if (edgeDragging.isDragging) {
             edgedraggingService.dragover(event);
             try {
@@ -95,6 +133,12 @@
         };
       };
 
+      edgedraggingService.dragleaveMagnet = function() {
+        return function (event) {
+          edgeDragging.magnetActive = false;
+        }
+      };
+
       edgedraggingService.dragoverMagnet = function(connector) {
         return function(event) {
           if (edgeDragging.isDragging) {
@@ -112,24 +156,47 @@
               }
             }
             if (isValidEdgeCallback(draggedEdgeSource, connector)) {
-              return applyFunction(function() {
+              if(dragAnimation == flowchartConstants.dragAnimationShadow) {
+
+                edgeDragging.connector = connector;
+                edgeDragging.magnetActive = true;
+
                 edgeDragging.dragPoint2 = modelservice.connectors.getCenteredCoord(connector.id);
+                edgeDragging.pathElement.attr('d', Edgedrawingservice.getEdgeDAttribute(edgeDragging.dragPoint1, edgeDragging.dragPoint2, edgeStyle));
+                edgeDragging.circleElement.attr('cx', edgeDragging.dragPoint2.x);
+                edgeDragging.circleElement.attr('cy', edgeDragging.dragPoint2.y);
+
                 event.preventDefault();
                 event.stopPropagation();
                 return false;
-              });
+
+              } else if(dragAnimation == flowchartConstants.dragAnimationRepaint) {
+                return applyFunction(function() {
+                  edgeDragging.dragPoint2 = modelservice.connectors.getCenteredCoord(connector.id);
+                  event.preventDefault();
+                  event.stopPropagation();
+                  return false;
+                });
+              }
             }
           }
 
         }
       };
 
-      edgedraggingService.dragend = function(event) {
-        if (edgeDragging.isDragging) {
-          edgeDragging.isDragging = false;
-          edgeDragging.dragPoint1 = null;
-          edgeDragging.dragPoint2 = null;
-          event.stopPropagation();
+      edgedraggingService.dragend = function() {
+        return function(event) {
+
+          if (edgeDragging.isDragging) {
+            edgeDragging.isDragging = false;
+            edgeDragging.dragPoint1 = null;
+            edgeDragging.dragPoint2 = null;
+            event.stopPropagation();
+
+            if(dragAnimation == flowchartConstants.dragAnimationShadow) {
+              edgeDragging.gElement.css('display', 'none');
+            }
+          }
         }
       };
 
@@ -148,6 +215,7 @@
                 throw error;
               }
             }
+
             if (isValidEdgeCallback(draggedEdgeSource, targetConnector)) {
               modelservice.edges._addEdge(draggedEdgeSource, targetConnector);
               event.stopPropagation();
