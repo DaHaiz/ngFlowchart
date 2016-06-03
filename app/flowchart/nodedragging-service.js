@@ -3,7 +3,7 @@
   'use strict';
 
   function Nodedraggingfactory(flowchartConstants) {
-    return function(modelservice, nodeDraggingScope, applyFunction, automaticResize) {
+    return function(modelservice, nodeDraggingScope, applyFunction, automaticResize, dragAnimation) {
 
       var dragOffset = {};
       var draggedElement = null;
@@ -19,7 +19,7 @@
         return getCoordinate(x, modelservice.getCanvasHtmlElement().offsetWidth);
       }
       function getYCoordinate(y) {
-        return getCoordinate(y,  modelservice.getCanvasHtmlElement().offsetHeight);
+        return getCoordinate(y, modelservice.getCanvasHtmlElement().offsetHeight);
       }
       function resizeCanvas(draggedNode, nodeElement) {
         if (automaticResize) {
@@ -44,11 +44,18 @@
             dragOffset.x = parseInt(element.css('left')) - event.clientX;
             dragOffset.y = parseInt(element.css('top')) - event.clientY;
 
+            if (dragAnimation == flowchartConstants.dragAnimationShadow) {
+              var shadowElement = angular.element('<div style="position: absolute; opacity: 0.7; top: '+ getYCoordinate(dragOffset.y + event.clientY) +'px; left: '+ getXCoordinate(dragOffset.x + event.clientX) +'px; "><div class="innerNode"><p style="padding: 0 10px;">'+ nodeDraggingScope.draggedNode.name +'</p> </div></div>');
+              nodeDraggingScope.shadowElement = shadowElement;
+              var canvasElement = modelservice.getCanvasHtmlElement();
+              canvasElement.appendChild(nodeDraggingScope.shadowElement[0]);
+            }
+
             event.dataTransfer.setData('Text', 'Just to support firefox');
             if (event.dataTransfer.setDragImage) {
               var invisibleDiv = angular.element('<div></div>')[0]; // This divs stays invisible, because it is not in the dom.
               event.dataTransfer.setDragImage(invisibleDiv, 0, 0);
-            } else {
+            } else if (dragAnimation == flowchartConstants.dragAnimationRepaint) {
               event.target.style.display = 'none'; // Internetexplorer does not support setDragImage, but it takes an screenshot, from the draggedelement and uses it as dragimage.
               // Since angular redraws the element in the next dragover call, display: none never gets visible to the user.
             }
@@ -67,24 +74,46 @@
         },
 
         dragover: function(event) {
-          if (nodeDraggingScope.draggedNode) {
-            return applyFunction(function() {
+          if (dragAnimation == flowchartConstants.dragAnimationRepaint) {
+            if (nodeDraggingScope.draggedNode) {
+              return applyFunction(function() {
+                nodeDraggingScope.draggedNode.x = getXCoordinate(dragOffset.x + event.clientX);
+                nodeDraggingScope.draggedNode.y = getYCoordinate(dragOffset.y + event.clientY);
+                resizeCanvas(nodeDraggingScope.draggedNode, draggedElement);
+                event.preventDefault();
+                return false;
+              });
+            }
+          } else if (dragAnimation == flowchartConstants.dragAnimationShadow) {
+            if (nodeDraggingScope.draggedNode) {
               nodeDraggingScope.draggedNode.x = getXCoordinate(dragOffset.x + event.clientX);
-              nodeDraggingScope.draggedNode.y =  getYCoordinate(dragOffset.y + event.clientY);
+              nodeDraggingScope.draggedNode.y = getYCoordinate(dragOffset.y + event.clientY);
+              nodeDraggingScope.shadowElement.css('left', nodeDraggingScope.draggedNode.x + 'px');
+              nodeDraggingScope.shadowElement.css('top', nodeDraggingScope.draggedNode.y + 'px');
               resizeCanvas(nodeDraggingScope.draggedNode, draggedElement);
               event.preventDefault();
-              return false;
-            });
+            }
           }
         },
 
         dragend: function(event) {
-          if (nodeDraggingScope.draggedNode) {
-            nodeDraggingScope.draggedNode = null;
-            draggedElement = null;
-            dragOffset.x = 0;
-            dragOffset.y = 0;
-          }
+          applyFunction(function() {
+
+            if (nodeDraggingScope.shadowElement) {
+              nodeDraggingScope.draggedNode.x = parseInt(nodeDraggingScope.shadowElement.css('left').replace('px',''));
+              nodeDraggingScope.draggedNode.y = parseInt(nodeDraggingScope.shadowElement.css('top').replace('px',''));
+
+              modelservice.getCanvasHtmlElement().removeChild(nodeDraggingScope.shadowElement[0]);
+              nodeDraggingScope.shadowElement = null;
+            }
+
+            if (nodeDraggingScope.draggedNode) {
+              nodeDraggingScope.draggedNode = null;
+              draggedElement = null;
+              dragOffset.x = 0;
+              dragOffset.y = 0;
+            }
+          });
         }
       };
     };

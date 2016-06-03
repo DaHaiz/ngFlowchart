@@ -7,7 +7,9 @@
     topConnectorType: 'topConnector',
     bottomConnectorType: 'bottomConnector',
     curvedStyle: 'curved',
-    lineStyle: 'line'
+    lineStyle: 'line',
+    dragAnimationRepaint: 'repaint',
+    dragAnimationShadow: 'shadow'
   };
   constants.canvasClass = constants.htmlPrefix + '-canvas';
   constants.selectedClass = constants.htmlPrefix + '-selected';
