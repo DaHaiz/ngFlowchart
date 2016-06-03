@@ -57,10 +57,10 @@
 
             if (edgeDragging.gElement == undefined) {
               //set shadow elements once
-              var el = angular.element(modelservice.getSvgHtmlElement());
-              edgeDragging.gElement = angular.element(el[0].getElementsByClassName('shadow-svg-class'));
-              edgeDragging.pathElement = angular.element(el[0].getElementsByClassName('shadow-svg-class')).find('path');
-              edgeDragging.circleElement = angular.element(el[0].getElementsByClassName('shadow-svg-class')).find('circle');
+              // IE Support
+              edgeDragging.gElement = angular.element(document.querySelectorAll('.shadow-svg-class'));
+              edgeDragging.pathElement = angular.element(document.querySelectorAll('.shadow-svg-class')).find('path');
+              edgeDragging.circleElement = angular.element(document.querySelectorAll('.shadow-svg-class')).find('circle');
             }
 
             edgeDragging.gElement.css('display', 'block');
@@ -77,6 +77,10 @@
         if (edgeDragging.isDragging) {
 
           if(!edgeDragging.magnetActive && dragAnimation == flowchartConstants.dragAnimationShadow) {
+
+            if (destinationHtmlElement !== null) {
+              destinationHtmlElement.style.display = oldDisplayStyle;
+            }
 
             edgeDragging.dragPoint2 = {
               x: event.clientX + dragOffset.x,
@@ -131,25 +135,9 @@
 
       edgedraggingService.dragleaveMagnet = function() {
         return function (event) {
-
-          if(event.clientX === 0) {
-            if(dragAnimation == flowchartConstants.dragAnimationShadow) {
-
-              if(edgeDragging.connector !== undefined) {
-                if (isValidEdgeCallback(draggedEdgeSource, edgeDragging.connector)) {
-                  modelservice.edges._addEdge(draggedEdgeSource, edgeDragging.connector);
-                  event.stopPropagation();
-                  event.preventDefault();
-                  return false;
-                }
-              }
-            }
-          }
-
           edgeDragging.magnetActive = false;
         }
       };
-
 
       edgedraggingService.dragoverMagnet = function(connector) {
         return function(event) {
@@ -177,6 +165,10 @@
                 edgeDragging.pathElement.attr('d', Edgedrawingservice.getEdgeDAttribute(edgeDragging.dragPoint1, edgeDragging.dragPoint2, edgeStyle));
                 edgeDragging.circleElement.attr('cx', edgeDragging.dragPoint2.x);
                 edgeDragging.circleElement.attr('cy', edgeDragging.dragPoint2.y);
+
+                event.preventDefault();
+                event.stopPropagation();
+                return false;
 
               } else if(dragAnimation == flowchartConstants.dragAnimationRepaint) {
                 return applyFunction(function() {
@@ -223,6 +215,7 @@
                 throw error;
               }
             }
+
             if (isValidEdgeCallback(draggedEdgeSource, targetConnector)) {
               modelservice.edges._addEdge(draggedEdgeSource, targetConnector);
               event.stopPropagation();
