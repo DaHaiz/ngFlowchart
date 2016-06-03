@@ -13,7 +13,7 @@
         edgeStyle: '@',
         userCallbacks: '=?callbacks',
         automaticResize: '=?',
-        dragAnimation: '=',
+        dragAnimation: '=?',
         nodeWidth: '=?',
         nodeHeight: '=?'
       },

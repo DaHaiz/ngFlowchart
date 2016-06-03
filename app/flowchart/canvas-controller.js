@@ -4,6 +4,8 @@
 
   function canvasController($scope, Mouseoverfactory, Nodedraggingfactory, Modelfactory, Edgedraggingfactory, Edgedrawingservice) {
 
+    $scope.dragAnimation = angular.isDefined($scope.dragAnimation) ? $scope.dragAnimation : 'repaint';
+
     $scope.userCallbacks = $scope.userCallbacks || {};
     $scope.automaticResize = $scope.automaticResize || false;
     angular.forEach($scope.userCallbacks, function(callback, key) {

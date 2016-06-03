@@ -24,6 +24,7 @@
 
       edgedraggingService.dragstart = function(connector) {
         return function(event) {
+
           edgeDragging.isDragging = true;
 
           draggedEdgeSource = connector;
@@ -54,19 +55,24 @@
 
           if (dragAnimation == flowchartConstants.dragAnimationShadow) {
 
-            var el = angular.element(modelservice.getSvgHtmlElement());
-            angular.element(el[0].getElementsByClassName('shadow-svg-class')).css('display', 'block');
-            angular.element(el[0].getElementsByClassName('shadow-svg-class')).find('path').attr('d', Edgedrawingservice.getEdgeDAttribute(edgeDragging.dragPoint1, edgeDragging.dragPoint2, edgeStyle));
-            angular.element(el[0].getElementsByClassName('shadow-svg-class')).find('circle').attr('cx', edgeDragging.dragPoint2.x);
-            angular.element(el[0].getElementsByClassName('shadow-svg-class')).find('circle').attr('cy', edgeDragging.dragPoint2.y);
+            if (edgeDragging.gElement == undefined) {
+              //set shadow elements once
+              var el = angular.element(modelservice.getSvgHtmlElement());
+              edgeDragging.gElement = angular.element(el[0].getElementsByClassName('shadow-svg-class'));
+              edgeDragging.pathElement = angular.element(el[0].getElementsByClassName('shadow-svg-class')).find('path');
+              edgeDragging.circleElement = angular.element(el[0].getElementsByClassName('shadow-svg-class')).find('circle');
+            }
+
+            edgeDragging.gElement.css('display', 'block');
+            edgeDragging.pathElement.attr('d', Edgedrawingservice.getEdgeDAttribute(edgeDragging.dragPoint1, edgeDragging.dragPoint2, edgeStyle));
+            edgeDragging.circleElement.attr('cx', edgeDragging.dragPoint2.x);
+            edgeDragging.circleElement.attr('cy', edgeDragging.dragPoint2.y);
           }
           event.stopPropagation();
         };
       };
 
       edgedraggingService.dragover = function(event) {
-
-        edgeDragging.endCounter -= 1;
 
         if (edgeDragging.isDragging) {
 
@@ -77,10 +83,9 @@
               y: event.clientY + dragOffset.y
             };
 
-            var el = angular.element(modelservice.getSvgHtmlElement());
-            angular.element(el[0].getElementsByClassName('shadow-svg-class')).find('path').attr('d', Edgedrawingservice.getEdgeDAttribute(edgeDragging.dragPoint1, edgeDragging.dragPoint2, edgeStyle));
-            angular.element(el[0].getElementsByClassName('shadow-svg-class')).find('circle').attr('cx', edgeDragging.dragPoint2.x);
-            angular.element(el[0].getElementsByClassName('shadow-svg-class')).find('circle').attr('cy', edgeDragging.dragPoint2.y);
+            edgeDragging.pathElement.attr('d', Edgedrawingservice.getEdgeDAttribute(edgeDragging.dragPoint1, edgeDragging.dragPoint2, edgeStyle));
+            edgeDragging.circleElement.attr('cx', edgeDragging.dragPoint2.x);
+            edgeDragging.circleElement.attr('cy', edgeDragging.dragPoint2.y);
 
           } else if(dragAnimation == flowchartConstants.dragAnimationRepaint) {
             return applyFunction(function () {
@@ -167,13 +172,13 @@
 
                 edgeDragging.connector = connector;
                 edgeDragging.magnetActive = true;
-                var el = angular.element(modelservice.getSvgHtmlElement());
-                edgeDragging.dragPoint2 = modelservice.connectors.getCenteredCoord(connector.id);
-                angular.element(el[0].getElementsByClassName('shadow-svg-class')).find('path').attr('d', Edgedrawingservice.getEdgeDAttribute(edgeDragging.dragPoint1, edgeDragging.dragPoint2, edgeStyle));
-                angular.element(el[0].getElementsByClassName('shadow-svg-class')).find('circle').attr('cx', edgeDragging.dragPoint2.x);
-                angular.element(el[0].getElementsByClassName('shadow-svg-class')).find('circle').attr('cy', edgeDragging.dragPoint2.y);
 
-              } else {
+                edgeDragging.dragPoint2 = modelservice.connectors.getCenteredCoord(connector.id);
+                edgeDragging.pathElement.attr('d', Edgedrawingservice.getEdgeDAttribute(edgeDragging.dragPoint1, edgeDragging.dragPoint2, edgeStyle));
+                edgeDragging.circleElement.attr('cx', edgeDragging.dragPoint2.x);
+                edgeDragging.circleElement.attr('cy', edgeDragging.dragPoint2.y);
+
+              } else if(dragAnimation == flowchartConstants.dragAnimationRepaint) {
                 return applyFunction(function() {
                   edgeDragging.dragPoint2 = modelservice.connectors.getCenteredCoord(connector.id);
                   event.preventDefault();
@@ -197,8 +202,7 @@
             event.stopPropagation();
 
             if(dragAnimation == flowchartConstants.dragAnimationShadow) {
-              var el = angular.element(modelservice.getSvgHtmlElement());
-              angular.element(el[0].getElementsByClassName('shadow-svg-class')).css('display', 'none');
+              edgeDragging.gElement.css('display', 'none');
             }
           }
         }
