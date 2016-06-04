@@ -18,6 +18,7 @@
       edgeDragging.isDragging = false;
       edgeDragging.dragPoint1 = null;
       edgeDragging.dragPoint2 = null;
+      edgeDragging.shadowDragStarted = false;
 
       var destinationHtmlElement = null;
       var oldDisplayStyle = "";
@@ -67,6 +68,12 @@
             oldDisplayStyle = destinationHtmlElement.style.display;
             event.target.style.display = 'none'; // Internetexplorer does not support setDragImage, but it takes an screenshot, from the draggedelement and uses it as dragimage.
             // Since angular redraws the element in the next dragover call, display: none never gets visible to the user.
+
+            if (dragAnimation == flowchartConstants.dragAnimationShadow) {
+              // IE Drag Fix
+              edgeDragging.shadowDragStarted = true;
+            }
+
           }
 
           if (dragAnimation == flowchartConstants.dragAnimationShadow) {
@@ -95,6 +102,11 @@
 
             if (destinationHtmlElement !== null) {
               destinationHtmlElement.style.display = oldDisplayStyle;
+            }
+
+            if (edgeDragging.shadowDragStarted) {
+              applyFunction();
+              edgeDragging.shadowDragStarted = false;
             }
 
             edgeDragging.dragPoint2 = {

@@ -8,7 +8,10 @@
       var dragOffset = {};
       var draggedElement = null;
       nodeDraggingScope.draggedNode = null;
+      nodeDraggingScope.shadowDragStarted = false;
 
+      var destinationHtmlElement = null;
+      var oldDisplayStyle = "";
 
       function getCoordinate(coordinate, max) {
         coordinate = Math.max(coordinate, 0);
@@ -55,9 +58,15 @@
             if (event.dataTransfer.setDragImage) {
               var invisibleDiv = angular.element('<div></div>')[0]; // This divs stays invisible, because it is not in the dom.
               event.dataTransfer.setDragImage(invisibleDiv, 0, 0);
-            } else if (dragAnimation == flowchartConstants.dragAnimationRepaint) {
+            } else {
+              destinationHtmlElement = event.target;
+              oldDisplayStyle = destinationHtmlElement.style.display;
               event.target.style.display = 'none'; // Internetexplorer does not support setDragImage, but it takes an screenshot, from the draggedelement and uses it as dragimage.
               // Since angular redraws the element in the next dragover call, display: none never gets visible to the user.
+              if (dragAnimation == flowchartConstants.dragAnimationShadow) {
+                // IE Drag Fix
+                nodeDraggingScope.shadowDragStarted = true;
+              }
             }
           };
         },
@@ -86,6 +95,11 @@
             }
           } else if (dragAnimation == flowchartConstants.dragAnimationShadow) {
             if (nodeDraggingScope.draggedNode) {
+              if(nodeDraggingScope.shadowDragStarted) {
+                destinationHtmlElement.style.display = oldDisplayStyle;
+                nodeDraggingScope.shadowDragStarted = false;
+                applyFunction();
+              }
               nodeDraggingScope.draggedNode.x = getXCoordinate(dragOffset.x + event.clientX);
               nodeDraggingScope.draggedNode.y = getYCoordinate(dragOffset.y + event.clientY);
               nodeDraggingScope.shadowElement.css('left', nodeDraggingScope.draggedNode.x + 'px');
