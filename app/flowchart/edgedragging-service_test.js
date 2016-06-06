@@ -32,6 +32,9 @@ describe('edgedragging-service_test', function() {
     this.canvasElement = jasmine.createSpyObj('canvasElement', ['getBoundingClientRect']);
     this.canvasElement.getBoundingClientRect.and.returnValue(angular.copy(this.canvasCoords));
 
+    this.dragAnimation = flowchartConstants.dragAnimationRepaint;
+    this.edgeStyle = flowchartConstants.lineStyle;
+
     this.connector = {id: 1, type: flowchartConstants.bottomConnectorType};
     this.destinationConnector = {id: 2, type: flowchartConstants.bottomConnectorType};
     this.connectorCoords = {x: 100, y: 100};
@@ -48,7 +51,7 @@ describe('edgedragging-service_test', function() {
     this.applyFunction = jasmine.createSpy('apply').and.callFake(function(f) {
       return f()
     });
-    this.edgedraggingService = Edgedraggingfactory(this.modelservice, {nodes: [], edges: []}, this.edgeDragging, this.userIsValidEdgeCallback, this.applyFunction);
+    this.edgedraggingService = Edgedraggingfactory(this.modelservice, {nodes: [], edges: []}, this.edgeDragging, this.userIsValidEdgeCallback, this.applyFunction, this.dragAnimation, this.edgeStyle);
 
     this.startEvent = createEvent('startEvent', this.canvasCoords.left + this.connectorCoords.x, this.canvasCoords.top + this.connectorCoords.y);
     this.dragDistance = 20;
@@ -120,7 +123,7 @@ describe('edgedragging-service_test', function() {
   it('dragend should reset the scope and call stopPropagation', function() {
     this.edgedraggingService.dragstart(angular.copy(this.connector))(this.startEvent);
     this.edgedraggingService.dragend(this.endEvent);
-
+    
     expect(this.edgeDragging.isDragging).toBe(false);
     expect(this.edgeDragging.dragPoint1).toBeNull();
     expect(this.edgeDragging.dragPoint2).toBeNull();
