@@ -49,6 +49,9 @@
 
             if (dragAnimation == flowchartConstants.dragAnimationShadow) {
               var shadowElement = angular.element('<div style="position: absolute; opacity: 0.7; top: '+ getYCoordinate(dragOffset.y + event.clientY) +'px; left: '+ getXCoordinate(dragOffset.x + event.clientX) +'px; "><div class="innerNode"><p style="padding: 0 10px;">'+ nodeDraggingScope.draggedNode.name +'</p> </div></div>');
+              var targetInnerNode = angular.element(event.target).children()[0];
+              shadowElement.children()[0].style = targetInnerNode.style;
+              shadowElement.children()[0].style.cssText = document.defaultView.getComputedStyle(targetInnerNode, "").cssText;
               nodeDraggingScope.shadowElement = shadowElement;
               var canvasElement = modelservice.getCanvasHtmlElement();
               canvasElement.appendChild(nodeDraggingScope.shadowElement[0]);
