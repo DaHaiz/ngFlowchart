@@ -117,7 +117,7 @@
             edgeDragging.circleElement.attr('cx', edgeDragging.dragPoint2.x);
             edgeDragging.circleElement.attr('cy', edgeDragging.dragPoint2.y);
 
-          } else if(dragAnimation == flowchartConstants.dragAnimationRepaint) {
+          } else if (dragAnimation == flowchartConstants.dragAnimationRepaint) {
             return applyFunction(function () {
 
               if (destinationHtmlElement !== null) {
@@ -159,10 +159,8 @@
         };
       };
 
-      edgedraggingService.dragleaveMagnet = function() {
-        return function (event) {
+      edgedraggingService.dragleaveMagnet = function (event) {
           edgeDragging.magnetActive = false;
-        }
       };
 
       edgedraggingService.dragoverMagnet = function(connector) {
@@ -182,7 +180,7 @@
               }
             }
             if (isValidEdgeCallback(draggedEdgeSource, connector)) {
-              if(dragAnimation == flowchartConstants.dragAnimationShadow) {
+              if (dragAnimation == flowchartConstants.dragAnimationShadow) {
 
                 edgeDragging.magnetActive = true;
 
@@ -195,7 +193,7 @@
                 event.stopPropagation();
                 return false;
 
-              } else if(dragAnimation == flowchartConstants.dragAnimationRepaint) {
+              } else if (dragAnimation == flowchartConstants.dragAnimationRepaint) {
                 return applyFunction(function() {
                   edgeDragging.dragPoint2 = modelservice.connectors.getCenteredCoord(connector.id);
                   event.preventDefault();
@@ -209,18 +207,15 @@
         }
       };
 
-      edgedraggingService.dragend = function() {
-        return function(event) {
+      edgedraggingService.dragend = function(event) {
+        if (edgeDragging.isDragging) {
+          edgeDragging.isDragging = false;
+          edgeDragging.dragPoint1 = null;
+          edgeDragging.dragPoint2 = null;
+          event.stopPropagation();
 
-          if (edgeDragging.isDragging) {
-            edgeDragging.isDragging = false;
-            edgeDragging.dragPoint1 = null;
-            edgeDragging.dragPoint2 = null;
-            event.stopPropagation();
-
-            if(dragAnimation == flowchartConstants.dragAnimationShadow) {
-              edgeDragging.gElement.css('display', 'none');
-            }
+          if (dragAnimation == flowchartConstants.dragAnimationShadow) {
+            edgeDragging.gElement.css('display', 'none');
           }
         }
       };
