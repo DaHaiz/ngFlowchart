@@ -26,12 +26,13 @@
       edgedraggingService.dragstart = function(connector) {
         return function(event) {
 
-          if(connector.type == flowchartConstants.topConnectorType) {
-            for(var i = 0; i < model.edges.length; i++) {
-              if(model.edges[i].destination == connector.id) {
+          if (connector.type == flowchartConstants.topConnectorType) {
+            for (var i = 0; i < model.edges.length; i++) {
+              if (model.edges[i].destination == connector.id) {
                 var swapConnector = modelservice.connectors.getConnector(model.edges[i].source);
-                modelservice.edges.delete(model.edges[i]);
-                applyFunction();
+                applyFunction(function() {
+                  modelservice.edges.delete(model.edges[i]);
+                });
                 break;
               }
             }
@@ -39,7 +40,7 @@
 
           edgeDragging.isDragging = true;
 
-          if(swapConnector != undefined) {
+          if (swapConnector != undefined) {
             draggedEdgeSource = swapConnector;
             edgeDragging.dragPoint1 = modelservice.connectors.getCenteredCoord(swapConnector.id);
           } else {
@@ -73,7 +74,6 @@
               // IE Drag Fix
               edgeDragging.shadowDragStarted = true;
             }
-
           }
 
           if (dragAnimation == flowchartConstants.dragAnimationShadow) {
@@ -97,16 +97,15 @@
       edgedraggingService.dragover = function(event) {
 
         if (edgeDragging.isDragging) {
-
-          if(!edgeDragging.magnetActive && dragAnimation == flowchartConstants.dragAnimationShadow) {
-
+          if (!edgeDragging.magnetActive && dragAnimation == flowchartConstants.dragAnimationShadow) {
             if (destinationHtmlElement !== null) {
               destinationHtmlElement.style.display = oldDisplayStyle;
             }
 
             if (edgeDragging.shadowDragStarted) {
-              applyFunction();
-              edgeDragging.shadowDragStarted = false;
+              applyFunction(function() {
+                edgeDragging.shadowDragStarted = false;
+              });
             }
 
             edgeDragging.dragPoint2 = {

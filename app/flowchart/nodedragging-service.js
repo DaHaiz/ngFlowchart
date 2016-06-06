@@ -96,9 +96,10 @@
           } else if (dragAnimation == flowchartConstants.dragAnimationShadow) {
             if (nodeDraggingScope.draggedNode) {
               if(nodeDraggingScope.shadowDragStarted) {
-                destinationHtmlElement.style.display = oldDisplayStyle;
-                nodeDraggingScope.shadowDragStarted = false;
-                applyFunction();
+                applyFunction(function() {
+                  destinationHtmlElement.style.display = oldDisplayStyle;
+                  nodeDraggingScope.shadowDragStarted = false;
+                });
               }
               nodeDraggingScope.draggedNode.x = getXCoordinate(dragOffset.x + event.clientX);
               nodeDraggingScope.draggedNode.y = getYCoordinate(dragOffset.y + event.clientY);
@@ -112,7 +113,6 @@
 
         dragend: function(event) {
           applyFunction(function() {
-
             if (nodeDraggingScope.shadowElement) {
               nodeDraggingScope.draggedNode.x = parseInt(nodeDraggingScope.shadowElement.css('left').replace('px',''));
               nodeDraggingScope.draggedNode.y = parseInt(nodeDraggingScope.shadowElement.css('top').replace('px',''));
