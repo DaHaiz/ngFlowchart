@@ -5,6 +5,7 @@
   function Modelfactory(Modelvalidation) {
     var connectorsHtmlElements = {};
     var canvasHtmlElement = null;
+    var svgHtmlElement = null;
 
     return function innerModelfactory(model, selectedObjects, edgeAddedCallback) {
       Modelvalidation.validateModel(model);
@@ -42,6 +43,16 @@
       }
 
       modelservice.connectors = {
+
+        getConnector: function(connectorId) {
+          for(var i=0; i<model.nodes.length; i++) {
+            for(var j=0; j<model.nodes[i].connectors.length; j++) {
+              if(model.nodes[i].connectors[j].id == connectorId) {
+                return model.nodes[i].connectors[j];
+              }
+            }
+          }
+        },
 
         setHtmlElement: function(connectorId, element) {
           connectorsHtmlElements[connectorId] = element;
@@ -243,6 +254,14 @@
 
       modelservice.getCanvasHtmlElement = function() {
         return canvasHtmlElement;
+      };
+
+      modelservice.setSvgHtmlElement = function(element) {
+        svgHtmlElement = element;
+      };
+
+      modelservice.getSvgHtmlElement = function() {
+        return svgHtmlElement;
       };
 
       return modelservice;

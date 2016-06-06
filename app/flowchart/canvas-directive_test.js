@@ -16,6 +16,7 @@ describe('the canvas-directive, node drawing is not tested at all to separate fr
     module('flowchart', function($provide, $controllerProvider) {
       $provide.service('modelservice', function() {
         this.setCanvasHtmlElement = jasmine.createSpy('modelservice.setCanvasHtmlElement');
+        this.setSvgHtmlElement = jasmine.createSpy('modelservice.setSvgHtmlElement');
 
         this.edges = jasmine.createSpyObj('modelservice edges', ['sourceCoord', 'destCoord', 'isSelected']);
         this.edges.sourceCoord.and.returnValue(EDGE_SOURCE);

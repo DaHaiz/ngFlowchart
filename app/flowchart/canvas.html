@@ -10,11 +10,17 @@
         ng-attr-class="{{(modelservice.edges.isSelected(edge) && flowchartConstants.selectedClass + ' ' + flowchartConstants.edgeClass) || edge == mouseOver.edge && flowchartConstants.hoverClass + ' ' + flowchartConstants.edgeClass || edge.active && flowchartConstants.activeClass + ' ' + flowchartConstants.edgeClass || flowchartConstants.edgeClass}}"
         ng-attr-d="{{getEdgeDAttribute(modelservice.edges.sourceCoord(edge), modelservice.edges.destCoord(edge), edgeStyle)}}"></path>
     </g>
-    <g ng-if="edgeDragging.isDragging">
+    <g ng-if="dragAnimation == flowchartConstants.dragAnimationRepaint && edgeDragging.isDragging">
+
       <path class="{{ flowchartConstants.edgeClass }} {{ flowchartConstants.draggingClass }}"
             ng-attr-d="{{getEdgeDAttribute(edgeDragging.dragPoint1, edgeDragging.dragPoint2, edgeStyle)}}"></path>
       <circle class="edge-endpoint" r="4" ng-attr-cx="{{edgeDragging.dragPoint2.x}}"
               ng-attr-cy="{{edgeDragging.dragPoint2.y}}"></circle>
+
+    </g>
+    <g ng-if="dragAnimation == flowchartConstants.dragAnimationShadow" class="shadow-svg-class {{ flowchartConstants.edgeClass }} {{ flowchartConstants.draggingClass }}" style="display:none">
+      <path d=""></path>
+      <circle class="edge-endpoint" r="4"></circle>
     </g>
   </svg>
   <fc-node selected="modelservice.nodes.isSelected(node)" under-mouse="node === mouseOver.node" node="node"

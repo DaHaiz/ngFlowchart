@@ -38,6 +38,9 @@ describe('test the nodedragging service', function() {
       name: 'testnode'
     };
 
+    this.automaticResize = false;
+    this.dragAnimation = 'repaint';
+
     this.fakeEvent = {
       preventDefault: jasmine.createSpy('preventDefault'),
       target: angular.element('<div style="top: 100px; left: 100px; display: initial;"></div>')[0],
@@ -50,7 +53,7 @@ describe('test the nodedragging service', function() {
     };
 
     this.$scope.draggingNode = {};
-    nodedragging = Nodedraggingfactory(modelservice, this.$scope.draggingNode, this.$scope.$apply.bind(this.$scope));
+    nodedragging = Nodedraggingfactory(modelservice, this.$scope.draggingNode, this.$scope.$apply.bind(this.$scope), this.automaticResize, this.dragAnimation);
   }));
 
   it('dragstart should select the node witch is dragged and deselect all others', function() {
