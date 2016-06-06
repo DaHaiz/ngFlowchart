@@ -44,6 +44,16 @@
 
       modelservice.connectors = {
 
+        getConnector: function(connectorId) {
+          for(var i=0; i<model.nodes.length; i++) {
+            for(var j=0; j<model.nodes[i].connectors.length; j++) {
+              if(model.nodes[i].connectors[j].id == connectorId) {
+                return model.nodes[i].connectors[j];
+              }
+            }
+          }
+        },
+
         setHtmlElement: function(connectorId, element) {
           connectorsHtmlElements[connectorId] = element;
         },

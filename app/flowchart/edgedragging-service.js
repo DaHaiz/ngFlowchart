@@ -18,6 +18,7 @@
       edgeDragging.isDragging = false;
       edgeDragging.dragPoint1 = null;
       edgeDragging.dragPoint2 = null;
+      edgeDragging.shadowDragStarted = false;
 
       var destinationHtmlElement = null;
       var oldDisplayStyle = "";
@@ -25,10 +26,27 @@
       edgedraggingService.dragstart = function(connector) {
         return function(event) {
 
+          if (connector.type == flowchartConstants.topConnectorType) {
+            for (var i = 0; i < model.edges.length; i++) {
+              if (model.edges[i].destination == connector.id) {
+                var swapConnector = modelservice.connectors.getConnector(model.edges[i].source);
+                applyFunction(function() {
+                  modelservice.edges.delete(model.edges[i]);
+                });
+                break;
+              }
+            }
+          }
+
           edgeDragging.isDragging = true;
 
-          draggedEdgeSource = connector;
-          edgeDragging.dragPoint1 = modelservice.connectors.getCenteredCoord(connector.id);
+          if (swapConnector != undefined) {
+            draggedEdgeSource = swapConnector;
+            edgeDragging.dragPoint1 = modelservice.connectors.getCenteredCoord(swapConnector.id);
+          } else {
+            draggedEdgeSource = connector;
+            edgeDragging.dragPoint1 = modelservice.connectors.getCenteredCoord(connector.id);
+          }
 
           var canvas = modelservice.getCanvasHtmlElement();
           if (!canvas) {
@@ -51,10 +69,14 @@
             oldDisplayStyle = destinationHtmlElement.style.display;
             event.target.style.display = 'none'; // Internetexplorer does not support setDragImage, but it takes an screenshot, from the draggedelement and uses it as dragimage.
             // Since angular redraws the element in the next dragover call, display: none never gets visible to the user.
+
+            if (dragAnimation == flowchartConstants.dragAnimationShadow) {
+              // IE Drag Fix
+              edgeDragging.shadowDragStarted = true;
+            }
           }
 
           if (dragAnimation == flowchartConstants.dragAnimationShadow) {
-
             if (edgeDragging.gElement == undefined) {
               //set shadow elements once
               // IE Support
@@ -75,11 +97,15 @@
       edgedraggingService.dragover = function(event) {
 
         if (edgeDragging.isDragging) {
-
-          if(!edgeDragging.magnetActive && dragAnimation == flowchartConstants.dragAnimationShadow) {
-
+          if (!edgeDragging.magnetActive && dragAnimation == flowchartConstants.dragAnimationShadow) {
             if (destinationHtmlElement !== null) {
               destinationHtmlElement.style.display = oldDisplayStyle;
+            }
+
+            if (edgeDragging.shadowDragStarted) {
+              applyFunction(function() {
+                edgeDragging.shadowDragStarted = false;
+              });
             }
 
             edgeDragging.dragPoint2 = {
@@ -158,7 +184,6 @@
             if (isValidEdgeCallback(draggedEdgeSource, connector)) {
               if(dragAnimation == flowchartConstants.dragAnimationShadow) {
 
-                edgeDragging.connector = connector;
                 edgeDragging.magnetActive = true;
 
                 edgeDragging.dragPoint2 = modelservice.connectors.getCenteredCoord(connector.id);
