@@ -103,10 +103,8 @@
                   nodeDraggingScope.shadowDragStarted = false;
                 });
               }
-              nodeDraggingScope.draggedNode.x = getXCoordinate(dragOffset.x + event.clientX);
-              nodeDraggingScope.draggedNode.y = getYCoordinate(dragOffset.y + event.clientY);
-              nodeDraggingScope.shadowElement.css('left', nodeDraggingScope.draggedNode.x + 'px');
-              nodeDraggingScope.shadowElement.css('top', nodeDraggingScope.draggedNode.y + 'px');
+              nodeDraggingScope.shadowElement.css('left', getXCoordinate(dragOffset.x + event.clientX) + 'px');
+              nodeDraggingScope.shadowElement.css('top', getYCoordinate(dragOffset.y + event.clientY) + 'px');
               resizeCanvas(nodeDraggingScope.draggedNode, draggedElement);
               event.preventDefault();
             }
