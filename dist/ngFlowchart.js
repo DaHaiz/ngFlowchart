@@ -110,31 +110,6 @@ if (!Function.prototype.bind) {
 
   'use strict';
 
-  angular
-    .module('flowchart')
-    .provider('NodeTemplatePath', NodeTemplatePath);
-
-  function NodeTemplatePath() {
-    var templatePath = "flowchart/node.html";
-
-    this.setTemplatePath = setTemplatePath;
-    this.$get = NodeTemplatePath;
-
-    function setTemplatePath(path) {
-      templatePath = path;
-    }
-
-    function NodeTemplatePath() {
-      return templatePath;
-    }
-  }
-
-}());
-
-(function() {
-
-  'use strict';
-
   function Nodedraggingfactory(flowchartConstants) {
     return function(modelservice, nodeDraggingScope, applyFunction, automaticResize, dragAnimation) {
 
@@ -270,6 +245,31 @@ if (!Function.prototype.bind) {
   angular
     .module('flowchart')
     .factory('Nodedraggingfactory', Nodedraggingfactory);
+
+}());
+
+(function() {
+
+  'use strict';
+
+  angular
+    .module('flowchart')
+    .provider('NodeTemplatePath', NodeTemplatePath);
+
+  function NodeTemplatePath() {
+    var templatePath = "flowchart/node.html";
+
+    this.setTemplatePath = setTemplatePath;
+    this.$get = NodeTemplatePath;
+
+    function setTemplatePath(path) {
+      templatePath = path;
+    }
+
+    function NodeTemplatePath() {
+      return templatePath;
+    }
+  }
 
 }());
 
