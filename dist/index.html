@@ -23,6 +23,9 @@
             title="Delete selected nodes and connections">
       Delete Selected
     </button>
+    <button ng-click="activateWorkflow()">
+      Activate Workflow
+    </button>
   </div>
   <fc-canvas model="model" selected-objects="flowchartselected" edge-style="curved" callbacks="callbacks"
              automatic-resize="true"></fc-canvas>

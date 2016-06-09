@@ -200,6 +200,12 @@ $scope.addNewNode = function () {
   model.nodes.push(newNode);
 };
 
+$scope.activateWorkflow = function() {
+  angular.forEach($scope.model.edges, function(edge) {
+    edge.active = !edge.active;
+  });
+};
+
 $scope.addNewInputConnector = function () {
   var connectorName = prompt("Enter a connector name:", "New connector");
   if (!connectorName) {
