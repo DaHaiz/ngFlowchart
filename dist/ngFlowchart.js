@@ -1412,7 +1412,7 @@ module.run(['$templateCache', function($templateCache) {
     '  id="{{node.id}}"\n' +
     '  ng-attr-style="position: absolute; top: {{ node.y }}px; left: {{ node.x }}px;"\n' +
     '  ng-dblclick="callbacks.doubleClick($event)">\n' +
-    '  <div class="innerNode" style="background-color: blue;">\n' +
+    '  <div class="innerNode">\n' +
     '    <p>{{ node.name }}</p>\n' +
     '\n' +
     '    <div class="{{flowchartConstants.topConnectorClass}}">\n' +
