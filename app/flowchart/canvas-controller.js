@@ -2,7 +2,7 @@
 
   'use strict';
 
-  function canvasController($scope, Mouseoverfactory, Nodedraggingfactory, Modelfactory, Edgedraggingfactory, Edgedrawingservice) {
+  function canvasController($scope, Mouseoverfactory, Nodedraggingfactory, Modelfactory, Edgedraggingfactory, Edgedrawingservice, FlowchartCanvasService) {
 
     $scope.dragAnimation = angular.isDefined($scope.dragAnimation) ? $scope.dragAnimation : 'repaint';
 
@@ -30,10 +30,15 @@
 
     $scope.canvasClick = $scope.modelservice.deselectAll;
 
-    $scope.drop = nodedraggingservice.drop;
+    $scope.drop = function(event) {
+      nodedraggingservice.drop(event);
+      FlowchartCanvasService._notifyDrop(event);
+    };
+
     $scope.dragover = function(event) {
       nodedraggingservice.dragover(event);
       edgedraggingservice.dragover(event);
+      FlowchartCanvasService._notifyDragover(event);
     };
 
     $scope.edgeClick = function(event, edge) {
