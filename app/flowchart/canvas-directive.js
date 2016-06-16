@@ -2,7 +2,7 @@
 
   'use strict';
 
-  function fcCanvas(flowchartConstants) {
+  function fcCanvas(flowchartConstants, FlowchartCanvasService) {
     return {
       restrict: 'E',
       templateUrl: "flowchart/canvas.html",
@@ -45,6 +45,7 @@
 
         scope.$watch('model', adjustCanvasSize);
 
+        FlowchartCanvasService.setCanvasHtmlElement(element[0]);
         scope.modelservice.setCanvasHtmlElement(element[0]);
         scope.modelservice.setSvgHtmlElement(element[0].querySelector('svg'));
       }

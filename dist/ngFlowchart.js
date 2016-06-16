@@ -156,7 +156,7 @@ if (!Function.prototype.bind) {
             dragOffset.y = parseInt(element.css('top')) - event.clientY;
 
             if (dragAnimation == flowchartConstants.dragAnimationShadow) {
-              var shadowElement = angular.element('<div style="position: absolute; opacity: 0.7; top: '+ getYCoordinate(dragOffset.y + event.clientY) +'px; left: '+ getXCoordinate(dragOffset.x + event.clientX) +'px; "><div class="innerNode"><p style="padding: 0 10px;">'+ nodeDraggingScope.draggedNode.name +'</p> </div></div>');
+              var shadowElement = angular.element('<div style="position: absolute; opacity: 0.7; top: '+ getYCoordinate(dragOffset.y + event.clientY) +'px; left: '+ getXCoordinate(dragOffset.x + event.clientX) +'px; "><div class="innerNode"><p style="padding: 0 15px;">'+ nodeDraggingScope.draggedNode.name +'</p> </div></div>');
               var targetInnerNode = angular.element(event.target).children()[0];
               shadowElement.children()[0].style.backgroundColor = targetInnerNode.style.backgroundColor;
               nodeDraggingScope.shadowElement = shadowElement;
@@ -1212,7 +1212,48 @@ if (!Function.prototype.bind) {
 
   'use strict';
 
-  function fcCanvas(flowchartConstants) {
+  function CanvasService($rootScope) {
+
+    var canvasHtmlElement;
+
+    this.setCanvasHtmlElement = function(element) {
+      canvasHtmlElement = element;
+    };
+
+    this.getCanvasHtmlElement = function() {
+      return canvasHtmlElement;
+    };
+
+    this.dragover = function(scope, callback) {
+        var handler = $rootScope.$on('notifying-dragover-event', callback);
+        scope.$on('$destroy', handler);
+    };
+    
+    this._notifyDragover = function(event) {
+      $rootScope.$emit('notifying-dragover-event', event);
+    };
+
+    this.drop = function(scope, callback) {
+      var handler = $rootScope.$on('notifying-drop-event', callback);
+      scope.$on('$destroy', handler);
+    };
+
+    this._notifyDrop = function(event) {
+      $rootScope.$emit('notifying-drop-event', event);
+    };
+  }
+  CanvasService.$inject = ["$rootScope"];
+
+  angular.module('flowchart')
+      .service('FlowchartCanvasService', CanvasService);
+
+}());
+
+(function() {
+
+  'use strict';
+
+  function fcCanvas(flowchartConstants, FlowchartCanvasService) {
     return {
       restrict: 'E',
       templateUrl: "flowchart/canvas.html",
@@ -1255,12 +1296,13 @@ if (!Function.prototype.bind) {
 
         scope.$watch('model', adjustCanvasSize);
 
+        FlowchartCanvasService.setCanvasHtmlElement(element[0]);
         scope.modelservice.setCanvasHtmlElement(element[0]);
         scope.modelservice.setSvgHtmlElement(element[0].querySelector('svg'));
       }
     };
   }
-  fcCanvas.$inject = ["flowchartConstants"];
+  fcCanvas.$inject = ["flowchartConstants", "FlowchartCanvasService"];
 
   angular
     .module('flowchart')
@@ -1273,7 +1315,7 @@ if (!Function.prototype.bind) {
 
   'use strict';
 
-  function canvasController($scope, Mouseoverfactory, Nodedraggingfactory, Modelfactory, Edgedraggingfactory, Edgedrawingservice) {
+  function canvasController($scope, Mouseoverfactory, Nodedraggingfactory, Modelfactory, Edgedraggingfactory, Edgedrawingservice, FlowchartCanvasService) {
 
     $scope.dragAnimation = angular.isDefined($scope.dragAnimation) ? $scope.dragAnimation : 'repaint';
 
@@ -1301,10 +1343,15 @@ if (!Function.prototype.bind) {
 
     $scope.canvasClick = $scope.modelservice.deselectAll;
 
-    $scope.drop = nodedraggingservice.drop;
+    $scope.drop = function(event) {
+      nodedraggingservice.drop(event);
+      FlowchartCanvasService._notifyDrop(event);
+    };
+
     $scope.dragover = function(event) {
       nodedraggingservice.dragover(event);
       edgedraggingservice.dragover(event);
+      FlowchartCanvasService._notifyDragover(event);
     };
 
     $scope.edgeClick = function(event, edge) {
@@ -1345,7 +1392,7 @@ if (!Function.prototype.bind) {
 
     $scope.getEdgeDAttribute = Edgedrawingservice.getEdgeDAttribute;
   }
-  canvasController.$inject = ["$scope", "Mouseoverfactory", "Nodedraggingfactory", "Modelfactory", "Edgedraggingfactory", "Edgedrawingservice"];
+  canvasController.$inject = ["$scope", "Mouseoverfactory", "Nodedraggingfactory", "Modelfactory", "Edgedraggingfactory", "Edgedrawingservice", "FlowchartCanvasService"];
 
   angular
     .module('flowchart')
