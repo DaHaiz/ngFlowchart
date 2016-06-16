@@ -48,7 +48,7 @@
             dragOffset.y = parseInt(element.css('top')) - event.clientY;
 
             if (dragAnimation == flowchartConstants.dragAnimationShadow) {
-              var shadowElement = angular.element('<div style="position: absolute; opacity: 0.7; top: '+ getYCoordinate(dragOffset.y + event.clientY) +'px; left: '+ getXCoordinate(dragOffset.x + event.clientX) +'px; "><div class="innerNode"><p style="padding: 0 10px;">'+ nodeDraggingScope.draggedNode.name +'</p> </div></div>');
+              var shadowElement = angular.element('<div style="position: absolute; opacity: 0.7; top: '+ getYCoordinate(dragOffset.y + event.clientY) +'px; left: '+ getXCoordinate(dragOffset.x + event.clientX) +'px; "><div class="innerNode"><p style="padding: 0 15px;">'+ nodeDraggingScope.draggedNode.name +'</p> </div></div>');
               var targetInnerNode = angular.element(event.target).children()[0];
               shadowElement.children()[0].style.backgroundColor = targetInnerNode.style.backgroundColor;
               nodeDraggingScope.shadowElement = shadowElement;
