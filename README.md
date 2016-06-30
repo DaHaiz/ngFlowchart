@@ -165,3 +165,6 @@ Instantiate it with `Modelfactory(model, selectedObjects)` with model and select
 ngFlowchart supports Chrome, Firefox, Opera and IE10+. Safari is not supported. PRs to expand support are welcome.
 
 Right now it is only possible to have one canvas per site, this may changes in future.
+
+###Sponsors
+Thanks to BrowserStack for kindly helping us improve cross browser support.
