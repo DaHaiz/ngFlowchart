@@ -78,7 +78,7 @@ describe('test the nodedragging service', function() {
     var innerDragStart = nodedragging.dragstart(this.node);
     innerDragStart(this.fakeEvent);
 
-    expect(this.fakeEvent.dataTransfer.setData).toHaveBeenCalled();
+    expect(this.fakeevent.originalEvent.dataTransfer.setData).toHaveBeenCalled();
   });
 
   it('should drop the defaultNode under the mousepointer and prevent default', function() {
@@ -152,7 +152,7 @@ describe('test the nodedragging service', function() {
   });
 
   it('should fix the internet explorer setDragImage bug', function() {
-    this.fakeEvent.dataTransfer.setDragImage = null;
+    this.fakeevent.originalEvent.dataTransfer.setDragImage = null;
     nodedragging.dragstart(this.node)(this.fakeEvent);
 
     expect(this.fakeEvent.target.style.display).toEqual('none');

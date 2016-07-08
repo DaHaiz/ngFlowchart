@@ -56,10 +56,10 @@
               canvasElement.appendChild(nodeDraggingScope.shadowElement[0]);
             }
 
-            event.dataTransfer.setData('Text', 'Just to support firefox');
-            if (event.dataTransfer.setDragImage) {
+            event.originalEvent.dataTransfer.setData('Text', 'Just to support firefox');
+            if (event.originalEvent.dataTransfer.setDragImage) {
               var invisibleDiv = angular.element('<div></div>')[0]; // This divs stays invisible, because it is not in the dom.
-              event.dataTransfer.setDragImage(invisibleDiv, 0, 0);
+              event.originalEvent.dataTransfer.setDragImage(invisibleDiv, 0, 0);
             } else {
               destinationHtmlElement = event.target;
               oldDisplayStyle = destinationHtmlElement.style.display;
