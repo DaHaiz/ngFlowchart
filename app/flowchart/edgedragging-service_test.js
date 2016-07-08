@@ -21,8 +21,8 @@ describe('edgedragging-service_test', function() {
     var event = jasmine.createSpyObj(name, ['stopPropagation', 'preventDefault']);
     event.target = angular.element('<div></div>')[0];
     event.dataTransfer = jasmine.createSpyObj('datatransfer', ['setDragImage', 'setData']);
-    event.clientX = clientX;
-    event.clientY = clientY;
+    event.originalEvent.originalEvent.clientX = clientX;
+    event.originalEvent.originalEvent.clientY = clientY;
     return event;
   }
 

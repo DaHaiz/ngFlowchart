@@ -56,8 +56,8 @@
           dragOffset.y = -canvas.getBoundingClientRect().top;
 
           edgeDragging.dragPoint2 = {
-            x: event.clientX + dragOffset.x,
-            y: event.clientY + dragOffset.y
+            x: event.originalEvent.originalEvent.clientX + dragOffset.x,
+            y: event.originalEvent.originalEvent.clientY + dragOffset.y
           };
 
           event.dataTransfer.setData('Text', 'Just to support firefox');
@@ -109,8 +109,8 @@
             }
 
             edgeDragging.dragPoint2 = {
-              x: event.clientX + dragOffset.x,
-              y: event.clientY + dragOffset.y
+              x: event.originalEvent.originalEvent.clientX + dragOffset.x,
+              y: event.originalEvent.originalEvent.clientY + dragOffset.y
             };
 
             edgeDragging.pathElement.attr('d', Edgedrawingservice.getEdgeDAttribute(edgeDragging.dragPoint1, edgeDragging.dragPoint2, edgeStyle));
@@ -125,8 +125,8 @@
               }
 
               edgeDragging.dragPoint2 = {
-                x: event.clientX + dragOffset.x,
-                y: event.clientY + dragOffset.y
+                x: event.originalEvent.originalEvent.clientX + dragOffset.x,
+                y: event.originalEvent.originalEvent.clientY + dragOffset.y
               };
             });
           }

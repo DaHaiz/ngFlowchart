@@ -44,11 +44,11 @@
             draggedElement = event.target;
 
             var element = angular.element(event.target);
-            dragOffset.x = parseInt(element.css('left')) - event.clientX;
-            dragOffset.y = parseInt(element.css('top')) - event.clientY;
+            dragOffset.x = parseInt(element.css('left')) - event.originalEvent.originalEvent.clientX;
+            dragOffset.y = parseInt(element.css('top')) - event.originalEvent.originalEvent.clientY;
 
             if (dragAnimation == flowchartConstants.dragAnimationShadow) {
-              var shadowElement = angular.element('<div style="position: absolute; opacity: 0.7; top: '+ getYCoordinate(dragOffset.y + event.clientY) +'px; left: '+ getXCoordinate(dragOffset.x + event.clientX) +'px; "><div class="innerNode"><p style="padding: 0 15px;">'+ nodeDraggingScope.draggedNode.name +'</p> </div></div>');
+              var shadowElement = angular.element('<div style="position: absolute; opacity: 0.7; top: '+ getYCoordinate(dragOffset.y + event.originalEvent.originalEvent.clientY) +'px; left: '+ getXCoordinate(dragOffset.x + event.originalEvent.originalEvent.clientX) +'px; "><div class="innerNode"><p style="padding: 0 15px;">'+ nodeDraggingScope.draggedNode.name +'</p> </div></div>');
               var targetInnerNode = angular.element(event.target).children()[0];
               shadowElement.children()[0].style.backgroundColor = targetInnerNode.style.backgroundColor;
               nodeDraggingScope.shadowElement = shadowElement;
@@ -76,8 +76,8 @@
         drop: function(event) {
           if (nodeDraggingScope.draggedNode) {
             return applyFunction(function() {
-              nodeDraggingScope.draggedNode.x = getXCoordinate(dragOffset.x + event.clientX);
-              nodeDraggingScope.draggedNode.y = getYCoordinate(dragOffset.y + event.clientY);
+              nodeDraggingScope.draggedNode.x = getXCoordinate(dragOffset.x + event.originalEvent.originalEvent.clientX);
+              nodeDraggingScope.draggedNode.y = getYCoordinate(dragOffset.y + event.originalEvent.originalEvent.clientY);
               event.preventDefault();
               return false;
             })
@@ -88,8 +88,8 @@
           if (dragAnimation == flowchartConstants.dragAnimationRepaint) {
             if (nodeDraggingScope.draggedNode) {
               return applyFunction(function() {
-                nodeDraggingScope.draggedNode.x = getXCoordinate(dragOffset.x + event.clientX);
-                nodeDraggingScope.draggedNode.y = getYCoordinate(dragOffset.y + event.clientY);
+                nodeDraggingScope.draggedNode.x = getXCoordinate(dragOffset.x + event.originalEvent.originalEvent.clientX);
+                nodeDraggingScope.draggedNode.y = getYCoordinate(dragOffset.y + event.originalEvent.originalEvent.clientY);
                 resizeCanvas(nodeDraggingScope.draggedNode, draggedElement);
                 event.preventDefault();
                 return false;
@@ -103,8 +103,8 @@
                   nodeDraggingScope.shadowDragStarted = false;
                 });
               }
-              nodeDraggingScope.shadowElement.css('left', getXCoordinate(dragOffset.x + event.clientX) + 'px');
-              nodeDraggingScope.shadowElement.css('top', getYCoordinate(dragOffset.y + event.clientY) + 'px');
+              nodeDraggingScope.shadowElement.css('left', getXCoordinate(dragOffset.x + event.originalEvent.originalEvent.clientX) + 'px');
+              nodeDraggingScope.shadowElement.css('top', getYCoordinate(dragOffset.y + event.originalEvent.originalEvent.clientY) + 'px');
               resizeCanvas(nodeDraggingScope.draggedNode, draggedElement);
               event.preventDefault();
             }
