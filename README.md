@@ -135,6 +135,8 @@ Your site should now show your first flowchart with two connected nodes.
   * `edgeDoubleClick(event, edge)` will be called when an edge is doubleclicked.
   * `edgeMouseOver(event, edge)` will be called if the mouse hovers an edge.
   * `isValidEdge(sourceConnector, destinationConnector)` will be called, when the user tries to connect to edges. Returns `true` if this is an valid edge in your application or `false` otherwise.
+  * `edgeRemoved(edge)` will be called if an edge has been removed
+  * `nodeRemoved(node)` will be called if a node has been removed
   * `nodeCallbacks` an object which will be available in the scope of the node template. This is usefull, to register a doubleclick handler on a node or similiar things. Every method that is handed into the `nodeCallbacks` will be available in the node template via the `callbacks` attribute.
  
 ### The Node template
