@@ -246,11 +246,24 @@ $scope.callbacks = {
   isValidEdge: function (source, destination) {
     return source.type === flowchartConstants.bottomConnectorType && destination.type === flowchartConstants.topConnectorType;
   },
+  edgeAdded: function (edge) {
+    console.log("edge added");
+    console.log(edge);
+  },
+  nodeRemoved: function (node) {
+    console.log("node removed");
+    console.log(node);
+  },
+  edgeRemoved: function (edge) {
+    console.log("edge removed");
+    console.log(edge);
+  },
   nodeCallbacks: {
     'doubleClick': function (event) {
       console.log('Node was doubleclicked.')
     }
   }
 };
+
 })
 ;

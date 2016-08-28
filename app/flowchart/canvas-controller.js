@@ -14,7 +14,7 @@
       }
     });
 
-    $scope.modelservice = Modelfactory($scope.model, $scope.selectedObjects, $scope.userCallbacks.edgeAdded || angular.noop);
+    $scope.modelservice = Modelfactory($scope.model, $scope.selectedObjects, $scope.userCallbacks.edgeAdded || angular.noop, $scope.userCallbacks.nodeRemoved || angular.noop,  $scope.userCallbacks.edgeRemoved || angular.noop);
 
     $scope.nodeDragging = {};
     var nodedraggingservice = Nodedraggingfactory($scope.modelservice, $scope.nodeDragging, $scope.$apply.bind($scope), $scope.automaticResize, $scope.dragAnimation);

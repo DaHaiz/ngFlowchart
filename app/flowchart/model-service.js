@@ -7,13 +7,21 @@
     var canvasHtmlElement = null;
     var svgHtmlElement = null;
 
-    return function innerModelfactory(model, selectedObjects, edgeAddedCallback) {
+    return function innerModelfactory(model, selectedObjects, edgeAddedCallback, nodeRemovedCallback, edgeRemovedCallback) {
       Modelvalidation.validateModel(model);
       var modelservice = {
         selectedObjects: selectedObjects
       };
       if (!angular.isFunction(edgeAddedCallback)) {
         edgeAddedCallback = angular.noop;
+      }
+
+      if (!angular.isFunction(nodeRemovedCallback)) {
+        nodeRemovedCallback = angular.noop;
+      }
+
+      if (!angular.isFunction(edgeRemovedCallback)) {
+        edgeRemovedCallback = angular.noop;
       }
 
       function selectObject(object) {
@@ -118,6 +126,7 @@
         },
 
         delete: function(node) {
+
           if (this.isSelected(node)) {
             this.deselect(node);
           }
@@ -138,6 +147,7 @@
             }
           }
           model.nodes.splice(index, 1);
+          nodeRemovedCallback(node);
         },
 
         getSelectedNodes: function() {
@@ -197,6 +207,7 @@
             this.deselect(edge)
           }
           model.edges.splice(index, 1);
+          edgeRemovedCallback(edge);
         },
 
         getSelectedEdges: function() {
