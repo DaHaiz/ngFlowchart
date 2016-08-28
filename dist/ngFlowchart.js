@@ -544,13 +544,21 @@ if (!Function.prototype.bind) {
     var canvasHtmlElement = null;
     var svgHtmlElement = null;
 
-    return function innerModelfactory(model, selectedObjects, edgeAddedCallback) {
+    return function innerModelfactory(model, selectedObjects, edgeAddedCallback, nodeRemovedCallback, edgeRemovedCallback) {
       Modelvalidation.validateModel(model);
       var modelservice = {
         selectedObjects: selectedObjects
       };
       if (!angular.isFunction(edgeAddedCallback)) {
         edgeAddedCallback = angular.noop;
+      }
+
+      if (!angular.isFunction(nodeRemovedCallback)) {
+        nodeRemovedCallback = angular.noop;
+      }
+
+      if (!angular.isFunction(edgeRemovedCallback)) {
+        edgeRemovedCallback = angular.noop;
       }
 
       function selectObject(object) {
@@ -655,6 +663,7 @@ if (!Function.prototype.bind) {
         },
 
         delete: function(node) {
+
           if (this.isSelected(node)) {
             this.deselect(node);
           }
@@ -675,6 +684,7 @@ if (!Function.prototype.bind) {
             }
           }
           model.nodes.splice(index, 1);
+          nodeRemovedCallback(node);
         },
 
         getSelectedNodes: function() {
@@ -734,6 +744,7 @@ if (!Function.prototype.bind) {
             this.deselect(edge)
           }
           model.edges.splice(index, 1);
+          edgeRemovedCallback(edge);
         },
 
         getSelectedEdges: function() {
@@ -1327,7 +1338,7 @@ if (!Function.prototype.bind) {
       }
     });
 
-    $scope.modelservice = Modelfactory($scope.model, $scope.selectedObjects, $scope.userCallbacks.edgeAdded || angular.noop);
+    $scope.modelservice = Modelfactory($scope.model, $scope.selectedObjects, $scope.userCallbacks.edgeAdded || angular.noop, $scope.userCallbacks.nodeRemoved || angular.noop,  $scope.userCallbacks.edgeRemoved || angular.noop);
 
     $scope.nodeDragging = {};
     var nodedraggingservice = Nodedraggingfactory($scope.modelservice, $scope.nodeDragging, $scope.$apply.bind($scope), $scope.automaticResize, $scope.dragAnimation);
