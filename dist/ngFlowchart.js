@@ -110,6 +110,31 @@ if (!Function.prototype.bind) {
 
   'use strict';
 
+  angular
+    .module('flowchart')
+    .provider('NodeTemplatePath', NodeTemplatePath);
+
+  function NodeTemplatePath() {
+    var templatePath = "flowchart/node.html";
+
+    this.setTemplatePath = setTemplatePath;
+    this.$get = NodeTemplatePath;
+
+    function setTemplatePath(path) {
+      templatePath = path;
+    }
+
+    function NodeTemplatePath() {
+      return templatePath;
+    }
+  }
+
+}());
+
+(function() {
+
+  'use strict';
+
   function Nodedraggingfactory(flowchartConstants) {
     return function(modelservice, nodeDraggingScope, applyFunction, automaticResize, dragAnimation) {
 
@@ -245,31 +270,6 @@ if (!Function.prototype.bind) {
   angular
     .module('flowchart')
     .factory('Nodedraggingfactory', Nodedraggingfactory);
-
-}());
-
-(function() {
-
-  'use strict';
-
-  angular
-    .module('flowchart')
-    .provider('NodeTemplatePath', NodeTemplatePath);
-
-  function NodeTemplatePath() {
-    var templatePath = "flowchart/node.html";
-
-    this.setTemplatePath = setTemplatePath;
-    this.$get = NodeTemplatePath;
-
-    function setTemplatePath(path) {
-      templatePath = path;
-    }
-
-    function NodeTemplatePath() {
-      return templatePath;
-    }
-  }
 
 }());
 
@@ -549,17 +549,10 @@ if (!Function.prototype.bind) {
       var modelservice = {
         selectedObjects: selectedObjects
       };
-      if (!angular.isFunction(edgeAddedCallback)) {
-        edgeAddedCallback = angular.noop;
-      }
 
-      if (!angular.isFunction(nodeRemovedCallback)) {
-        nodeRemovedCallback = angular.noop;
-      }
-
-      if (!angular.isFunction(edgeRemovedCallback)) {
-        edgeRemovedCallback = angular.noop;
-      }
+      modelservice.edgeAddedCallback = edgeAddedCallback || angular.noop;
+      modelservice.nodeRemovedCallback = nodeRemovedCallback || angular.noop;
+      modelservice.edgeRemovedCallback = edgeRemovedCallback || angular.noop;
 
       function selectObject(object) {
         if (modelservice.selectedObjects.indexOf(object) === -1) {
@@ -684,7 +677,7 @@ if (!Function.prototype.bind) {
             }
           }
           model.nodes.splice(index, 1);
-          nodeRemovedCallback(node);
+          modelservice.nodeRemovedCallback(node);
         },
 
         getSelectedNodes: function() {
@@ -744,7 +737,7 @@ if (!Function.prototype.bind) {
             this.deselect(edge)
           }
           model.edges.splice(index, 1);
-          edgeRemovedCallback(edge);
+          modelservice.edgeRemovedCallback(edge);
         },
 
         getSelectedEdges: function() {
@@ -768,7 +761,7 @@ if (!Function.prototype.bind) {
           var edge = {source: sourceConnector.id, destination: destConnector.id};
           Modelvalidation.validateEdges(model.edges.concat([edge]), model.nodes);
           model.edges.push(edge);
-          edgeAddedCallback(edge);
+          modelservice.edgeAddedCallback(edge);
         }
       };
 
@@ -810,6 +803,12 @@ if (!Function.prototype.bind) {
 
       modelservice.getSvgHtmlElement = function() {
         return svgHtmlElement;
+      };
+
+      modelservice.registerCallbacks = function (edgeAddedCallback, nodeRemovedCallback, edgeRemovedCallback) {
+        modelservice.edgeAddedCallback = edgeAddedCallback;
+        modelservice.nodeRemovedCallback = nodeRemovedCallback;
+        modelservice.edgeRemovedCallback = edgeRemovedCallback;
       };
 
       return modelservice;
