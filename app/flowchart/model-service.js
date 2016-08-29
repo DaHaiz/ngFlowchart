@@ -12,17 +12,10 @@
       var modelservice = {
         selectedObjects: selectedObjects
       };
-      if (!angular.isFunction(edgeAddedCallback)) {
-        edgeAddedCallback = angular.noop;
-      }
 
-      if (!angular.isFunction(nodeRemovedCallback)) {
-        nodeRemovedCallback = angular.noop;
-      }
-
-      if (!angular.isFunction(edgeRemovedCallback)) {
-        edgeRemovedCallback = angular.noop;
-      }
+      modelservice.edgeAddedCallback = edgeAddedCallback || angular.noop;
+      modelservice.nodeRemovedCallback = nodeRemovedCallback || angular.noop;
+      modelservice.edgeRemovedCallback = edgeRemovedCallback || angular.noop;
 
       function selectObject(object) {
         if (modelservice.selectedObjects.indexOf(object) === -1) {
@@ -147,7 +140,7 @@
             }
           }
           model.nodes.splice(index, 1);
-          nodeRemovedCallback(node);
+          modelservice.nodeRemovedCallback(node);
         },
 
         getSelectedNodes: function() {
@@ -207,7 +200,7 @@
             this.deselect(edge)
           }
           model.edges.splice(index, 1);
-          edgeRemovedCallback(edge);
+          modelservice.edgeRemovedCallback(edge);
         },
 
         getSelectedEdges: function() {
@@ -231,7 +224,7 @@
           var edge = {source: sourceConnector.id, destination: destConnector.id};
           Modelvalidation.validateEdges(model.edges.concat([edge]), model.nodes);
           model.edges.push(edge);
-          edgeAddedCallback(edge);
+          modelservice.edgeAddedCallback(edge);
         }
       };
 
@@ -273,6 +266,12 @@
 
       modelservice.getSvgHtmlElement = function() {
         return svgHtmlElement;
+      };
+
+      modelservice.registerCallbacks = function (edgeAddedCallback, nodeRemovedCallback, edgeRemovedCallback) {
+        modelservice.edgeAddedCallback = edgeAddedCallback;
+        modelservice.nodeRemovedCallback = nodeRemovedCallback;
+        modelservice.edgeRemovedCallback = edgeRemovedCallback;
       };
 
       return modelservice;

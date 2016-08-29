@@ -264,6 +264,7 @@ $scope.callbacks = {
     }
   }
 };
+modelservice.registerCallbacks($scope.callbacks.edgeAdded, $scope.callbacks.nodeRemoved, $scope.callbacks.edgeRemoved);
 
 })
 ;
