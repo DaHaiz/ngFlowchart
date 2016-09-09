@@ -20,9 +20,9 @@ describe('edgedragging-service_test', function() {
   function createEvent(name, clientX, clientY) {
     var event = jasmine.createSpyObj(name, ['stopPropagation', 'preventDefault']);
     event.target = angular.element('<div></div>')[0];
-    event.dataTransfer = jasmine.createSpyObj('datatransfer', ['setDragImage', 'setData']);
-    event.clientX = clientX;
-    event.clientY = clientY;
+    event.originalEvent.dataTransfer = jasmine.createSpyObj('datatransfer', ['setDragImage', 'setData']);
+    event.originalEvent.originalEvent.clientX = clientX;
+    event.originalEvent.originalEvent.clientY = clientY;
     return event;
   }
 
@@ -71,8 +71,8 @@ describe('edgedragging-service_test', function() {
     expect(this.edgeDragging.isDragging).toBe(true);
     expect(this.edgeDragging.dragPoint1).toEqual(this.connectorCoords);
     expect(this.edgeDragging.dragPoint2).toEqual(this.connectorCoords);
-    //expect(this.startEvent.dataTransfer.setDragImage).toHaveBeenCalled();
-    expect(this.startEvent.dataTransfer.setData).toHaveBeenCalled();
+    //expect(this.startevent.originalEvent.dataTransfer.setDragImage).toHaveBeenCalled();
+    expect(this.startevent.originalEvent.dataTransfer.setData).toHaveBeenCalled();
     expect(this.startEvent.stopPropagation).toHaveBeenCalled();
   });
 
@@ -148,7 +148,7 @@ describe('edgedragging-service_test', function() {
   });
 
   it('should fix the internet explorer setDragImage bug', function() {
-    this.startEvent.dataTransfer.setDragImage = null;
+    this.startevent.originalEvent.dataTransfer.setDragImage = null;
     this.edgedraggingService.dragstart(this.connector)(this.startEvent);
 
     expect(this.startEvent.target.style.display).toEqual('none');
@@ -160,7 +160,7 @@ describe('edgedragging-service_test', function() {
   it('dragover and drop should perform modelvalidation', function() {
     var that = this;
 
-    this.startEvent.dataTransfer.setDragImage = null;
+    this.startevent.originalEvent.dataTransfer.setDragImage = null;
     this.edgedraggingService.dragstart(this.connector)(this.startEvent);
 
     this.Modelvalidation.validateEdges.and.throwError(new this.Modelvalidation.ModelvalidationError());

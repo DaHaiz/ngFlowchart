@@ -78,14 +78,14 @@ describe('test the nodedragging service', function() {
     var innerDragStart = nodedragging.dragstart(this.node);
     innerDragStart(this.fakeEvent);
 
-    expect(this.fakeEvent.dataTransfer.setData).toHaveBeenCalled();
+    expect(this.fakeevent.originalEvent.dataTransfer.setData).toHaveBeenCalled();
   });
 
   it('should drop the defaultNode under the mousepointer and prevent default', function() {
     var clientX = 100;
     var clientY = 100;
-    this.fakeEvent.clientX = clientX;
-    this.fakeEvent.clientY = clientY;
+    this.fakeEvent.originalEvent.clientX = clientX;
+    this.fakeEvent.originalEvent.clientY = clientY;
 
     nodedragging.dragstart(this.node)(this.fakeEvent);
     expect(nodedragging.drop(this.fakeEvent)).toBe(false);
@@ -98,8 +98,8 @@ describe('test the nodedragging service', function() {
   it('dragover should preventdefault, update node coordinates and prevent dragging outside of the canvas', function() {
     var clientX = 100;
     var clientY = 100;
-    this.fakeEvent.clientX = clientX;
-    this.fakeEvent.clientY = clientY;
+    this.fakeEvent.originalEvent.clientX = clientX;
+    this.fakeEvent.originalEvent.clientY = clientY;
 
     nodedragging.dragstart(this.node)(this.fakeEvent);
     expect(nodedragging.dragover(this.fakeEvent)).toBe(false);
@@ -110,16 +110,16 @@ describe('test the nodedragging service', function() {
 
     clientX = -2;
     clientY = -2;
-    this.fakeEvent.clientX = clientX;
-    this.fakeEvent.clientY = clientY;
+    this.fakeEvent.originalEvent.clientX = clientX;
+    this.fakeEvent.originalEvent.clientY = clientY;
     expect(nodedragging.dragover(this.fakeEvent)).toBe(false);
     expect(this.node.x).toEqual(0);
     expect(this.node.y).toEqual(0);
 
     clientX = CANVAS_LENGTH + 1;
     clientY = CANVAS_LENGTH + 1;
-    this.fakeEvent.clientX = clientX;
-    this.fakeEvent.clientY = clientY;
+    this.fakeEvent.originalEvent.clientX = clientX;
+    this.fakeEvent.originalEvent.clientY = clientY;
     expect(nodedragging.dragover(this.fakeEvent)).toBe(false);
     expect(this.node.x).toEqual(CANVAS_LENGTH);
     expect(this.node.y).toEqual(CANVAS_LENGTH);
@@ -152,7 +152,7 @@ describe('test the nodedragging service', function() {
   });
 
   it('should fix the internet explorer setDragImage bug', function() {
-    this.fakeEvent.dataTransfer.setDragImage = null;
+    this.fakeevent.originalEvent.dataTransfer.setDragImage = null;
     nodedragging.dragstart(this.node)(this.fakeEvent);
 
     expect(this.fakeEvent.target.style.display).toEqual('none');
