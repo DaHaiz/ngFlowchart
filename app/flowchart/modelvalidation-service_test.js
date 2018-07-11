@@ -61,10 +61,11 @@ describe('The modelvalidation', function() {
       var that = this;
 
       var nodes = angular.copy(this.validNodes);
-      nodes[0].id = nodes[1].id;
+      var id = nodes[1].id;
+      nodes[0].id = id;
       expect(function() {
         that.Modelvalidation.validateNodes(nodes)
-      }).toThrowError('Id not unique.');
+      }).toThrowError('Node\'s id = "' + id + '" is not unique.');
 
       nodes = angular.copy(this.validNodes);
       expect(this.Modelvalidation.validateNodes(angular.copy(nodes))).toEqual(nodes);
@@ -74,10 +75,11 @@ describe('The modelvalidation', function() {
       var that = this;
 
       var nodes = angular.copy(this.validNodes);
-      nodes[1].connectors[0].id = nodes[2].connectors[0].id;
+      var id = nodes[2].connectors[0].id;
+      nodes[1].connectors[0].id = id;
       expect(function() {
         that.Modelvalidation.validateNodes(nodes)
-      }).toThrowError('Id not unique.');
+      }).toThrowError('Connector with id = "' + id + '" is not unique.');
 
       nodes = angular.copy(this.validNodes);
       angular.forEach(nodes, function(node) {
@@ -97,13 +99,13 @@ describe('The modelvalidation', function() {
       delete nodes[0].name;
       expect(function() {
         that.Modelvalidation.validateNodes(nodes)
-      }).toThrowError('Name not valid.');
+      }).toThrowError('Node\'s (id = "' + nodes[0].id + '") name is not string.');
 
       nodes = angular.copy(this.validNodes);
       delete nodes[1].connectors[0].id;
       expect(function() {
         that.Modelvalidation.validateNodes(nodes)
-      }).toThrowError('Id not valid.');
+      }).toThrowError('Connector\'s id is not valid.');
     });
   });
 
@@ -120,31 +122,31 @@ describe('The modelvalidation', function() {
       delete node.connectors;
       expect(function() {
         that.Modelvalidation.validateNode(node)
-      }).toThrow(new Error('Connectors not valid.'));
+      }).toThrow(new Error('Node\'s (id = "' + node.id + '") connectors property is not valid.'));
 
       node = angular.copy(this.validNode);
       delete node.y;
       expect(function() {
         that.Modelvalidation.validateNode(node)
-      }).toThrow(new Error('Coordinates not valid.'));
+      }).toThrow(new Error('Node\'s (id = "' + node.id + '") vertical coordinate is not valid.'));
 
       node = angular.copy(this.validNode);
       delete node.x;
       expect(function() {
         that.Modelvalidation.validateNode(node)
-      }).toThrow(new Error('Coordinates not valid.'));
+      }).toThrow(new Error('Node\'s (id = "' + node.id + '") horizontal coordinate is not valid.'));
 
       node = angular.copy(this.validNode);
       delete node.id;
       expect(function() {
         that.Modelvalidation.validateNode(node)
-      }).toThrow(new Error('Id not valid.'));
+      }).toThrow(new Error('Node\'s id is not valid.'));
 
       node = angular.copy(this.validNode);
       delete node.name;
       expect(function() {
         that.Modelvalidation.validateNode(node)
-      }).toThrow(new Error('Name not valid.'));
+      }).toThrow(new Error('Node\'s (id = "' + node.id + '") name is not string.'));
     });
 
     it('should detect if x, y are natural numbers', function() {
@@ -154,26 +156,26 @@ describe('The modelvalidation', function() {
       node.x = -1;
       expect(function() {
         that.Modelvalidation.validateNode(node)
-      }).toThrow(new Error('Coordinates not valid.'));
+      }).toThrow(new Error('Node\'s (id = "' + node.id + '") horizontal coordinate is not valid.'));
 
       node = angular.copy(this.validNode);
       node.x = '1';
       expect(function() {
         that.Modelvalidation.validateNode(node)
-      }).toThrow(new Error('Coordinates not valid.'));
+      }).toThrow(new Error('Node\'s (id = "' + node.id + '") horizontal coordinate is not valid.'));
 
       node = angular.copy(this.validNode);
       node.x = true;
       expect(function() {
         that.Modelvalidation.validateNode(node)
-      }).toThrow(new Error('Coordinates not valid.'));
+      }).toThrow(new Error('Node\'s (id = "' + node.id + '") horizontal coordinate is not valid.'));
 
       node = angular.copy(this.validNode);
       node.x = 1.1;
       node = {id: 1, name: '', x: 1.1, y: 1, connectors: []};
       expect(function() {
         that.Modelvalidation.validateNode(node)
-      }).toThrow(new Error('Coordinates not valid.'));
+      }).toThrow(new Error('Node\'s (id = "' + node.id + '") horizontal coordinate is not valid.'));
 
       node = angular.copy(this.validNode);
       node.x = 10000;
@@ -192,7 +194,7 @@ describe('The modelvalidation', function() {
       node.name = true;
       expect(function() {
         that.Modelvalidation.validateNode(node)
-      }).toThrow(new Error('Name not valid.'));
+      }).toThrow(new Error('Node\'s (id = "' + node.id + '") name is not string.'));
 
       node = angular.copy(this.validNode);
       node.name = '';
@@ -210,7 +212,7 @@ describe('The modelvalidation', function() {
       node.connectors = '';
       expect(function() {
         that.Modelvalidation.validateNode(angular.copy(node))
-      }).toThrow(new Error('Connectors not valid.'));
+      }).toThrow(new Error('Node\'s (id = \"' + node.id + '") connectors property is not valid.'));
 
       node = angular.copy(this.validNode);
       node.connectors = [];
@@ -230,13 +232,13 @@ describe('The modelvalidation', function() {
       delete connector.id;
       expect(function() {
         that.Modelvalidation.validateConnector(connector)
-      }).toThrowError('Id not valid.');
+      }).toThrowError('Connector\'s id is not valid.');
 
       connector = angular.copy(this.validConnector);
       delete connector.type;
       expect(function() {
         that.Modelvalidation.validateConnector(connector)
-      }).toThrowError('Type not valid.');
+      }).toThrowError('Connector\'s (id = "' + connector.id + '") type is not valid.');
 
       connector = angular.copy(this.validConnector);
       expect(that.Modelvalidation.validateConnector(connector)).toEqual(this.validConnector);
@@ -249,19 +251,19 @@ describe('The modelvalidation', function() {
       connector.type = null;
       expect(function() {
         that.Modelvalidation.validateConnector(connector)
-      }).toThrowError('Type not valid.');
+      }).toThrowError('Connector\'s (id = "' + connector.id + '") type is not valid.');
 
       connector = angular.copy(this.validConnector);
       connector.type = 1;
       expect(function() {
         that.Modelvalidation.validateConnector(connector)
-      }).toThrowError('Type not valid.');
+      }).toThrowError('Connector\'s (id = "' + connector.id + '") type is not valid.');
 
       connector = angular.copy(this.validConnector);
       connector.type = true;
       expect(function() {
         that.Modelvalidation.validateConnector(connector)
-      }).toThrowError('Type not valid.');
+      }).toThrowError('Connector\'s (id = "' + connector.id + '") type is not valid.');
 
       connector = angular.copy(this.validConnector);
       connector.type = '';
@@ -305,13 +307,13 @@ describe('The modelvalidation', function() {
         delete edge.source;
         expect(function() {
           that.Modelvalidation.validateEdge(edge, angular.copy(that.validModel.nodes))
-        }).toThrowError('Source not valid.');
+        }).toThrowError('Source is not valid.');
 
         edge = angular.copy(this.validEdge);
         delete edge.destination;
         expect(function() {
           that.Modelvalidation.validateEdge(edge, angular.copy(that.validModel.nodes))
-        }).toThrowError('Destination not valid.');
+        }).toThrowError('Destination is not valid.');
       });
 
       it('should guarantee that source and destination are valid connector ids', function() {
@@ -321,13 +323,13 @@ describe('The modelvalidation', function() {
         model.edges.push({source: -1000, destination: model.nodes[1].connectors[0].id});
         expect(function() {
           that.Modelvalidation.validateEdge(model.edges[model.edges.length - 1], model.nodes)
-        }).toThrowError('Source not valid.');
+        }).toThrowError('Source is not valid.');
 
         model = angular.copy(this.validModel);
         model.edges.push({source: model.nodes[1].connectors[0].id, destination: -1000});
         expect(function() {
           that.Modelvalidation.validateEdge(model.edges[model.edges.length - 1], model.nodes)
-        }).toThrowError('Destination not valid.');
+        }).toThrowError('Destination is not valid.');
 
         model = angular.copy(this.validModel);
         expect(this.Modelvalidation.validateEdge(model.edges[0], model.nodes)).toEqual(this.validModel.edges[0]);
@@ -356,7 +358,7 @@ describe('The modelvalidation', function() {
         delete model.nodes[0].id;
         expect(function() {
           that.Modelvalidation.validateEdge(model.edges[0], model.nodes)
-        }).toThrowError('Id not valid.');
+        }).toThrowError('Node\'s id is not valid.');
       });
     });
 

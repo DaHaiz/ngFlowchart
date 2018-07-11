@@ -26,7 +26,7 @@
       angular.forEach(nodes, function(node) {
         that.validateNode(node);
         if (ids.indexOf(node.id) !== -1) {
-          throw new ModelvalidationError('Id not unique.');
+          throw new ModelvalidationError('Node\'s id = "' + node.id + '" is not unique.');
         }
         ids.push(node.id);
       });
@@ -35,7 +35,7 @@
       angular.forEach(nodes, function(node) {
         angular.forEach(node.connectors, function(connector) {
           if (connectorIds.indexOf(connector.id) !== -1) {
-            throw new ModelvalidationError('Id not unique.');
+            throw new ModelvalidationError('Connector with id = "' + connector.id + '" is not unique.');
           }
           connectorIds.push(connector.id);
         });
@@ -46,19 +46,19 @@
     this.validateNode = function(node) {
       var that = this;
       if (node.id === undefined) {
-        throw new ModelvalidationError('Id not valid.');
+        throw new ModelvalidationError('Node\'s id is not valid.');
       }
       if (typeof node.name !== 'string') {
-        throw new ModelvalidationError('Name not valid.');
+        throw new ModelvalidationError('Node\'s (id = "' + node.id + '") name is not string.');
       }
       if (typeof node.x !== 'number' || node.x < 0 || Math.round(node.x) !== node.x) {
-        throw new ModelvalidationError('Coordinates not valid.')
+        throw new ModelvalidationError('Node\'s (id = "' + node.id + '") horizontal coordinate is not valid.')
       }
       if (typeof node.y !== 'number' || node.y < 0 || Math.round(node.y) !== node.y) {
-        throw new ModelvalidationError('Coordinates not valid.')
+        throw new ModelvalidationError('Node\'s (id = "' + node.id + '") vertical coordinate is not valid.')
       }
       if (!Array.isArray(node.connectors)) {
-        throw new ModelvalidationError('Connectors not valid.');
+        throw new ModelvalidationError('Node\'s (id = "' + node.id + '") connectors property is not valid.');
       }
       angular.forEach(node.connectors, function(connector) {
         that.validateConnector(connector);
@@ -96,10 +96,10 @@
 
     this._validateEdge = function(edge, nodes) {
       if (edge.source === undefined) {
-        throw new ModelvalidationError('Source not valid.');
+        throw new ModelvalidationError('Source is not valid.');
       }
       if (edge.destination === undefined) {
-        throw new ModelvalidationError('Destination not valid.');
+        throw new ModelvalidationError('Destination is not valid.');
       }
 
       if (edge.source === edge.destination) {
@@ -107,11 +107,11 @@
       }
       var sourceNode = nodes.filter(function(node) {return node.connectors.some(function(connector) {return connector.id === edge.source})})[0];
       if (sourceNode === undefined) {
-        throw new ModelvalidationError('Source not valid.');
+        throw new ModelvalidationError('Source is not valid.');
       }
       var destinationNode = nodes.filter(function(node) {return node.connectors.some(function(connector) {return connector.id === edge.destination})})[0];
       if (destinationNode === undefined) {
-        throw new ModelvalidationError('Destination not valid.');
+        throw new ModelvalidationError('Destination is not valid.');
       }
       if (sourceNode === destinationNode) {
         throw new ModelvalidationError('Edge with same source and destination nodes.');
@@ -126,10 +126,10 @@
 
     this.validateConnector = function(connector) {
       if (connector.id === undefined) {
-        throw new ModelvalidationError('Id not valid.');
+        throw new ModelvalidationError('Connector\'s id is not valid.');
       }
       if (connector.type === undefined || connector.type === null || typeof connector.type !== 'string') {
-        throw new ModelvalidationError('Type not valid.');
+        throw new ModelvalidationError('Connector\'s (id = "' + connector.id + '") type is not valid.');
       }
       return connector;
     };
